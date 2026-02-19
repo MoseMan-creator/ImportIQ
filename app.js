@@ -76,6 +76,90 @@ async function loadDutyCategories() {
   }
 }
 
+// Add loading states
+async function loadProducts() {
+  const tbody = document.querySelector('#productTable tbody');
+  
+  // Show skeleton loading
+  tbody.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    const skeletonRow = document.createElement('tr');
+    skeletonRow.innerHTML = `
+      <td colspan="21">
+        <div class="skeleton" style="height: 40px; margin: 8px 0;"></div>
+      </td>
+    `;
+    tbody.appendChild(skeletonRow);
+  }
+  
+  try {
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    
+    const snapshot = await db.collection(PRODUCTS_COLLECTION)
+      .where('userId', '==', user.uid)
+      .orderBy('createdAt', 'desc')
+      .get();
+    
+    tbody.innerHTML = '';
+    
+    if (snapshot.empty) {
+      // Show empty state
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="21">
+            <div class="empty-state">
+              <i class="fas fa-box-open" style="font-size: 48px; color: var(--text-light);"></i>
+              <h3>No products yet</h3>
+              <p>Get started by adding your first product</p>
+              <button class="btn primary" onclick="openNew()">
+                <i class="fas fa-plus"></i> Add Product
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    
+    snapshot.forEach(doc => {
+      const product = doc.data();
+      const row = createProductRow(doc.id, product);
+      tbody.appendChild(row);
+    });
+    
+    showStatus(`Loaded ${snapshot.size} products`, 'success');
+  } catch (error) {
+    console.error("Error loading products:", error);
+    showStatus('Error loading products', 'error');
+    
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="21">
+          <div class="empty-state" style="color: var(--danger);">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p>Failed to load products</p>
+            <button class="btn secondary" onclick="refreshData()">
+              <i class="fas fa-sync-alt"></i> Try Again
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// Add loading state to buttons
+function setButtonLoading(button, isLoading) {
+  if (isLoading) {
+    button.disabled = true;
+    button.innerHTML = '<span class="loading"></span> Loading...';
+  } else {
+    button.disabled = false;
+    button.innerHTML = button.getAttribute('data-original-text');
+  }
+}
+
 // Initialize Choices.js dropdowns
 function initializeDutyDropdowns() {
   const dutySelects = ['newDutySelect', 'editDutySelect'];
