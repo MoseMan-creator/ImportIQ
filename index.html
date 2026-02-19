@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+   
+   <?!= include('BaseStyles'); ?>
+   <?!= include('ModalStyles'); ?>
+</head>
+<body>
+  <!-- Authentication Section -->
+  <div id="authSection" style="display: none;">
+    <h2>Login Required</h2>
+    <div style="max-width: 300px; margin: 20px auto; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+      <input type="email" id="email" placeholder="Email" style="width: 100%; margin-bottom: 10px; padding: 8px;">
+      <input type="password" id="password" placeholder="Password" style="width: 100%; margin-bottom: 10px; padding: 8px;">
+      <button onclick="login()" class="btn primary" style="width: 100%;">Login</button>
+      <p style="margin-top: 10px; font-size: 12px; color: #666;">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- Main App (hidden until authenticated) -->
+  <div id="appSection" style="display: none;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h2>📊 Product Dashboard</h2>
+      <span style="color: #666; font-size: 14px;">Welcome, <span id="userEmail"></span> 
+        <button onclick="logout()" class="btn secondary small" style="margin-left: 10px;">Logout</button>
+      </span>
+    </div>
+    
+    <div class="toolbar">
+      <button class="btn primary" onclick="openNew()">+ New Product</button>
+      <button id="refreshBtn" class="btn secondary" type="button" onclick="refreshData()">Refresh</button>
+      <span id="status" class="status"></span>
+    </div>
+
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
+          <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
+          <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
+          <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
+          <th>Final</th><th>Total Final</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Your existing modals go here -->
+  <!-- ... (keep all your existing modal HTML) ... -->
+
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
