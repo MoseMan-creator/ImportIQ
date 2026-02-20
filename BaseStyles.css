@@ -939,27 +939,60 @@ body {
 }
 
 /* Auth Card */
+/* Make auth card scrollable */
 .auth-card {
     flex: 1;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     display: flex;
-    align-items: center;
+    align-items: flex-start; /* Changed from center to flex-start */
     justify-content: center;
     padding: 40px;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
+    overflow-y: auto !important; /* Force vertical scroll */
+    max-height: 100vh; /* Limit height */
 }
 
+/* Make auth forms scrollable internally */
 .auth-form {
     width: 100%;
     max-width: 400px;
     display: none;
+    max-height: 100%;
+    overflow-y: auto !important;
+    padding: 10px 0;
 }
 
+/* Ensure the active form displays properly */
 .auth-form.active {
-    display: block;
-    animation: slideIn 0.3s ease;
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Add some bottom padding to see content better */
+.auth-body {
+    padding-bottom: 30px;
+}
+
+/* Style the scrollbar */
+.auth-card::-webkit-scrollbar {
+    width: 8px;
+}
+
+.auth-card::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+}
+
+.auth-card::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #6366f1, #14b8a6);
+    border-radius: 10px;
+}
+
+.auth-card::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #4f46e5, #0d9488);
 }
 
 @keyframes slideIn {
