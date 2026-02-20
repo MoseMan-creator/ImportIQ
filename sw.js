@@ -1,4 +1,4 @@
-const CACHE_NAME = 'product-dashboard-v1';
+const CACHE_NAME = 'ImportIQ-v1';
 const urlsToCache = [
   '/',
   '/index.html',
