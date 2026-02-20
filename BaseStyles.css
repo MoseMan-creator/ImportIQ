@@ -228,7 +228,7 @@ body {
 }
 
 /* Table Container */
-.table-container {
+/*.table-container {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -293,6 +293,101 @@ body {
 
 #productTable tbody tr:last-child td {
   border-bottom: none;
+} */
+
+/* Table Container - Fixed */
+.table-container {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: var(--radius-lg);
+    padding: 0;  /* Remove padding, let table handle it */
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow-x: auto;  /* Keep horizontal scroll */
+    overflow-y: hidden;
+    width: 100%;  /* Take full width of parent */
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Table Styles - Optimized */
+#productTable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.9rem;
+    min-width: 1400px;  /* Reduced from 1800px */
+    white-space: nowrap;  /* Prevent text wrapping in cells */
+}
+
+/* Make columns more compact */
+#productTable th,
+#productTable td {
+    padding: 12px 8px;  /* Reduced padding */
+    text-align: left;
+}
+
+/* Specific column widths */
+#productTable th:nth-child(1) { min-width: 120px; } /* Item */
+#productTable th:nth-child(2) { min-width: 50px; }  /* Qty */
+#productTable th:nth-child(3) { min-width: 60px; }  /* Link */
+#productTable th:nth-child(4) { min-width: 70px; }  /* Cost */
+#productTable th:nth-child(5) { min-width: 70px; }  /* Shipping */
+#productTable th:nth-child(6) { min-width: 60px; }  /* Duty% */
+#productTable th:nth-child(7) { min-width: 60px; }  /* VAT% */
+#productTable th:nth-child(8) { min-width: 80px; }  /* Handling */
+#productTable th:nth-child(9) { min-width: 80px; }  /* Declared */
+#productTable th:nth-child(10) { min-width: 60px; } /* Rate */
+#productTable th:nth-child(11) { min-width: 80px; } /* Landed */
+#productTable th:nth-child(12) { min-width: 80px; } /* Carrier */
+#productTable th:nth-child(13) { min-width: 70px; } /* Markup% */
+#productTable th:nth-child(14) { min-width: 80px; } /* Selling */
+#productTable th:nth-child(15) { min-width: 80px; } /* Profit */
+#productTable th:nth-child(16) { min-width: 70px; } /* Margin% */
+#productTable th:nth-child(17) { min-width: 80px; } /* VAT Apply */
+#productTable th:nth-child(18) { min-width: 80px; } /* VAT Amt */
+#productTable th:nth-child(19) { min-width: 80px; } /* Final */
+#productTable th:nth-child(20) { min-width: 90px; } /* Total Final */
+#productTable th:nth-child(21) { min-width: 90px; } /* Actions */
+
+/* Enhanced scrollbar for table container */
+.table-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: var(--surface-hover);
+    border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+}
+
+/* Scroll hint indicator */
+.scroll-hint {
+    display: none;
+    text-align: center;
+    padding: 10px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+/* Show hint when content overflows */
+.table-container.overflow .scroll-hint {
+    display: block;
 }
 
 /* Status Messages */
