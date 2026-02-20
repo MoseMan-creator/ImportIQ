@@ -62,8 +62,6 @@
     </table>
   </div>
 
-  <!-- Your existing modals go here -->
-  <!-- ... (keep all your existing modal HTML) ... -->
   <!-- New Product Modal -->
 <div id="newModal" class="modal">
   <div class="modal-content">
@@ -345,11 +343,13 @@
   </div>
 </div>
 
-<!-- Floating Action Button for mobile -->
-<button class="fab" onclick="openNew()">
-  <i class="fas fa-plus"></i>
+<!-- Floating Action Button with Tooltip -->
+<button class="fab" onclick="openNew()" aria-label="Add new product">
+    <span class="tooltip">Add New Product</span>
+    <i class="fas fa-plus"></i>
+    <span class="fab-progress"></span>
 </button>
-
+  
   <script src="firebase-config.js"></script>
   <script src="app.js"></script>
 </body>
