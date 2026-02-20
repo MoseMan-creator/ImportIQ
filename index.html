@@ -134,14 +134,13 @@
           </div>
           
           <!-- Google Sign-In Button -->
-          <button onclick="googleSignIn()" class="btn google-btn" id="googleSignInBtn">
+          <button onclick="googleSignInLogin()" class="btn google-btn" id="googleSignInBtn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
             <span>Continue with Google</span>
             <span class="btn-loader" style="display: none;">
               <i class="fas fa-circle-notch fa-spin"></i>
             </span>
           </button>
-        </div> <!-- Close auth-body -->
 
         <div class="auth-footer">
           <p>Don't have an account? <a href="#" onclick="toggleAuthForm('signup')">Create account</a></p>
@@ -220,14 +219,13 @@
           </div>
           
           <!-- Google Sign-Up Button (use same function) -->
-          <button onclick="googleSignIn()" class="btn google-btn" id="googleSignUpBtn">
+          <button onclick="googleSignInSignup()" class="btn google-btn" id="googleSignUpBtn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
             <span>Sign up with Google</span>
             <span class="btn-loader" style="display: none;">
               <i class="fas fa-circle-notch fa-spin"></i>
             </span>
           </button>
-        </div> <!-- Close auth-body -->
         
         <div class="auth-footer">
           <p>Already have an account? <a href="#" onclick="toggleAuthForm('login')">Sign in</a></p>
