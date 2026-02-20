@@ -1184,6 +1184,377 @@ function checkMobile() {
   }
 }
 
+// Authentication UI Functions
+function toggleAuthForm(formType) {
+    document.querySelectorAll('.auth-form').forEach(form => {
+        form.classList.remove('active');
+    });
+    
+    if (formType === 'login') {
+        document.getElementById('loginForm').classList.add('active');
+    } else if (formType === 'signup') {
+        document.getElementById('signupForm').classList.add('active');
+    } else if (formType === 'forgot') {
+        document.getElementById('forgotForm').classList.add('active');
+    }
+}
+
+function togglePassword(inputId) {
+    const input = document.getElementById(inputId);
+    const icon = input.nextElementSibling.querySelector('i');
+    
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+function fillDemoCredentials(email, password) {
+    document.getElementById('email').value = email;
+    document.getElementById('password').value = password;
+    showToast('Demo credentials filled!', 'info');
+}
+
+function showToast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    let icon = '';
+    switch(type) {
+        case 'success': icon = 'check-circle'; break;
+        case 'error': icon = 'exclamation-circle'; break;
+        case 'warning': icon = 'exclamation-triangle'; break;
+        default: icon = 'info-circle';
+    }
+    
+    toast.innerHTML = `
+        <div class="toast-icon"><i class="fas fa-${icon}"></i></div>
+        <div class="toast-message">${message}</div>
+        <button class="toast-close" onclick="this.parentElement.remove()"><i class="fas fa-times"></i></button>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.remove();
+    }, 5000);
+}
+
+function showForgotPassword() {
+    toggleAuthForm('forgot');
+}
+
+function sendResetLink() {
+    const email = document.getElementById('resetEmail').value;
+    if (!email) {
+        showToast('Please enter your email', 'error');
+        return;
+    }
+    
+    // Add your Firebase password reset logic here
+    firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            showToast('Password reset email sent!', 'success');
+            setTimeout(() => toggleAuthForm('login'), 3000);
+        })
+        .catch(error => {
+            showToast(error.message, 'error');
+        });
+}
+
+function showTerms() {
+    showToast('Terms of Service would open here', 'info');
+}
+
+function showPrivacy() {
+    showToast('Privacy Policy would open here', 'info');
+}
+
+// Enhanced login function
+async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('rememberMe')?.checked || false;
+    const loginBtn = document.getElementById('loginBtn');
+    
+    if (!email || !password) {
+        showToast('Please enter email and password', 'error');
+        return;
+    }
+    
+    // Show loading state
+    loginBtn.classList.add('loading');
+    const btnText = loginBtn.querySelector('.btn-text');
+    const btnLoader = loginBtn.querySelector('.btn-loader');
+    btnText.style.visibility = 'hidden';
+    btnLoader.style.display = 'inline-block';
+    
+    try {
+        // Set persistence based on remember me
+        const persistence = rememberMe 
+            ? firebase.auth.Auth.Persistence.LOCAL 
+            : firebase.auth.Auth.Persistence.SESSION;
+        await firebase.auth().setPersistence(persistence);
+        
+        await firebase.auth().signInWithEmailAndPassword(email, password);
+        showToast('Welcome back to ImportIQ!', 'success');
+    } catch (error) {
+        showToast(error.message, 'error');
+        // Reset button state
+        loginBtn.classList.remove('loading');
+        btnText.style.visibility = 'visible';
+        btnLoader.style.display = 'none';
+    }
+}
+
+// Enhanced signup function
+async function showSignup() {
+    const name = document.getElementById('signupName')?.value;
+    const email = document.getElementById('signupEmail')?.value;
+    const password = document.getElementById('signupPassword')?.value;
+    const confirmPassword = document.getElementById('confirmPassword')?.value;
+    const acceptTerms = document.getElementById('acceptTerms')?.checked;
+    const signupBtn = document.getElementById('signupBtn');
+    
+    if (!name || !email || !password || !confirmPassword) {
+        showToast('Please fill in all fields', 'error');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showToast('Passwords do not match', 'error');
+        return;
+    }
+    
+    if (!acceptTerms) {
+        showToast('Please accept the Terms of Service', 'error');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showToast('Password must be at least 6 characters', 'error');
+        return;
+    }
+    
+    // Show loading state
+    signupBtn.classList.add('loading');
+    const btnText = signupBtn.querySelector('.btn-text');
+    const btnLoader = signupBtn.querySelector('.btn-loader');
+    btnText.style.visibility = 'hidden';
+    btnLoader.style.display = 'inline-block';
+    
+    try {
+        await firebase.auth().createUserWithEmailAndPassword(email, password);
+        
+        // Update profile with name
+        const user = firebase.auth().currentUser;
+        await user.updateProfile({
+            displayName: name
+        });
+        
+        showToast('Account created successfully!', 'success');
+    } catch (error) {
+        showToast(error.message, 'error');
+        // Reset button state
+        signupBtn.classList.remove('loading');
+        btnText.style.visibility = 'visible';
+        btnLoader.style.display = 'none';
+    }
+}
+
+// Update showAuthSection function
+function showAuthSection() {
+    console.log('Showing auth section');
+    document.getElementById('authSection').style.display = 'flex';
+    document.getElementById('appSection').style.display = 'none';
+    
+    // Reset forms
+    toggleAuthForm('login');
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = '';
+}
+
+// Google Sign-In Function - Updated for both buttons
+async function googleSignIn(buttonId = 'googleSignInBtn') {
+  // Determine which button was clicked
+  const googleBtn = document.getElementById(buttonId);
+  if (!googleBtn) {
+    console.error('Google button not found');
+    return;
+  }
+  
+  // Show loading state
+  googleBtn.classList.add('loading');
+  const btnText = googleBtn.querySelector('span:not(.btn-loader)');
+  const btnLoader = googleBtn.querySelector('.btn-loader');
+  if (btnText) btnText.style.opacity = '0.5';
+  if (btnLoader) btnLoader.style.display = 'inline-block';
+  
+  try {
+    // Configure Google Provider
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    googleProvider.addScope('profile');
+    googleProvider.addScope('email');
+    googleProvider.setCustomParameters({
+      prompt: 'select_account'
+    });
+    
+    // Check if mobile for better UX
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    let result;
+    if (isMobile) {
+      // Use redirect for mobile (better UX)
+      await firebase.auth().signInWithRedirect(googleProvider);
+      return; // The redirect will happen, so we stop here
+    } else {
+      // Use popup for desktop
+      result = await firebase.auth().signInWithPopup(googleProvider);
+    }
+    
+    // Handle successful sign-in (for popup)
+    await handleGoogleSignInResult(result);
+    
+  } catch (error) {
+    console.error('Google Sign-In Error:', error);
+    handleGoogleSignInError(error);
+  } finally {
+    // Reset button state (won't execute on redirect)
+    googleBtn.classList.remove('loading');
+    if (btnText) btnText.style.opacity = '1';
+    if (btnLoader) btnLoader.style.display = 'none';
+  }
+}
+
+// Handle Google Sign-In Result
+async function handleGoogleSignInResult(result) {
+  // Get user info
+  const user = result.user;
+  const isNewUser = result.additionalUserInfo.isNewUser;
+  
+  console.log('Google sign-in successful:', user.displayName);
+  showToast(`Welcome ${user.displayName || 'back'} to ImportIQ!`, 'success');
+  
+  // Create/update user profile in Firestore
+  const userProfile = {
+    email: user.email,
+    displayName: user.displayName,
+    photoURL: user.photoURL,
+    lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+    authProvider: 'google'
+  };
+  
+  if (isNewUser) {
+    // New user - create full profile
+    await db.collection('userProfiles').doc(user.uid).set({
+      ...userProfile,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      preferences: {
+        currency: 'USD',
+        defaultMarkup: 30,
+        defaultVAT: 17.5
+      }
+    });
+    showToast('Account created successfully!', 'success');
+  } else {
+    // Existing user - update last login only
+    await db.collection('userProfiles').doc(user.uid).update({
+      lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  }
+}
+
+// Handle Google Sign-In Errors
+function handleGoogleSignInError(error) {
+  let errorMessage = 'Sign-in failed. Please try again.';
+  let errorTitle = 'Authentication Error';
+  
+  switch (error.code) {
+    case 'auth/popup-closed-by-user':
+      errorMessage = 'Sign-in was cancelled. Please try again when ready.';
+      errorTitle = 'Sign-in Cancelled';
+      break;
+      
+    case 'auth/popup-blocked':
+      errorMessage = 'Popup was blocked by your browser. Please allow popups for this site.';
+      errorTitle = 'Popup Blocked';
+      break;
+      
+    case 'auth/cancelled-popup-request':
+      errorMessage = 'Another sign-in request is already in progress.';
+      errorTitle = 'Request Pending';
+      break;
+      
+    case 'auth/account-exists-with-different-credential':
+      errorMessage = 'An account already exists with the same email address using a different sign-in method. Try signing in with email/password.';
+      errorTitle = 'Account Conflict';
+      break;
+      
+    case 'auth/network-request-failed':
+      errorMessage = 'Network connection lost. Please check your internet and try again.';
+      errorTitle = 'Connection Error';
+      break;
+      
+    case 'auth/user-disabled':
+      errorMessage = 'This account has been disabled. Please contact support.';
+      errorTitle = 'Account Disabled';
+      break;
+      
+    case 'auth/unauthorized-domain':
+      errorMessage = 'This domain is not authorized for Google Sign-In. Please check Firebase console.';
+      errorTitle = 'Unauthorized Domain';
+      break;
+      
+    default:
+      console.error('Unhandled error:', error);
+  }
+  
+  // Show error toast
+  showToast(errorMessage, 'error', 6000);
+  
+  // Log for debugging
+  console.error(`${errorTitle}:`, error.code, error.message);
+}
+
+// Handle redirect result (for mobile)
+async function handleRedirectResult() {
+  try {
+    const result = await firebase.auth().getRedirectResult();
+    if (result.user) {
+      console.log('Redirect sign-in successful');
+      await handleGoogleSignInResult(result);
+    }
+  } catch (error) {
+    console.error('Redirect error:', error);
+    handleGoogleSignInError(error);
+  }
+}
+
+// Call this on page load
+document.addEventListener('DOMContentLoaded', () => {
+  handleRedirectResult();
+});
+
+// Convenience functions for different buttons
+function googleSignInLogin() {
+  googleSignIn('googleSignInBtn');
+}
+
+function googleSignInSignup() {
+  googleSignIn('googleSignUpBtn');
+}
+
+// Make functions globally available
+window.googleSignIn = googleSignIn;
+window.googleSignInLogin = googleSignInLogin;
+window.googleSignInSignup = googleSignInSignup;
+
 // Check if table overflows container
 function checkOverflow() {
     const container = document.querySelector('.table-container');
@@ -1214,6 +1585,7 @@ function updateConnectionStatus() {
 window.addEventListener('online', updateConnectionStatus);
 window.addEventListener('offline', updateConnectionStatus);
 updateConnectionStatus();
+
 
 // Listen for online/offline events
 window.addEventListener('online', function() {
