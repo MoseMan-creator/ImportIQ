@@ -1184,6 +1184,22 @@ function checkMobile() {
   }
 }
 
+// Update connection status
+function updateConnectionStatus() {
+    const statusEl = document.getElementById('connectionStatus');
+    if (navigator.onLine) {
+        statusEl.className = 'connection-status online';
+        statusEl.innerHTML = '<i class="fas fa-wifi"></i> Online';
+    } else {
+        statusEl.className = 'connection-status offline';
+        statusEl.innerHTML = '<i class="fas fa-wifi-slash"></i> Offline';
+    }
+}
+
+window.addEventListener('online', updateConnectionStatus);
+window.addEventListener('offline', updateConnectionStatus);
+updateConnectionStatus();
+
 // Listen for online/offline events
 window.addEventListener('online', function() {
   showStatus('Back online! Syncing data...', 'success');
