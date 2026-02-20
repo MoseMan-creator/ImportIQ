@@ -1184,6 +1184,21 @@ function checkMobile() {
   }
 }
 
+// Check if table overflows container
+function checkOverflow() {
+    const container = document.querySelector('.table-container');
+    const table = document.getElementById('productTable');
+    
+    if (table.scrollWidth > container.clientWidth) {
+        container.classList.add('overflow');
+    } else {
+        container.classList.remove('overflow');
+    }
+}
+
+window.addEventListener('load', checkOverflow);
+window.addEventListener('resize', checkOverflow);
+
 // Update connection status
 function updateConnectionStatus() {
     const statusEl = document.getElementById('connectionStatus');
