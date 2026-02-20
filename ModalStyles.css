@@ -1,28 +1,33 @@
 <style>
-  /* Modal Overlay */
-  .modal {
+ /* Modal Overlay */
+.modal {
     display: none;
-    position: fixed;
+    position: fixed;  /* This is crucial */
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     z-index: 1000;
     align-items: center;
     justify-content: center;
     padding: 20px;
     animation: fadeIn 0.3s ease;
-  }
+}
+
 
   @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
   }
 
-  /* Modal Content */
+/* Modal Content */
   .modal-content {
+    position: relative;  /* This ensures it stays inside the overlay */
     background: var(--surface);
     border-radius: var(--radius);
     width: 100%;
@@ -32,7 +37,7 @@
     box-shadow: var(--shadow-lg);
     animation: slideUp 0.3s ease;
     border: 1px solid var(--border);
-  }
+}
 
   @keyframes slideUp {
     from {
