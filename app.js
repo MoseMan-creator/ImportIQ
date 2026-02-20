@@ -2,32 +2,122 @@
 let currentEditId = null;
 let dutyCategories = [];
 let choicesInstances = {};
+let isOfflineMode = false;
 
 // Initialize app when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
+  // Check Firebase connection
+  checkFirebaseConnection();
+  
   // Check auth state
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       showAppSection();
-      loadDutyCategories();
-      loadProducts();
+      // Load data with retry mechanism
+      retryOperation(loadDutyCategories, 3);
+      retryOperation(loadProducts, 3);
     } else {
       showAuthSection();
     }
   });
+  
+  // Initialize modals
+  initializeModals();
 });
+
+// Retry operation on failure
+async function retryOperation(operation, maxRetries) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      await operation();
+      break;
+    } catch (error) {
+      console.log(`Attempt ${i + 1} failed:`, error);
+      if (i === maxRetries - 1) {
+        if (error.code === 'permission-denied') {
+          showStatus('Permission denied. Please check Firebase rules.', 'error');
+        } else if (error.code === 'unavailable' || error.code === 'failed-precondition') {
+          showStatus('Working in offline mode. Changes will sync when online.', 'warning');
+          isOfflineMode = true;
+          // Load from cache or use defaults
+          loadDutyCategoriesFromCache();
+        } else if (error.message && error.message.includes('API has not been used')) {
+          showStatus('Firestore API not enabled. Please enable it in Google Cloud Console.', 'error');
+        } else {
+          showStatus('Connection error. Please check your internet.', 'error');
+        }
+      }
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+}
+
+// Check Firebase connection status
+function checkFirebaseConnection() {
+  if (!navigator.onLine) {
+    showStatus('You are offline. Working in offline mode.', 'warning');
+    isOfflineMode = true;
+    return false;
+  }
+  
+  // Test Firestore connection
+  if (db) {
+    db.collection('_health_check').doc('_check').get()
+      .then(() => {
+        console.log('Firestore connection OK');
+        isOfflineMode = false;
+      })
+      .catch((error) => {
+        console.error('Firestore connection failed:', error);
+        if (error.code === 'unavailable') {
+          showStatus('Cannot connect to database. Working offline.', 'warning');
+          isOfflineMode = true;
+        }
+      });
+  }
+  
+  return true;
+}
+
+// Load duty categories from cache when offline
+function loadDutyCategoriesFromCache() {
+  // Use default duty categories as fallback
+  dutyCategories = [
+    { id: '1', label: 'Electronics', rate: 20 },
+    { id: '2', label: 'Clothing', rate: 25 },
+    { id: '3', label: 'Books', rate: 0 },
+    { id: '4', label: 'Furniture', rate: 30 },
+    { id: '5', label: 'Toys', rate: 15 },
+    { id: '6', label: 'Automotive', rate: 35 },
+    { id: '7', label: 'Food', rate: 10 },
+    { id: '8', label: 'Medicine', rate: 0 }
+  ];
+  
+  initializeDutyDropdowns();
+  showStatus('Using default duty categories (offline mode)', 'warning');
+}
 
 // Authentication functions
 function showSignup() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   
+  if (!email || !password) {
+    showStatus('Please enter email and password', 'error');
+    return;
+  }
+  
+  setAuthButtonLoading(true);
+  
   firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(() => {
       showStatus('Account created!', 'success');
+      setAuthButtonLoading(false);
     })
     .catch((error) => {
       showStatus(error.message, 'error');
+      setAuthButtonLoading(false);
     });
 }
 
@@ -35,10 +125,43 @@ function login() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   
+  if (!email || !password) {
+    showStatus('Please enter email and password', 'error');
+    return;
+  }
+  
+  setAuthButtonLoading(true);
+  
   firebase.auth().signInWithEmailAndPassword(email, password)
     .catch((error) => {
       showStatus(error.message, 'error');
+      setAuthButtonLoading(false);
     });
+}
+
+function setAuthButtonLoading(isLoading) {
+  const loginBtn = document.querySelector('#authSection .btn.primary');
+  const signupBtn = document.querySelector('#authSection .btn.secondary');
+  
+  if (isLoading) {
+    if (loginBtn) {
+      loginBtn.disabled = true;
+      loginBtn.innerHTML = '<span class="loading"></span> Logging in...';
+    }
+    if (signupBtn) {
+      signupBtn.disabled = true;
+      signupBtn.innerHTML = '<span class="loading"></span> Creating...';
+    }
+  } else {
+    if (loginBtn) {
+      loginBtn.disabled = false;
+      loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+    }
+    if (signupBtn) {
+      signupBtn.disabled = false;
+      signupBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+    }
+  }
 }
 
 function logout() {
@@ -55,13 +178,28 @@ function showAppSection() {
   document.getElementById('userEmail').textContent = user.email;
   document.getElementById('authSection').style.display = 'none';
   document.getElementById('appSection').style.display = 'block';
+  
+  // Show FAB on mobile
+  checkMobile();
 }
 
 // Load duty categories from Firestore
 async function loadDutyCategories() {
   try {
+    // Check if Firestore is properly initialized
+    if (!db) {
+      throw new Error('Firestore not initialized');
+    }
+    
     const snapshot = await db.collection(DUTY_COLLECTION).orderBy('label').get();
     dutyCategories = [];
+    
+    if (snapshot.empty) {
+      // Add default duty categories if none exist
+      await addDefaultDutyCategories();
+      return;
+    }
+    
     snapshot.forEach(doc => {
       dutyCategories.push({
         id: doc.id,
@@ -73,10 +211,40 @@ async function loadDutyCategories() {
     initializeDutyDropdowns();
   } catch (error) {
     console.error("Error loading duty categories:", error);
+    throw error; // Propagate error for retry mechanism
   }
 }
 
-// Add loading states
+// Add default duty categories
+async function addDefaultDutyCategories() {
+  const defaultCategories = [
+    { label: 'Electronics', rate: 20 },
+    { label: 'Clothing', rate: 25 },
+    { label: 'Books', rate: 0 },
+    { label: 'Furniture', rate: 30 },
+    { label: 'Toys', rate: 15 },
+    { label: 'Automotive', rate: 35 },
+    { label: 'Food', rate: 10 },
+    { label: 'Medicine', rate: 0 }
+  ];
+  
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+  
+  const batch = db.batch();
+  defaultCategories.forEach(cat => {
+    const docRef = db.collection(DUTY_COLLECTION).doc();
+    batch.set(docRef, {
+      ...cat,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+  });
+  
+  await batch.commit();
+  await loadDutyCategories();
+}
+
+// Load products from Firestore
 async function loadProducts() {
   const tbody = document.querySelector('#productTable tbody');
   
@@ -96,10 +264,19 @@ async function loadProducts() {
     const user = firebase.auth().currentUser;
     if (!user) return;
     
-    const snapshot = await db.collection(PRODUCTS_COLLECTION)
-      .where('userId', '==', user.uid)
-      .orderBy('createdAt', 'desc')
-      .get();
+    let snapshot;
+    if (isOfflineMode) {
+      // Try to get from cache first
+      snapshot = await db.collection(PRODUCTS_COLLECTION)
+        .where('userId', '==', user.uid)
+        .orderBy('createdAt', 'desc')
+        .get({ source: 'cache' });
+    } else {
+      snapshot = await db.collection(PRODUCTS_COLLECTION)
+        .where('userId', '==', user.uid)
+        .orderBy('createdAt', 'desc')
+        .get();
+    }
     
     tbody.innerHTML = '';
     
@@ -131,7 +308,6 @@ async function loadProducts() {
     showStatus(`Loaded ${snapshot.size} products`, 'success');
   } catch (error) {
     console.error("Error loading products:", error);
-    showStatus('Error loading products', 'error');
     
     tbody.innerHTML = `
       <tr>
@@ -146,17 +322,8 @@ async function loadProducts() {
         </td>
       </tr>
     `;
-  }
-}
-
-// Add loading state to buttons
-function setButtonLoading(button, isLoading) {
-  if (isLoading) {
-    button.disabled = true;
-    button.innerHTML = '<span class="loading"></span> Loading...';
-  } else {
-    button.disabled = false;
-    button.innerHTML = button.getAttribute('data-original-text');
+    
+    throw error; // Propagate error for retry mechanism
   }
 }
 
@@ -182,7 +349,9 @@ function initializeDutyDropdowns() {
       choicesInstances[selectId] = new Choices(select, {
         searchEnabled: true,
         itemSelectText: '',
-        shouldSort: false
+        shouldSort: false,
+        placeholder: true,
+        placeholderValue: 'Select duty...'
       });
       
       // Add event listener for "Other" selection
@@ -205,36 +374,16 @@ function initializeDutyDropdowns() {
             document.getElementById('editOtherDuty').disabled = true;
           }
         }
+        
+        // Trigger calculation when duty changes
+        if (selectId.includes('new')) {
+          calculateNewPreview();
+        } else {
+          calculateEditPreview();
+        }
       });
     }
   });
-}
-
-// Load products from Firestore
-async function loadProducts() {
-  try {
-    const user = firebase.auth().currentUser;
-    if (!user) return;
-    
-    const snapshot = await db.collection(PRODUCTS_COLLECTION)
-      .where('userId', '==', user.uid)
-      .orderBy('createdAt', 'desc')
-      .get();
-    
-    const tbody = document.querySelector('#productTable tbody');
-    tbody.innerHTML = '';
-    
-    snapshot.forEach(doc => {
-      const product = doc.data();
-      const row = createProductRow(doc.id, product);
-      tbody.appendChild(row);
-    });
-    
-    showStatus(`Loaded ${snapshot.size} products`, 'success');
-  } catch (error) {
-    console.error("Error loading products:", error);
-    showStatus('Error loading products', 'error');
-  }
 }
 
 // Create table row for a product
@@ -277,16 +426,16 @@ function createProductRow(id, product) {
   const cells = [
     product.item || '',
     product.quantity || 1,
-    `<a href="${product.link || '#'}" target="_blank">Link</a>`,
-    `$${parseFloat(product.cost || 0).toFixed(2)}`,
-    `$${parseFloat(product.shipping || 0).toFixed(2)}`,
+    product.link ? `<a href="${product.link}" target="_blank" class="table-link">Link</a>` : '—',
+    `$${(product.cost || 0).toFixed(2)}`,
+    `$${(product.shipping || 0).toFixed(2)}`,
     `${dutyPercent}%`,
     `${vatPercent}%`,
-    `BBD $${parseFloat(product.handling || 0).toFixed(2)}`,
-    `$${parseFloat(product.declared || cifUSD).toFixed(2)}`,
-    parseFloat(product.rate || 2).toFixed(2),
+    `BBD $${(product.handling || 0).toFixed(2)}`,
+    `$${(product.declared || cifUSD).toFixed(2)}`,
+    (product.rate || 2).toFixed(2),
     `BBD $${landedCost.toFixed(2)}`,
-    `BBD $${parseFloat(product.carrier || 0).toFixed(2)}`,
+    `BBD $${(product.carrier || 0).toFixed(2)}`,
     `${markupPercent}%`,
     `BBD $${sellingPrice.toFixed(2)}`,
     `BBD $${profit.toFixed(2)}`,
@@ -295,8 +444,10 @@ function createProductRow(id, product) {
     `BBD $${finalVatAmount.toFixed(2)}`,
     `BBD $${finalPrice.toFixed(2)}`,
     `BBD $${(finalPrice * (product.quantity || 1)).toFixed(2)}`,
-    `<button class="btn small" onclick="editProduct('${id}')">Edit</button>
-     <button class="btn small secondary" onclick="deleteProduct('${id}')">Delete</button>`
+    `<div class="action-buttons">
+      <button class="btn small" onclick="editProduct('${id}')"><i class="fas fa-edit"></i></button>
+      <button class="btn small secondary" onclick="deleteProduct('${id}')"><i class="fas fa-trash"></i></button>
+    </div>`
   ];
   
   cells.forEach(cellContent => {
@@ -331,17 +482,22 @@ function openNew() {
   document.getElementById('newOtherDuty').disabled = true;
   document.getElementById('newOtherDuty').value = '';
   
-  // Open modal
-  openModal('newModal');
-  
-  // Add event listeners for live calculations
-  const calcFields = ['newCost', 'newShipping', 'newDeclared', 'newRate', 'newVat', 'newMarkup', 'newCarrier', 'newHandling'];
+  // Remove existing event listeners
+  const calcFields = ['newCost', 'newShipping', 'newDeclared', 'newRate', 'newVat', 'newMarkup', 'newCarrier', 'newHandling', 'newQuantity'];
   calcFields.forEach(fieldId => {
-    document.getElementById(fieldId).addEventListener('input', calculateNewPreview);
+    const field = document.getElementById(fieldId);
+    field.removeEventListener('input', calculateNewPreview);
+    field.addEventListener('input', calculateNewPreview);
   });
   
+  document.getElementById('newDutySelect').removeEventListener('change', calculateNewPreview);
   document.getElementById('newDutySelect').addEventListener('change', calculateNewPreview);
+  
+  document.getElementById('newOtherDuty').removeEventListener('input', calculateNewPreview);
   document.getElementById('newOtherDuty').addEventListener('input', calculateNewPreview);
+  
+  // Open modal
+  openModal('newModal');
   
   // Initial calculation
   calculateNewPreview();
@@ -360,13 +516,20 @@ function calculateNewPreview() {
   const handling = parseFloat(document.getElementById('newHandling').value) || 0;
   const quantity = parseInt(document.getElementById('newQuantity').value) || 1;
   
+  // Update declared field if empty
+  if (!document.getElementById('newDeclared').value) {
+    document.getElementById('newDeclared').value = (cost + shipping).toFixed(2);
+  }
+  
   // Get duty rate
   let dutyRate = 0;
-  const dutySelect = choicesInstances.newDutySelect.getValue();
-  if (dutySelect.value === 'other') {
-    dutyRate = parseFloat(document.getElementById('newOtherDuty').value) || 0;
-  } else {
-    dutyRate = parseFloat(dutySelect.value) || 0;
+  if (choicesInstances.newDutySelect) {
+    const dutySelect = choicesInstances.newDutySelect.getValue();
+    if (dutySelect && dutySelect.value === 'other') {
+      dutyRate = parseFloat(document.getElementById('newOtherDuty').value) || 0;
+    } else if (dutySelect && dutySelect.value) {
+      dutyRate = parseFloat(dutySelect.value) || 0;
+    }
   }
   
   // Calculate CIF
@@ -415,59 +578,79 @@ function calculateNewPreview() {
 
 // Save new product
 async function saveNew() {
+  const saveBtn = document.querySelector('#newModal .modal-actions .btn.primary');
+  const originalText = saveBtn.innerHTML;
+  setButtonLoading(saveBtn, true);
+  
   try {
     const user = firebase.auth().currentUser;
     if (!user) {
       showStatus('Please login first', 'error');
+      setButtonLoading(saveBtn, false);
       return;
     }
     
     // Get values
     const item = document.getElementById('newItem').value.trim();
-    const quantity = parseInt(document.getElementById('newQuantity').value);
+    const quantity = parseInt(document.getElementById('newQuantity').value) || 1;
     const link = document.getElementById('newLink').value.trim();
     const cost = parseFloat(document.getElementById('newCost').value);
-    const shipping = parseFloat(document.getElementById('newShipping').value);
+    const shipping = parseFloat(document.getElementById('newShipping').value) || 0;
     const declared = parseFloat(document.getElementById('newDeclared').value) || (cost + shipping);
     const rate = parseFloat(document.getElementById('newRate').value);
-    const markup = parseFloat(document.getElementById('newMarkup').value);
-    const vat = parseFloat(document.getElementById('newVat').value);
+    const markup = parseFloat(document.getElementById('newMarkup').value) || 0;
+    const vat = parseFloat(document.getElementById('newVat').value) || 17.5;
     const carrier = parseFloat(document.getElementById('newCarrier').value) || 0;
     const handling = parseFloat(document.getElementById('newHandling').value) || 0;
     
+    // Validate required fields
+    if (!item) {
+      showStatus('Please enter an item name', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
+    if (isNaN(cost) || cost <= 0) {
+      showStatus('Please enter a valid cost', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
+    if (isNaN(rate) || rate <= 0) {
+      showStatus('Please enter a valid exchange rate', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
     // Get duty
-    const dutySelect = choicesInstances.newDutySelect.getValue();
     let duty = 0;
-    if (dutySelect.value === 'other') {
-      duty = parseFloat(document.getElementById('newOtherDuty').value) || 0;
-    } else {
-      duty = parseFloat(dutySelect.value) || 0;
+    if (choicesInstances.newDutySelect) {
+      const dutySelect = choicesInstances.newDutySelect.getValue();
+      if (dutySelect && dutySelect.value === 'other') {
+        duty = parseFloat(document.getElementById('newOtherDuty').value) || 0;
+      } else if (dutySelect && dutySelect.value) {
+        duty = parseFloat(dutySelect.value) || 0;
+      }
     }
     
     // Determine VAT apply
     const cifUSD = declared;
     const vatApply = cifUSD > 30 ? 'Yes' : 'No';
     
-    // Validate required fields
-    if (!item || isNaN(cost) || isNaN(rate)) {
-      showStatus('Please fill in required fields (Item, Cost, Rate)', 'error');
-      return;
-    }
-    
     // Create product object
     const product = {
       item,
-      quantity: quantity || 1,
-      link,
+      quantity,
+      link: link || '',
       cost,
-      shipping: shipping || 0,
+      shipping,
       declared,
       rate,
-      markup: markup || 0,
-      vat: vat || 17.5,
+      markup,
+      vat,
       duty,
-      carrier: carrier || 0,
-      handling: handling || 0,
+      carrier,
+      handling,
       vatApply,
       userId: user.uid,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -475,16 +658,25 @@ async function saveNew() {
     };
     
     // Save to Firestore
-    await db.collection(PRODUCTS_COLLECTION).add(product);
+    if (isOfflineMode) {
+      // In offline mode, save locally and sync later
+      await db.collection(PRODUCTS_COLLECTION).add(product);
+      showStatus('Product saved locally. Will sync when online.', 'warning');
+    } else {
+      await db.collection(PRODUCTS_COLLECTION).add(product);
+      showStatus('Product saved successfully!', 'success');
+    }
     
     // Close modal and refresh
     closeModal('newModal');
-    showStatus('Product saved successfully!', 'success');
     refreshData();
     
   } catch (error) {
     console.error("Error saving product:", error);
     showStatus('Error saving product: ' + error.message, 'error');
+  } finally {
+    setButtonLoading(saveBtn, false);
+    saveBtn.innerHTML = originalText;
   }
 }
 
@@ -513,9 +705,11 @@ async function editProduct(id) {
     // Set duty dropdown
     const dutyValue = product.duty || 0;
     if (choicesInstances.editDutySelect) {
-      const dutyCategory = dutyCategories.find(d => d.rate === dutyValue);
+      const dutyCategory = dutyCategories.find(d => Math.abs(d.rate - dutyValue) < 0.01);
       if (dutyCategory) {
         choicesInstances.editDutySelect.setChoiceByValue(dutyValue.toString());
+        document.getElementById('editOtherDutyGroup').style.display = 'none';
+        document.getElementById('editOtherDuty').disabled = true;
       } else {
         choicesInstances.editDutySelect.setChoiceByValue('other');
         document.getElementById('editOtherDutyGroup').style.display = 'block';
@@ -523,6 +717,20 @@ async function editProduct(id) {
         document.getElementById('editOtherDuty').value = dutyValue;
       }
     }
+    
+    // Add event listeners for live calculations
+    const calcFields = ['editCost', 'editShipping', 'editDeclared', 'editRate', 'editVat', 'editMarkup', 'editCarrier', 'editHandling', 'editQuantity'];
+    calcFields.forEach(fieldId => {
+      const field = document.getElementById(fieldId);
+      field.removeEventListener('input', calculateEditPreview);
+      field.addEventListener('input', calculateEditPreview);
+    });
+    
+    document.getElementById('editDutySelect').removeEventListener('change', calculateEditPreview);
+    document.getElementById('editDutySelect').addEventListener('change', calculateEditPreview);
+    
+    document.getElementById('editOtherDuty').removeEventListener('input', calculateEditPreview);
+    document.getElementById('editOtherDuty').addEventListener('input', calculateEditPreview);
     
     // Calculate preview
     calculateEditPreview();
@@ -538,35 +746,127 @@ async function editProduct(id) {
 
 // Calculate preview for edit
 function calculateEditPreview() {
-  // Similar to calculateNewPreview but for edit form
-  // Implementation omitted for brevity - same logic as calculateNewPreview
+  // Get values
+  const cost = parseFloat(document.getElementById('editCost').value) || 0;
+  const shipping = parseFloat(document.getElementById('editShipping').value) || 0;
+  const declared = parseFloat(document.getElementById('editDeclared').value) || (cost + shipping);
+  const rate = parseFloat(document.getElementById('editRate').value) || 2;
+  const vatRate = parseFloat(document.getElementById('editVat').value) || 17.5;
+  const markup = parseFloat(document.getElementById('editMarkup').value) || 30;
+  const carrier = parseFloat(document.getElementById('editCarrier').value) || 0;
+  const handling = parseFloat(document.getElementById('editHandling').value) || 0;
+  const quantity = parseInt(document.getElementById('editQuantity').value) || 1;
+  
+  // Update declared field if empty
+  if (!document.getElementById('editDeclared').value) {
+    document.getElementById('editDeclared').value = (cost + shipping).toFixed(2);
+  }
+  
+  // Get duty rate
+  let dutyRate = 0;
+  if (choicesInstances.editDutySelect) {
+    const dutySelect = choicesInstances.editDutySelect.getValue();
+    if (dutySelect && dutySelect.value === 'other') {
+      dutyRate = parseFloat(document.getElementById('editOtherDuty').value) || 0;
+    } else if (dutySelect && dutySelect.value) {
+      dutyRate = parseFloat(dutySelect.value) || 0;
+    }
+  }
+  
+  // Calculate CIF
+  const cifUSD = declared;
+  const cifBBD = cifUSD * rate;
+  
+  // Calculate duty (only if CIF > $30)
+  let dutyAmount = 0;
+  if (cifUSD > 30) {
+    dutyAmount = cifBBD * (dutyRate / 100);
+  }
+  
+  // Calculate VAT on customs (only if CIF > $30)
+  let vatAmount = 0;
+  if (cifUSD > 30) {
+    vatAmount = (cifBBD + dutyAmount) * (vatRate / 100);
+  }
+  
+  // Calculate landed cost
+  const landedCost = cifBBD + dutyAmount + vatAmount + carrier + handling;
+  
+  // Calculate selling price
+  const sellingPrice = landedCost * (1 + (markup / 100));
+  
+  // Calculate VAT on selling (if applicable)
+  const vatApply = cifUSD > 30 ? 'Yes' : 'No';
+  const finalVatAmount = vatApply === 'Yes' ? sellingPrice * 0.175 : 0;
+  const finalPrice = sellingPrice + finalVatAmount;
+  
+  // Calculate profit and margin
+  const profit = finalPrice - landedCost;
+  const margin = landedCost > 0 ? (profit / landedCost) * 100 : 0;
+  
+  // Update preview
+  document.getElementById('editCIF').textContent = `$${cifUSD.toFixed(2)}`;
+  document.getElementById('editCIFBBD').textContent = `BBD $${cifBBD.toFixed(2)}`;
+  document.getElementById('editDutyAmount').textContent = `BBD $${dutyAmount.toFixed(2)}`;
+  document.getElementById('editVatAmount').textContent = `BBD $${vatAmount.toFixed(2)}`;
+  document.getElementById('editLanded').textContent = `BBD $${landedCost.toFixed(2)}`;
+  document.getElementById('editSellingPreview').textContent = `BBD $${sellingPrice.toFixed(2)}`;
+  document.getElementById('editProfit').textContent = `BBD $${profit.toFixed(2)}`;
+  document.getElementById('editMargin').textContent = `${margin.toFixed(1)}%`;
+  document.getElementById('editFinalPreview').textContent = `BBD $${finalPrice.toFixed(2)}`;
+  document.getElementById('editTotalFinal').textContent = `BBD $${(finalPrice * quantity).toFixed(2)}`;
 }
 
 // Save edited product
 async function saveEdit() {
+  const saveBtn = document.querySelector('#editModal .modal-actions .btn.primary');
+  const originalText = saveBtn.innerHTML;
+  setButtonLoading(saveBtn, true);
+  
   try {
     if (!currentEditId) return;
     
-    // Get values (similar to saveNew)
+    // Get values
     const item = document.getElementById('editItem').value.trim();
-    const quantity = parseInt(document.getElementById('editQuantity').value);
+    const quantity = parseInt(document.getElementById('editQuantity').value) || 1;
     const link = document.getElementById('editLink').value.trim();
     const cost = parseFloat(document.getElementById('editCost').value);
-    const shipping = parseFloat(document.getElementById('editShipping').value);
+    const shipping = parseFloat(document.getElementById('editShipping').value) || 0;
     const declared = parseFloat(document.getElementById('editDeclared').value) || (cost + shipping);
     const rate = parseFloat(document.getElementById('editRate').value);
-    const markup = parseFloat(document.getElementById('editMarkup').value);
-    const vat = parseFloat(document.getElementById('editVat').value);
+    const markup = parseFloat(document.getElementById('editMarkup').value) || 0;
+    const vat = parseFloat(document.getElementById('editVat').value) || 17.5;
     const carrier = parseFloat(document.getElementById('editCarrier').value) || 0;
     const handling = parseFloat(document.getElementById('editHandling').value) || 0;
     
+    // Validate required fields
+    if (!item) {
+      showStatus('Please enter an item name', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
+    if (isNaN(cost) || cost <= 0) {
+      showStatus('Please enter a valid cost', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
+    if (isNaN(rate) || rate <= 0) {
+      showStatus('Please enter a valid exchange rate', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
     // Get duty
-    const dutySelect = choicesInstances.editDutySelect.getValue();
     let duty = 0;
-    if (dutySelect.value === 'other') {
-      duty = parseFloat(document.getElementById('editOtherDuty').value) || 0;
-    } else {
-      duty = parseFloat(dutySelect.value) || 0;
+    if (choicesInstances.editDutySelect) {
+      const dutySelect = choicesInstances.editDutySelect.getValue();
+      if (dutySelect && dutySelect.value === 'other') {
+        duty = parseFloat(document.getElementById('editOtherDuty').value) || 0;
+      } else if (dutySelect && dutySelect.value) {
+        duty = parseFloat(dutySelect.value) || 0;
+      }
     }
     
     // Determine VAT apply
@@ -576,17 +876,17 @@ async function saveEdit() {
     // Update product
     const updateData = {
       item,
-      quantity: quantity || 1,
-      link,
+      quantity,
+      link: link || '',
       cost,
-      shipping: shipping || 0,
+      shipping,
       declared,
       rate,
-      markup: markup || 0,
-      vat: vat || 17.5,
+      markup,
+      vat,
       duty,
-      carrier: carrier || 0,
-      handling: handling || 0,
+      carrier,
+      handling,
       vatApply,
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
@@ -600,6 +900,9 @@ async function saveEdit() {
   } catch (error) {
     console.error("Error updating product:", error);
     showStatus('Error updating product', 'error');
+  } finally {
+    setButtonLoading(saveBtn, false);
+    saveBtn.innerHTML = originalText;
   }
 }
 
@@ -619,12 +922,23 @@ async function deleteProduct(id) {
 
 // Add new duty category
 async function saveNewDuty() {
+  const saveBtn = document.querySelector('#addDutyModal .btn.primary');
+  const originalText = saveBtn.innerHTML;
+  setButtonLoading(saveBtn, true);
+  
   try {
     const label = document.getElementById('newDutyLabel').value.trim();
     const rate = parseFloat(document.getElementById('newDutyRate').value);
     
-    if (!label || isNaN(rate)) {
-      showStatus('Please enter both name and rate', 'error');
+    if (!label) {
+      showStatus('Please enter a duty name', 'error');
+      setButtonLoading(saveBtn, false);
+      return;
+    }
+    
+    if (isNaN(rate) || rate < 0) {
+      showStatus('Please enter a valid duty rate', 'error');
+      setButtonLoading(saveBtn, false);
       return;
     }
     
@@ -641,21 +955,60 @@ async function saveNewDuty() {
     document.getElementById('newDutyRate').value = '';
     
     showStatus('Duty category added!', 'success');
-    loadDutyCategories();
+    await loadDutyCategories();
     
   } catch (error) {
     console.error("Error saving duty:", error);
     showStatus('Error saving duty category', 'error');
+  } finally {
+    setButtonLoading(saveBtn, false);
+    saveBtn.innerHTML = originalText;
+  }
+}
+
+// Open add duty modal
+function openAddDutyModal() {
+  document.getElementById('newDutyLabel').value = '';
+  document.getElementById('newDutyRate').value = '';
+  openModal('addDutyModal');
+}
+
+// Add loading state to buttons
+function setButtonLoading(button, isLoading) {
+  if (isLoading) {
+    button.disabled = true;
+    button.innerHTML = '<span class="loading"></span> Saving...';
+  } else {
+    button.disabled = false;
   }
 }
 
 // Open/close modal functions
 function openModal(modalId) {
   document.getElementById(modalId).style.display = 'flex';
+  document.body.style.overflow = 'hidden';
 }
 
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = 'none';
+  document.body.style.overflow = 'auto';
+  
+  // Remove event listeners to prevent memory leaks
+  if (modalId === 'newModal') {
+    const calcFields = ['newCost', 'newShipping', 'newDeclared', 'newRate', 'newVat', 'newMarkup', 'newCarrier', 'newHandling', 'newQuantity'];
+    calcFields.forEach(fieldId => {
+      document.getElementById(fieldId).removeEventListener('input', calculateNewPreview);
+    });
+    document.getElementById('newDutySelect').removeEventListener('change', calculateNewPreview);
+    document.getElementById('newOtherDuty').removeEventListener('input', calculateNewPreview);
+  } else if (modalId === 'editModal') {
+    const calcFields = ['editCost', 'editShipping', 'editDeclared', 'editRate', 'editVat', 'editMarkup', 'editCarrier', 'editHandling', 'editQuantity'];
+    calcFields.forEach(fieldId => {
+      document.getElementById(fieldId).removeEventListener('input', calculateEditPreview);
+    });
+    document.getElementById('editDutySelect').removeEventListener('change', calculateEditPreview);
+    document.getElementById('editOtherDuty').removeEventListener('input', calculateEditPreview);
+  }
 }
 
 // Refresh data
@@ -669,21 +1022,61 @@ function showStatus(message, type) {
   statusEl.textContent = message;
   statusEl.className = 'status ' + type;
   
-  setTimeout(() => {
+  // Clear previous timeout
+  if (window.statusTimeout) {
+    clearTimeout(window.statusTimeout);
+  }
+  
+  window.statusTimeout = setTimeout(() => {
     statusEl.textContent = '';
     statusEl.className = 'status';
-  }, 3000);
+  }, 5000);
 }
 
 // Initialize modals
 function initializeModals() {
   // Close modal when clicking outside
   window.onclick = function(event) {
-    if (event.target.className === 'modal') {
-      event.target.style.display = 'none';
+    if (event.target.classList.contains('modal')) {
+      closeModal(event.target.id);
     }
   };
+  
+  // Close modal with Escape key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      const modals = document.querySelectorAll('.modal[style*="display: flex"]');
+      modals.forEach(modal => {
+        closeModal(modal.id);
+      });
+    }
+  });
 }
 
-// Initialize when page loads
-initializeModals();
+// Check mobile and show/hide FAB
+function checkMobile() {
+  const fab = document.querySelector('.fab');
+  if (fab) {
+    if (window.innerWidth <= 768) {
+      fab.style.display = 'flex';
+    } else {
+      fab.style.display = 'none';
+    }
+  }
+}
+
+// Listen for online/offline events
+window.addEventListener('online', function() {
+  showStatus('Back online! Syncing data...', 'success');
+  isOfflineMode = false;
+  refreshData();
+  loadDutyCategories();
+});
+
+window.addEventListener('offline', function() {
+  showStatus('You are offline. Working in offline mode.', 'warning');
+  isOfflineMode = true;
+});
+
+// Listen for resize events
+window.addEventListener('resize', checkMobile);
