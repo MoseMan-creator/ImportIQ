@@ -4,17 +4,31 @@ let dutyCategories = [];
 let choicesInstances = {};
 let isOfflineMode = false;
 
+// Make functions globally available
+window.openNew = openNew;
+window.editProduct = editProduct;
+window.deleteProduct = deleteProduct;
+window.saveNew = saveNew;
+window.saveEdit = saveEdit;
+window.closeModal = closeModal;
+window.openModal = openModal;
+window.refreshData = refreshData;
+window.logout = logout;
+window.login = login;
+window.showSignup = showSignup;
+window.openAddDutyModal = openAddDutyModal;
+window.saveNewDuty = saveNewDuty;
+
 // Initialize app when DOM loads
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('App initializing...');
+  
   // Check Firebase connection
   checkFirebaseConnection();
   
   // Check auth state
-  // Add after Firebase initialization
-console.log('Firebase Project:', firebase.app().options.projectId);
-console.log('Firestore:', db ? 'Initialized' : 'Failed');
-  
   firebase.auth().onAuthStateChanged(function(user) {
+    console.log('Auth state changed:', user ? 'Logged in' : 'Logged out');
     if (user) {
       showAppSection();
       // Load data with retry mechanism
@@ -104,6 +118,7 @@ function loadDutyCategoriesFromCache() {
 
 // Authentication functions
 function showSignup() {
+  console.log('Show signup called');
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   
@@ -126,6 +141,7 @@ function showSignup() {
 }
 
 function login() {
+  console.log('Login called');
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
   
@@ -137,6 +153,10 @@ function login() {
   setAuthButtonLoading(true);
   
   firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+      console.log('Login successful');
+      setAuthButtonLoading(false);
+    })
     .catch((error) => {
       showStatus(error.message, 'error');
       setAuthButtonLoading(false);
@@ -169,15 +189,18 @@ function setAuthButtonLoading(isLoading) {
 }
 
 function logout() {
+  console.log('Logout called');
   firebase.auth().signOut();
 }
 
 function showAuthSection() {
+  console.log('Showing auth section');
   document.getElementById('authSection').style.display = 'block';
   document.getElementById('appSection').style.display = 'none';
 }
 
 function showAppSection() {
+  console.log('Showing app section');
   const user = firebase.auth().currentUser;
   document.getElementById('userEmail').textContent = user.email;
   document.getElementById('authSection').style.display = 'none';
@@ -189,6 +212,7 @@ function showAppSection() {
 
 // Load duty categories from Firestore
 async function loadDutyCategories() {
+  console.log('Loading duty categories...');
   try {
     // Check if Firestore is properly initialized
     if (!db) {
@@ -199,6 +223,7 @@ async function loadDutyCategories() {
     dutyCategories = [];
     
     if (snapshot.empty) {
+      console.log('No duty categories found, adding defaults...');
       // Add default duty categories if none exist
       await addDefaultDutyCategories();
       return;
@@ -210,6 +235,8 @@ async function loadDutyCategories() {
         ...doc.data()
       });
     });
+    
+    console.log('Loaded duty categories:', dutyCategories.length);
     
     // Initialize dropdowns
     initializeDutyDropdowns();
@@ -250,6 +277,7 @@ async function addDefaultDutyCategories() {
 
 // Load products from Firestore
 async function loadProducts() {
+  console.log('Loading products...');
   const tbody = document.querySelector('#productTable tbody');
   
   // Show skeleton loading
@@ -285,12 +313,13 @@ async function loadProducts() {
     tbody.innerHTML = '';
     
     if (snapshot.empty) {
+      console.log('No products found');
       // Show empty state
       tbody.innerHTML = `
         <tr>
           <td colspan="21">
             <div class="empty-state">
-              <i class="fas fa-box-open" style="font-size: 48px; color: var(--text-light);"></i>
+              <i class="fas fa-box-open"></i>
               <h3>No products yet</h3>
               <p>Get started by adding your first product</p>
               <button class="btn primary" onclick="openNew()">
@@ -333,6 +362,7 @@ async function loadProducts() {
 
 // Initialize Choices.js dropdowns
 function initializeDutyDropdowns() {
+  console.log('Initializing duty dropdowns');
   const dutySelects = ['newDutySelect', 'editDutySelect'];
   
   dutySelects.forEach(selectId => {
@@ -386,6 +416,8 @@ function initializeDutyDropdowns() {
           calculateEditPreview();
         }
       });
+    } else {
+      console.warn(`Select element ${selectId} not found`);
     }
   });
 }
@@ -465,6 +497,16 @@ function createProductRow(id, product) {
 
 // Open new product modal
 function openNew() {
+  console.log('Opening new product modal');
+  
+  // Check if modal exists
+  const modal = document.getElementById('newModal');
+  if (!modal) {
+    console.error('New modal not found');
+    showStatus('Error: Modal not found', 'error');
+    return;
+  }
+  
   // Reset form
   document.getElementById('newItem').value = '';
   document.getElementById('newQuantity').value = '1';
@@ -490,15 +532,23 @@ function openNew() {
   const calcFields = ['newCost', 'newShipping', 'newDeclared', 'newRate', 'newVat', 'newMarkup', 'newCarrier', 'newHandling', 'newQuantity'];
   calcFields.forEach(fieldId => {
     const field = document.getElementById(fieldId);
-    field.removeEventListener('input', calculateNewPreview);
-    field.addEventListener('input', calculateNewPreview);
+    if (field) {
+      field.removeEventListener('input', calculateNewPreview);
+      field.addEventListener('input', calculateNewPreview);
+    }
   });
   
-  document.getElementById('newDutySelect').removeEventListener('change', calculateNewPreview);
-  document.getElementById('newDutySelect').addEventListener('change', calculateNewPreview);
+  const dutySelect = document.getElementById('newDutySelect');
+  if (dutySelect) {
+    dutySelect.removeEventListener('change', calculateNewPreview);
+    dutySelect.addEventListener('change', calculateNewPreview);
+  }
   
-  document.getElementById('newOtherDuty').removeEventListener('input', calculateNewPreview);
-  document.getElementById('newOtherDuty').addEventListener('input', calculateNewPreview);
+  const otherDuty = document.getElementById('newOtherDuty');
+  if (otherDuty) {
+    otherDuty.removeEventListener('input', calculateNewPreview);
+    otherDuty.addEventListener('input', calculateNewPreview);
+  }
   
   // Open modal
   openModal('newModal');
@@ -661,6 +711,8 @@ async function saveNew() {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     
+    console.log('Saving product:', product);
+    
     // Save to Firestore
     if (isOfflineMode) {
       // In offline mode, save locally and sync later
@@ -686,6 +738,7 @@ async function saveNew() {
 
 // Edit product
 async function editProduct(id) {
+  console.log('Editing product:', id);
   try {
     currentEditId = id;
     
@@ -895,6 +948,8 @@ async function saveEdit() {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp()
     };
     
+    console.log('Updating product:', updateData);
+    
     await db.collection(PRODUCTS_COLLECTION).doc(currentEditId).update(updateData);
     
     closeModal('editModal');
@@ -912,6 +967,7 @@ async function saveEdit() {
 
 // Delete product
 async function deleteProduct(id) {
+  console.log('Deleting product:', id);
   if (confirm('Are you sure you want to delete this product?')) {
     try {
       await db.collection(PRODUCTS_COLLECTION).doc(id).delete();
@@ -972,6 +1028,7 @@ async function saveNewDuty() {
 
 // Open add duty modal
 function openAddDutyModal() {
+  console.log('Opening add duty modal');
   document.getElementById('newDutyLabel').value = '';
   document.getElementById('newDutyRate').value = '';
   openModal('addDutyModal');
@@ -989,41 +1046,64 @@ function setButtonLoading(button, isLoading) {
 
 // Open/close modal functions
 function openModal(modalId) {
-  document.getElementById(modalId).style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  console.log('Opening modal:', modalId);
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  } else {
+    console.error('Modal not found:', modalId);
+  }
 }
 
 function closeModal(modalId) {
-  document.getElementById(modalId).style.display = 'none';
-  document.body.style.overflow = 'auto';
+  console.log('Closing modal:', modalId);
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
   
   // Remove event listeners to prevent memory leaks
   if (modalId === 'newModal') {
     const calcFields = ['newCost', 'newShipping', 'newDeclared', 'newRate', 'newVat', 'newMarkup', 'newCarrier', 'newHandling', 'newQuantity'];
     calcFields.forEach(fieldId => {
-      document.getElementById(fieldId).removeEventListener('input', calculateNewPreview);
+      const field = document.getElementById(fieldId);
+      if (field) field.removeEventListener('input', calculateNewPreview);
     });
-    document.getElementById('newDutySelect').removeEventListener('change', calculateNewPreview);
-    document.getElementById('newOtherDuty').removeEventListener('input', calculateNewPreview);
+    const dutySelect = document.getElementById('newDutySelect');
+    if (dutySelect) dutySelect.removeEventListener('change', calculateNewPreview);
+    const otherDuty = document.getElementById('newOtherDuty');
+    if (otherDuty) otherDuty.removeEventListener('input', calculateNewPreview);
   } else if (modalId === 'editModal') {
     const calcFields = ['editCost', 'editShipping', 'editDeclared', 'editRate', 'editVat', 'editMarkup', 'editCarrier', 'editHandling', 'editQuantity'];
     calcFields.forEach(fieldId => {
-      document.getElementById(fieldId).removeEventListener('input', calculateEditPreview);
+      const field = document.getElementById(fieldId);
+      if (field) field.removeEventListener('input', calculateEditPreview);
     });
-    document.getElementById('editDutySelect').removeEventListener('change', calculateEditPreview);
-    document.getElementById('editOtherDuty').removeEventListener('input', calculateEditPreview);
+    const dutySelect = document.getElementById('editDutySelect');
+    if (dutySelect) dutySelect.removeEventListener('change', calculateEditPreview);
+    const otherDuty = document.getElementById('editOtherDuty');
+    if (otherDuty) otherDuty.removeEventListener('input', calculateEditPreview);
   }
 }
 
 // Refresh data
 function refreshData() {
+  console.log('Refreshing data');
   loadProducts();
 }
 
 // Show status message
 function showStatus(message, type) {
+  console.log('Status:', type, message);
   const statusEl = document.getElementById('status');
-  statusEl.textContent = message;
+  if (!statusEl) {
+    console.warn('Status element not found');
+    return;
+  }
+  
+  statusEl.innerHTML = `<i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i> ${message}`;
   statusEl.className = 'status ' + type;
   
   // Clear previous timeout
@@ -1032,13 +1112,15 @@ function showStatus(message, type) {
   }
   
   window.statusTimeout = setTimeout(() => {
-    statusEl.textContent = '';
+    statusEl.innerHTML = '';
     statusEl.className = 'status';
   }, 5000);
 }
 
 // Initialize modals
 function initializeModals() {
+  console.log('Initializing modals');
+  
   // Close modal when clicking outside
   window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
