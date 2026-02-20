@@ -2,31 +2,32 @@
 <html>
 <head>
   <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
-
-  <!-- Manifest for PWA -->
-<link rel="manifest" href="manifest.json">
-
-<!-- Theme color for browser UI -->
-<meta name="theme-color" content="#6366f1">
-
-<!-- iOS specific -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Product Dashboard">
-
-<!-- Favicon (prevents 404) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes">
   
-  <!-- Font Awesome 6 (latest) -->
+  <!-- ImportIQ Branding -->
+  <title>ImportIQ - Smart Import Calculator</title>
+  <meta name="description" content="ImportIQ - Calculate landed costs, duties, and profits for imported products">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    
-  <!-- Add favicon link to prevent 404 error -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+  
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
 
-  <!-- Add to your head to generate temporary icons -->
+  <!-- Theme Color -->
+  <meta name="theme-color" content="#6366f1">
+
+  <!-- iOS Specific -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="ImportIQ">
+
+  <!-- Favicon (emoji fallback) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
   
   <!-- Firebase SDKs -->
@@ -34,346 +35,385 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   
+  <!-- Choices.js -->
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
    
-<!-- Link to external CSS files -->
-<link rel="stylesheet" href="BaseStyles.css">
-<link rel="stylesheet" href="ModalStyles.css">
+  <!-- ImportIQ Styles -->
+  <link rel="stylesheet" href="BaseStyles.css">
+  <link rel="stylesheet" href="ModalStyles.css">
 </head>
   
 <body>
   <!-- Authentication Section -->
-  <div id="authSection" style="display: none;">
-    <h2>Login Required</h2>
-    <div style="max-width: 300px; margin: 20px auto; padding: 20px; background: #f8f9fa; border-radius: 8px;">
-      <input type="email" id="email" placeholder="Email" style="width: 100%; margin-bottom: 10px; padding: 8px;">
-      <input type="password" id="password" placeholder="Password" style="width: 100%; margin-bottom: 10px; padding: 8px;">
-      <button onclick="login()" class="btn primary" style="width: 100%;">Login</button>
-      <p style="margin-top: 10px; font-size: 12px; color: #666;">Don't have an account? <a href="#" onclick="showSignup()">Sign up</a></p>
+  <div id="authSection" class="auth-container" style="display: none;">
+    <div class="auth-card">
+      <div class="auth-header">
+        <i class="fas fa-chart-line"></i>
+        <h2>ImportIQ</h2>
+        <p>Smart Import Cost Calculator</p>
+      </div>
+      <div class="auth-body">
+        <input type="email" id="email" placeholder="Email" class="auth-input">
+        <input type="password" id="password" placeholder="Password" class="auth-input">
+        <button onclick="login()" class="btn primary auth-btn">Login</button>
+        <p class="auth-footer">
+          Don't have an account? <a href="#" onclick="showSignup()">Sign up</a>
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- Main App (hidden until authenticated) -->
-  <div id="appSection" style="display: none;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h2>📊 ImportIQ</h2>
-       <div id="connectionStatus" class="connection-status online">
-            <i class="fas fa-wifi"></i> Online
+  <!-- Main App -->
+  <div id="appSection" class="app-container" style="display: none;">
+    <!-- Header -->
+    <div class="app-header">
+      <h2>
+        <i class="fas fa-chart-line"></i>
+        ImportIQ Dashboard
+      </h2>
+      <div class="header-right">
+        <div id="connectionStatus" class="connection-status online">
+          <i class="fas fa-wifi"></i> Online
         </div>
-      <span style="color: #666; font-size: 14px;">Welcome, <span id="userEmail"></span> 
-        <button onclick="logout()" class="btn secondary small" style="margin-left: 10px;">Logout</button>
-      </span>
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-details">
+            <span class="user-greeting">Welcome back,</span>
+            <span class="user-email" id="userEmail"></span>
+          </div>
+          <button onclick="logout()" class="btn secondary small logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
     </div>
     
+    <!-- Toolbar -->
     <div class="toolbar">
-      <button class="btn primary" onclick="openNew()">+ New Product</button>
-      <button id="refreshBtn" class="btn secondary" type="button" onclick="refreshData()">Refresh</button>
+      <button class="btn primary" onclick="openNew()">
+        <i class="fas fa-plus"></i> New Product
+      </button>
+      <button id="refreshBtn" class="btn secondary" onclick="refreshData()">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
       <span id="status" class="status"></span>
     </div>
 
-    <table id="productTable">
-      <thead>
-        <tr>
-          <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
-          <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
-          <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
-          <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
-          <th>Final</th><th>Total Final</th><th>Actions</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <!-- Table Container -->
+    <div class="table-container">
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
+            <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
+            <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
+            <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
+            <th>Final</th><th>Total Final</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="scroll-hint">
+      <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
+    </div>
   </div>
 
   <!-- New Product Modal -->
-<div id="newModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3><i class="fas fa-plus-circle" style="color: var(--primary); margin-right: 8px;"></i>New Product</h3>
-    </div>
+  <div id="newModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus-circle"></i> New Product</h3>
+      </div>
+      <div class="modal-body">
+        <!-- Your existing modal content -->
+        <div class="grid">
+          <div class="form-section">
+            <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="form-group">
+                <label><i class="fas fa-tag"></i> Item Name *</label>
+                <input type="text" id="newItem" placeholder="e.g., Wireless Headphones" required>
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-hashtag"></i> Quantity</label>
+                <input type="number" id="newQuantity" min="1" value="1">
+              </div>
+              <div class="form-group full-span">
+                <label><i class="fas fa-link"></i> Product Link</label>
+                <input type="url" id="newLink" placeholder="https://...">
+              </div>
+            </div>
+          </div>
 
-    <div class="modal-body">
-      <div class="grid">
-        <div class="form-section">
-          <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
-          <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="form-group">
-              <label><i class="fas fa-tag"></i> Item Name *</label>
-              <input type="text" id="newItem" placeholder="e.g., Wireless Headphones" required>
+          <div class="form-section">
+            <h4><i class="fas fa-dollar-sign"></i> Costs</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="form-group">
+                <label>Product Cost (USD) *</label>
+                <input type="number" id="newCost" step="0.01" min="0" placeholder="0.00" required>
+              </div>
+              <div class="form-group">
+                <label>Shipping Cost (USD)</label>
+                <input type="number" id="newShipping" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Carrier Fee (BBD)</label>
+                <input type="number" id="newCarrier" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Handling Fee (BBD)</label>
+                <input type="number" id="newHandling" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group full-span">
+                <label>Declared Value (USD) <span class="field-note">• Auto-calculated, editable</span></label>
+                <input type="number" id="newDeclared" step="0.01" min="0" placeholder="Auto-filled from Cost + Shipping">
+              </div>
+              <div class="form-group">
+                <label>Exchange Rate *</label>
+                <input type="number" id="newRate" step="0.01" min="0" value="2.00" placeholder="2.00" required>
+              </div>
+              <div class="form-group">
+                <label>Markup %</label>
+                <input type="number" id="newMarkup" step="0.01" min="0" value="30" placeholder="30">
+              </div>
             </div>
-            <div class="form-group">
-              <label><i class="fas fa-hashtag"></i> Quantity</label>
-              <input type="number" id="newQuantity" min="1" value="1">
-            </div>
-            <div class="form-group full-span">
-              <label><i class="fas fa-link"></i> Product Link</label>
-              <input type="url" id="newLink" placeholder="https://...">
+          </div>
+
+          <div class="form-section">
+            <h4><i class="fas fa-calculator"></i> Duties & Taxes</h4>
+            <div class="duties-grid">
+              <div class="form-group">
+                <label>Duty Category</label>
+                <select id="newDutySelect"></select>
+              </div>
+              <div class="form-group">
+                <label>VAT Rate (%)</label>
+                <input type="number" id="newVat" step="0.1" min="0" value="17.5" placeholder="17.5">
+              </div>
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="button" class="btn secondary small" onclick="openAddDutyModal()">
+                  <i class="fas fa-plus"></i> Add Duty
+                </button>
+              </div>
+              <div class="form-group">
+                <label>VAT Apply</label>
+                <select id="newVatApply" disabled>
+                  <option value="Auto">Auto (if CIF > $30)</option>
+                </select>
+              </div>
+              <div id="newOtherDutyGroup" class="form-group full-span" style="display:none;">
+                <label>Other Duty %</label>
+                <input type="number" id="newOtherDuty" step="0.01" min="0" placeholder="Enter duty percentage" disabled>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="form-section">
-          <h4><i class="fas fa-dollar-sign"></i> Costs</h4>
-          <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="form-group">
-              <label>Product Cost (USD) *</label>
-              <input type="number" id="newCost" step="0.01" min="0" placeholder="0.00" required>
-            </div>
-            <div class="form-group">
-              <label>Shipping Cost (USD)</label>
-              <input type="number" id="newShipping" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Carrier Fee (BBD)</label>
-              <input type="number" id="newCarrier" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Handling Fee (BBD)</label>
-              <input type="number" id="newHandling" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group full-span">
-              <label>Declared Value (USD) <span style="font-size:11px; color:#6b7280;">• Auto-calculated, editable</span></label>
-              <input type="number" id="newDeclared" step="0.01" min="0" placeholder="Auto-filled from Cost + Shipping">
-            </div>
-            <div class="form-group">
-              <label>Exchange Rate *</label>
-              <input type="number" id="newRate" step="0.01" min="0" value="2.00" placeholder="2.00" required>
-            </div>
-            <div class="form-group">
-              <label>Markup %</label>
-              <input type="number" id="newMarkup" step="0.01" min="0" value="30" placeholder="30">
-            </div>
+        <div class="preview">
+          <h4><i class="fas fa-chart-line"></i> Preview Calculation</h4>
+          <div class="preview-grid">
+            <div class="preview-row"><span>CIF (USD):</span><span id="newCIF">$0.00</span></div>
+            <div class="preview-row"><span>CIF (BBD):</span><span id="newCIFBBD">BBD $0.00</span></div>
+            <div class="preview-row"><span>Duty Amount:</span><span id="newDutyAmount">BBD $0.00</span></div>
+            <div class="preview-row"><span>VAT Amount (Customs):</span><span id="newVatAmount">BBD $0.00</span></div>
+            <div class="preview-row"><span>Total Landed:</span><span id="newLanded">BBD $0.00</span></div>
+            <div class="preview-row"><span>Selling Price:</span><span id="newSellingPreview">BBD $0.00</span></div>
+            <div class="preview-row"><span>Profit:</span><span id="newProfit">BBD $0.00</span></div>
+            <div class="preview-row"><span>Margin %:</span><span id="newMargin">0%</span></div>
+            <div class="preview-row"><span>Final Price (inc VAT):</span><span id="newFinalPreview" class="highlight">BBD $0.00</span></div>
+            <div class="preview-row"><span>Total Final:</span><span id="newTotalFinal">BBD $0.00</span></div>
           </div>
-        </div>
-
-        <div class="form-section">
-          <h4><i class="fas fa-calculator"></i> Duties & Taxes</h4>
-          <div class="duties-grid">
-            <div class="form-group">
-              <label>Duty Category</label>
-              <select id="newDutySelect"></select>
-            </div>
-            <div class="form-group">
-              <label>VAT Rate (%)</label>
-              <input type="number" id="newVat" step="0.1" min="0" value="17.5" placeholder="17.5">
-            </div>
-            <div class="form-group">
-              <label>&nbsp;</label>
-              <button type="button" class="btn secondary small" onclick="openAddDutyModal()">
-                <i class="fas fa-plus"></i> Add Duty
-              </button>
-            </div>
-            <div class="form-group">
-              <label>VAT Apply</label>
-              <select id="newVatApply" disabled>
-                <option value="Auto">Auto (if CIF > $30)</option>
-              </select>
-            </div>
-
-            <div id="newOtherDutyGroup" class="form-group full-span" style="display:none; grid-column:1 / -1;">
-              <label>Other Duty %</label>
-              <input type="number" id="newOtherDuty" step="0.01" min="0" placeholder="Enter duty percentage" disabled>
-            </div>
+          <div class="info-banner">
+            <i class="fas fa-info-circle"></i>
+            <span>If CIF ≤ $30 USD: No duty or VAT charged</span>
           </div>
         </div>
       </div>
-
-      <div class="preview">
-        <h4><i class="fas fa-chart-line"></i> Preview Calculation</h4>
-        <div class="preview-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-          <div class="preview-row"><span>CIF (USD):</span><span id="newCIF">$0.00</span></div>
-          <div class="preview-row"><span>CIF (BBD):</span><span id="newCIFBBD">BBD $0.00</span></div>
-          <div class="preview-row"><span>Duty Amount:</span><span id="newDutyAmount">BBD $0.00</span></div>
-          <div class="preview-row"><span>VAT Amount (Customs):</span><span id="newVatAmount">BBD $0.00</span></div>
-          <div class="preview-row"><span>Total Landed:</span><span id="newLanded">BBD $0.00</span></div>
-          <div class="preview-row"><span>Selling Price:</span><span id="newSellingPreview">BBD $0.00</span></div>
-          <div class="preview-row"><span>Profit:</span><span id="newProfit">BBD $0.00</span></div>
-          <div class="preview-row"><span>Margin %:</span><span id="newMargin">0%</span></div>
-          <div class="preview-row"><span>Final Price (inc VAT):</span><span id="newFinalPreview" class="highlight">BBD $0.00</span></div>
-          <div class="preview-row"><span>Total Final:</span><span id="newTotalFinal">BBD $0.00</span></div>
-        </div>
-        <div class="preview-row" style="margin-top:16px; padding-top:12px; border-top:2px solid rgba(255,255,255,0.2);">
-          <span style="font-size:12px; opacity:0.9;">
-            <i class="fas fa-info-circle"></i> If CIF ≤ $30 USD: No duty or VAT charged
-          </span>
-        </div>
+      <div class="modal-actions">
+        <button class="btn secondary" onclick="closeModal('newModal')">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn primary" onclick="saveNew()">
+          <i class="fas fa-save"></i> Save Product
+        </button>
       </div>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn secondary" onclick="closeModal('newModal')">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn primary" onclick="saveNew()">
-        <i class="fas fa-save"></i> Save Product
-      </button>
     </div>
   </div>
-</div>
 
-<!-- Edit Product Modal -->
-<div id="editModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3><i class="fas fa-edit" style="color: var(--primary); margin-right: 8px;"></i>Edit Product</h3>
-    </div>
+  <!-- Edit Product Modal -->
+  <div id="editModal" class="modal">
+    <!-- Similar structure to new modal but with edit IDs -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-edit"></i> Edit Product</h3>
+      </div>
+      <div class="modal-body">
+        <!-- Same form fields with edit IDs -->
+        <div class="grid">
+          <div class="form-section">
+            <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="form-group">
+                <label><i class="fas fa-tag"></i> Item Name *</label>
+                <input type="text" id="editItem" placeholder="e.g., Wireless Headphones" required>
+              </div>
+              <div class="form-group">
+                <label><i class="fas fa-hashtag"></i> Quantity</label>
+                <input type="number" id="editQuantity" min="1" value="1">
+              </div>
+              <div class="form-group full-span">
+                <label><i class="fas fa-link"></i> Product Link</label>
+                <input type="url" id="editLink" placeholder="https://...">
+              </div>
+            </div>
+          </div>
 
-    <div class="modal-body">
-      <div class="grid">
-        <div class="form-section">
-          <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
-          <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="form-group">
-              <label><i class="fas fa-tag"></i> Item Name *</label>
-              <input type="text" id="editItem" placeholder="e.g., Wireless Headphones" required>
+          <div class="form-section">
+            <h4><i class="fas fa-dollar-sign"></i> Costs</h4>
+            <div class="grid" style="grid-template-columns: 1fr 1fr;">
+              <div class="form-group">
+                <label>Product Cost (USD) *</label>
+                <input type="number" id="editCost" step="0.01" min="0" placeholder="0.00" required>
+              </div>
+              <div class="form-group">
+                <label>Shipping Cost (USD)</label>
+                <input type="number" id="editShipping" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Carrier Fee (BBD)</label>
+                <input type="number" id="editCarrier" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group">
+                <label>Handling Fee (BBD)</label>
+                <input type="number" id="editHandling" step="0.01" min="0" placeholder="0.00">
+              </div>
+              <div class="form-group full-span">
+                <label>Declared Value (USD) <span class="field-note">• Auto-calculated, editable</span></label>
+                <input type="number" id="editDeclared" step="0.01" min="0" placeholder="Auto-filled from Cost + Shipping">
+              </div>
+              <div class="form-group">
+                <label>Exchange Rate *</label>
+                <input type="number" id="editRate" step="0.01" min="0" value="2.00" placeholder="2.00" required>
+              </div>
+              <div class="form-group">
+                <label>Markup %</label>
+                <input type="number" id="editMarkup" step="0.01" min="0" value="30" placeholder="30">
+              </div>
             </div>
-            <div class="form-group">
-              <label><i class="fas fa-hashtag"></i> Quantity</label>
-              <input type="number" id="editQuantity" min="1" value="1">
-            </div>
-            <div class="form-group full-span">
-              <label><i class="fas fa-link"></i> Product Link</label>
-              <input type="url" id="editLink" placeholder="https://...">
+          </div>
+
+          <div class="form-section">
+            <h4><i class="fas fa-calculator"></i> Duties & Taxes</h4>
+            <div class="duties-grid">
+              <div class="form-group">
+                <label>Duty Category</label>
+                <select id="editDutySelect"></select>
+              </div>
+              <div class="form-group">
+                <label>VAT Rate (%)</label>
+                <input type="number" id="editVat" step="0.1" min="0" value="17.5" placeholder="17.5">
+              </div>
+              <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="button" class="btn secondary small" onclick="openAddDutyModal()">
+                  <i class="fas fa-plus"></i> Add Duty
+                </button>
+              </div>
+              <div class="form-group">
+                <label>VAT Apply</label>
+                <select id="editVatApply" disabled>
+                  <option value="Auto">Auto (if CIF > $30)</option>
+                </select>
+              </div>
+              <div id="editOtherDutyGroup" class="form-group full-span" style="display:none;">
+                <label>Other Duty %</label>
+                <input type="number" id="editOtherDuty" step="0.01" min="0" placeholder="Enter duty percentage" disabled>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="form-section">
-          <h4><i class="fas fa-dollar-sign"></i> Costs</h4>
-          <div class="grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="form-group">
-              <label>Product Cost (USD) *</label>
-              <input type="number" id="editCost" step="0.01" min="0" placeholder="0.00" required>
-            </div>
-            <div class="form-group">
-              <label>Shipping Cost (USD)</label>
-              <input type="number" id="editShipping" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Carrier Fee (BBD)</label>
-              <input type="number" id="editCarrier" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group">
-              <label>Handling Fee (BBD)</label>
-              <input type="number" id="editHandling" step="0.01" min="0" placeholder="0.00">
-            </div>
-            <div class="form-group full-span">
-              <label>Declared Value (USD) <span style="font-size:11px; color:#6b7280;">• Auto-calculated, editable</span></label>
-              <input type="number" id="editDeclared" step="0.01" min="0" placeholder="Auto-filled from Cost + Shipping">
-            </div>
-            <div class="form-group">
-              <label>Exchange Rate *</label>
-              <input type="number" id="editRate" step="0.01" min="0" value="2.00" placeholder="2.00" required>
-            </div>
-            <div class="form-group">
-              <label>Markup %</label>
-              <input type="number" id="editMarkup" step="0.01" min="0" value="30" placeholder="30">
-            </div>
+        <div class="preview">
+          <h4><i class="fas fa-chart-line"></i> Preview Calculation</h4>
+          <div class="preview-grid">
+            <div class="preview-row"><span>CIF (USD):</span><span id="editCIF">$0.00</span></div>
+            <div class="preview-row"><span>CIF (BBD):</span><span id="editCIFBBD">BBD $0.00</span></div>
+            <div class="preview-row"><span>Duty Amount:</span><span id="editDutyAmount">BBD $0.00</span></div>
+            <div class="preview-row"><span>VAT Amount (Customs):</span><span id="editVatAmount">BBD $0.00</span></div>
+            <div class="preview-row"><span>Total Landed:</span><span id="editLanded">BBD $0.00</span></div>
+            <div class="preview-row"><span>Selling Price:</span><span id="editSellingPreview">BBD $0.00</span></div>
+            <div class="preview-row"><span>Profit:</span><span id="editProfit">BBD $0.00</span></div>
+            <div class="preview-row"><span>Margin %:</span><span id="editMargin">0%</span></div>
+            <div class="preview-row"><span>Final Price (inc VAT):</span><span id="editFinalPreview" class="highlight">BBD $0.00</span></div>
+            <div class="preview-row"><span>Total Final:</span><span id="editTotalFinal">BBD $0.00</span></div>
           </div>
-        </div>
-
-        <div class="form-section">
-          <h4><i class="fas fa-calculator"></i> Duties & Taxes</h4>
-          <div class="duties-grid">
-            <div class="form-group">
-              <label>Duty Category</label>
-              <select id="editDutySelect"></select>
-            </div>
-            <div class="form-group">
-              <label>VAT Rate (%)</label>
-              <input type="number" id="editVat" step="0.1" min="0" value="17.5" placeholder="17.5">
-            </div>
-            <div class="form-group">
-              <label>&nbsp;</label>
-              <button type="button" class="btn secondary small" onclick="openAddDutyModal()">
-                <i class="fas fa-plus"></i> Add Duty
-              </button>
-            </div>
-            <div class="form-group">
-              <label>VAT Apply</label>
-              <select id="editVatApply" disabled>
-                <option value="Auto">Auto (if CIF > $30)</option>
-              </select>
-            </div>
-
-            <div id="editOtherDutyGroup" class="form-group full-span" style="display:none; grid-column:1 / -1;">
-              <label>Other Duty %</label>
-              <input type="number" id="editOtherDuty" step="0.01" min="0" placeholder="Enter duty percentage" disabled>
-            </div>
+          <div class="info-banner">
+            <i class="fas fa-info-circle"></i>
+            <span>If CIF ≤ $30 USD: No duty or VAT charged</span>
           </div>
         </div>
       </div>
-
-      <div class="preview">
-        <h4><i class="fas fa-chart-line"></i> Preview Calculation</h4>
-        <div class="preview-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-          <div class="preview-row"><span>CIF (USD):</span><span id="editCIF">$0.00</span></div>
-          <div class="preview-row"><span>CIF (BBD):</span><span id="editCIFBBD">BBD $0.00</span></div>
-          <div class="preview-row"><span>Duty Amount:</span><span id="editDutyAmount">BBD $0.00</span></div>
-          <div class="preview-row"><span>VAT Amount (Customs):</span><span id="editVatAmount">BBD $0.00</span></div>
-          <div class="preview-row"><span>Total Landed:</span><span id="editLanded">BBD $0.00</span></div>
-          <div class="preview-row"><span>Selling Price:</span><span id="editSellingPreview">BBD $0.00</span></div>
-          <div class="preview-row"><span>Profit:</span><span id="editProfit">BBD $0.00</span></div>
-          <div class="preview-row"><span>Margin %:</span><span id="editMargin">0%</span></div>
-          <div class="preview-row"><span>Final Price (inc VAT):</span><span id="editFinalPreview" class="highlight">BBD $0.00</span></div>
-          <div class="preview-row"><span>Total Final:</span><span id="editTotalFinal">BBD $0.00</span></div>
-        </div>
-        <div class="preview-row" style="margin-top:16px; padding-top:12px; border-top:2px solid rgba(255,255,255,0.2);">
-          <span style="font-size:12px; opacity:0.9;">
-            <i class="fas fa-info-circle"></i> If CIF ≤ $30 USD: No duty or VAT charged
-          </span>
-        </div>
+      <div class="modal-actions">
+        <button class="btn secondary" onclick="closeModal('editModal')">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn primary" onclick="saveEdit()">
+          <i class="fas fa-save"></i> Update Product
+        </button>
       </div>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn secondary" onclick="closeModal('editModal')">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn primary" onclick="saveEdit()">
-        <i class="fas fa-save"></i> Update Product
-      </button>
     </div>
   </div>
-</div>
 
-<!-- Add Duty Modal -->
-<div id="addDutyModal" class="modal">
-  <div class="modal-content" style="max-width: 400px;">
-    <div class="modal-header">
-      <h3><i class="fas fa-plus-circle" style="color: var(--primary); margin-right: 8px;"></i>Add Duty Category</h3>
-    </div>
-    
-    <div class="modal-body">
-      <div class="form-group">
-        <label><i class="fas fa-tag"></i> Duty Name</label>
-        <input type="text" id="newDutyLabel" placeholder="e.g., Electronics, Clothing, etc.">
+  <!-- Add Duty Modal -->
+  <div id="addDutyModal" class="modal">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3><i class="fas fa-plus-circle"></i> Add Duty Category</h3>
       </div>
-      <div class="form-group">
-        <label><i class="fas fa-percent"></i> Duty Rate (%)</label>
-        <input type="number" id="newDutyRate" step="0.01" min="0" placeholder="0.00">
+      <div class="modal-body">
+        <div class="form-group">
+          <label><i class="fas fa-tag"></i> Duty Name</label>
+          <input type="text" id="newDutyLabel" placeholder="e.g., Electronics">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-percent"></i> Duty Rate (%)</label>
+          <input type="number" id="newDutyRate" step="0.01" min="0" placeholder="0.00">
+        </div>
       </div>
-    </div>
-    
-    <div class="modal-actions">
-      <button class="btn secondary" onclick="closeModal('addDutyModal')">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn primary" onclick="saveNewDuty()">
-        <i class="fas fa-save"></i> Save Duty
-      </button>
+      <div class="modal-actions">
+        <button class="btn secondary" onclick="closeModal('addDutyModal')">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn primary" onclick="saveNewDuty()">
+          <i class="fas fa-save"></i> Save Duty
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Floating Action Button with Tooltip -->
-<button class="fab" onclick="openNew()" aria-label="Add new product">
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="openNew()" aria-label="Add new product">
     <span class="tooltip">Add New Product</span>
     <i class="fas fa-plus"></i>
-    <span class="fab-progress"></span>
-</button>
+  </button>
   
+  <!-- Scripts -->
   <script src="firebase-config.js"></script>
   <script src="app.js"></script>
+  
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.log('ServiceWorker registration skipped:', err);
+        });
+      });
+    }
+  </script>
 </body>
 </html>
