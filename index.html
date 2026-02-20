@@ -57,6 +57,9 @@
   <div id="appSection" style="display: none;">
     <div style="display: flex; justify-content: space-between; align-items: center;">
       <h2>📊 ImportIQ</h2>
+       <div id="connectionStatus" class="connection-status online">
+            <i class="fas fa-wifi"></i> Online
+        </div>
       <span style="color: #666; font-size: 14px;">Welcome, <span id="userEmail"></span> 
         <button onclick="logout()" class="btn secondary small" style="margin-left: 10px;">Logout</button>
       </span>
@@ -66,9 +69,6 @@
       <button class="btn primary" onclick="openNew()">+ New Product</button>
       <button id="refreshBtn" class="btn secondary" type="button" onclick="refreshData()">Refresh</button>
       <span id="status" class="status"></span>
-      <div id="connectionStatus" class="connection-status online">
-    <i class="fas fa-wifi"></i> Online
-</div>
     </div>
 
     <table id="productTable">
