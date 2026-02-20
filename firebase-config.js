@@ -14,6 +14,18 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
+// Enable Google Sign-In provider
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+// Optional: Add scopes if needed
+googleProvider.addScope('profile');
+googleProvider.addScope('email');
+
+// Optional: Set custom parameters
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
 // Collections
 const PRODUCTS_COLLECTION = "products";
 const DUTY_COLLECTION = "dutyCategories";
@@ -29,3 +41,5 @@ db.enablePersistence()
       console.log('Persistence not supported');
     }
   });
+
+
