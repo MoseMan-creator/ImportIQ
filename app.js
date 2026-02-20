@@ -116,6 +116,39 @@ function loadDutyCategoriesFromCache() {
   showStatus('Using default duty categories (offline mode)', 'warning');
 }
 
+// Register service worker for PWA
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('Service Worker registered: ', registration);
+      })
+      .catch(error => {
+        console.log('Service Worker registration failed: ', error);
+      });
+  });
+}
+
+// Enhanced offline detection
+window.addEventListener('online', function() {
+  console.log('Back online');
+  showStatus('Back online! Syncing data...', 'success');
+  isOfflineMode = false;
+  refreshData();
+  loadDutyCategories();
+});
+
+window.addEventListener('offline', function() {
+  console.log('Offline');
+  showStatus('You are offline. Working in offline mode.', 'warning');
+  isOfflineMode = true;
+  
+  // Try to load from cache
+  loadProducts().catch(() => {
+    showStatus('Using cached data (offline mode)', 'info');
+  });
+});
+
 // Authentication functions
 function showSignup() {
   console.log('Show signup called');
