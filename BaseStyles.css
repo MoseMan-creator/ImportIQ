@@ -635,3 +635,28 @@ body {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+.connection-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.connection-status.online {
+    background: #10b981;
+    color: white;
+}
+
+.connection-status.offline {
+    background: #6b7280;
+    color: white;
+}
+
+.connection-status i {
+    font-size: 0.9rem;
+}
