@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
   checkFirebaseConnection();
   
   // Check auth state
+  // Add after Firebase initialization
+console.log('Firebase Project:', firebase.app().options.projectId);
+console.log('Firestore:', db ? 'Initialized' : 'Failed');
+  
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       showAppSection();
