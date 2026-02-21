@@ -221,26 +221,86 @@ function setAuthButtonLoading(isLoading) {
   }
 }
 
+// Update logout function
 function logout() {
-  console.log('Logout called');
-  firebase.auth().signOut();
+    console.log('Logout called');
+    firebase.auth().signOut()
+        .then(() => {
+            console.log('Logout successful');
+            // Force auth section to show
+            showAuthSection();
+        })
+        .catch((error) => {
+            console.error('Logout error:', error);
+        });
 }
 
+// Update showAuthSection function
 function showAuthSection() {
-  console.log('Showing auth section');
-  document.getElementById('authSection').style.display = 'block';
-  document.getElementById('appSection').style.display = 'none';
+    console.log('Showing auth section');
+    
+    // Hide app section
+    const appSection = document.getElementById('appSection');
+    if (appSection) {
+        appSection.style.display = 'none';
+    }
+    
+    // Show auth section
+    const authSection = document.getElementById('authSection');
+    if (authSection) {
+        authSection.style.display = 'flex';
+    }
+    
+    // Reset forms
+    toggleAuthForm('login');
+    
+    // Clear any existing form values
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    if (emailInput) emailInput.value = '';
+    if (passwordInput) passwordInput.value = '';
+    
+    // Make sure the login form is active
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.classList.add('active');
+    }
 }
 
+// Update showAppSection function
 function showAppSection() {
-  console.log('Showing app section');
-  const user = firebase.auth().currentUser;
-  document.getElementById('userEmail').textContent = user.email;
-  document.getElementById('authSection').style.display = 'none';
-  document.getElementById('appSection').style.display = 'block';
-  
-  // Show FAB on mobile
-  checkMobile();
+    console.log('Showing app section');
+    
+    const user = firebase.auth().currentUser;
+    if (!user) {
+        console.error('No user found');
+        return;
+    }
+    
+    // Update user email display
+    const userEmailEl = document.getElementById('userEmail');
+    if (userEmailEl) {
+        userEmailEl.textContent = user.email;
+    }
+    
+    // Hide auth section
+    const authSection = document.getElementById('authSection');
+    if (authSection) {
+        authSection.style.display = 'none';
+    }
+    
+    // Show app section
+    const appSection = document.getElementById('appSection');
+    if (appSection) {
+        appSection.style.display = 'block';
+    }
+    
+    // Load data
+    loadDutyCategories();
+    loadProducts();
+    
+    // Check mobile for FAB
+    checkMobile();
 }
 
 // Load duty categories from Firestore
