@@ -1,11 +1,12 @@
 const CACHE_NAME = 'ImportIQ-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/app.js',
-  '/firebase-config.js',
-  '/BaseStyles.css',
-  '/ModalStyles.css',
+  '/ImportIQ/',
+  '/ImportIQ/index.html',
+  '/ImportIQ/app.js',
+  '/ImportIQ/firebase-config.js',
+  '/ImportIQ/BaseStyles.css',
+  '/ImportIQ/ModalStyles.css',
+  // External URLs (these don't need the /ImportIQ/ prefix)
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css',
   'https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css',
@@ -14,6 +15,19 @@ const urlsToCache = [
   'https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js',
   'https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js'
 ];
+
+// In the fetch event, you'll need to handle requests properly
+self.addEventListener('fetch', event => {
+  // Skip cross-origin requests like Firebase
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+  
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => response || fetch(event.request))
+  );
+});
 
 // Install service worker and cache files
 self.addEventListener('install', event => {
