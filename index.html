@@ -106,223 +106,225 @@
   
 <body>
   <!-- Authentication Section - Modern PWA Style -->
-<div id="authSection" class="auth-section" style="display: none;">
-  <!-- Animated Background -->
-  <div class="auth-background">
-    <div class="gradient-sphere"></div>
-    <div class="gradient-sphere-2"></div>
-    <div class="grid-overlay"></div>
-  </div>
-  
-  <!-- Auth Container -->
-  <div class="auth-container">
-    <!-- Left Side - Branding -->
-    <div class="auth-brand">
-      <div class="brand-content">
-        <div class="brand-icon">
-          <i class="fas fa-chart-line"></i>
+  <div id="authSection" class="auth-section" style="display: none;">
+    <!-- Animated Background -->
+    <div class="auth-background">
+      <div class="gradient-sphere"></div>
+      <div class="gradient-sphere-2"></div>
+      <div class="grid-overlay"></div>
+    </div>
+    
+    <!-- Auth Container -->
+    <div class="auth-container">
+      <!-- Left Side - Branding -->
+      <div class="auth-brand">
+        <div class="brand-content">
+          <div class="brand-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h1 class="brand-name">ImportIQ</h1>
+          <p class="brand-tagline">Smart Import Cost Calculator</p>
+          
+          <div class="brand-features">
+            <div class="feature-item">
+              <i class="fas fa-calculator"></i>
+              <span>Real-time cost calculations</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-clock"></i>
+              <span>Offline support</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-shield-alt"></i>
+              <span>Secure cloud sync</span>
+            </div>
+            <div class="feature-item">
+              <i class="fas fa-mobile-alt"></i>
+              <span>Works on all devices</span>
+            </div>
+          </div>
         </div>
-        <h1 class="brand-name">ImportIQ</h1>
-        <p class="brand-tagline">Smart Import Cost Calculator</p>
+      </div>
+      
+      <!-- Right Side - Auth Forms -->
+      <div class="auth-card">
+        <!-- Login Form (default) -->
+        <div id="loginForm" class="auth-form active">
+          <div class="auth-header">
+            <h2>Welcome back</h2>
+            <p>Sign in to continue to ImportIQ</p>
+          </div>
+          
+          <div class="auth-body">
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <input type="email" id="email" placeholder="Email address" class="auth-input" autocomplete="email">
+            </div>
+            
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <input type="password" id="password" placeholder="Password" class="auth-input" autocomplete="current-password">
+              <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            
+            <div class="remember-forgot">
+              <label class="checkbox-container">
+                <input type="checkbox" id="rememberMe">
+                <span class="checkmark"></span>
+                <span class="checkbox-text">Remember me</span>
+              </label>
+              <a href="#" class="forgot-link" onclick="showForgotPassword()">Forgot password?</a>
+            </div>
+            
+            <button onclick="login()" class="btn primary auth-btn" id="loginBtn">
+              <span class="btn-text">Sign In</span>
+              <span class="btn-loader" style="display: none;">
+                <i class="fas fa-circle-notch fa-spin"></i>
+              </span>
+            </button>
+
+            <!-- Divider -->
+            <div class="divider">
+              <span class="divider-text">OR</span>
+            </div>
+            
+            <!-- Google Sign-In Button -->
+            <button onclick="googleSignInLogin()" class="btn google-btn" id="googleSignInBtn">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+              <span>Continue with Google</span>
+              <span class="btn-loader" style="display: none;">
+                <i class="fas fa-circle-notch fa-spin"></i>
+              </span>
+            </button>
+
+            <div class="auth-footer">
+              <p>Don't have an account? <a href="#" onclick="toggleAuthForm('signup')">Create account</a></p>
+            </div>
+            
+            <!-- Demo Credentials (for testing) -->
+            <div class="demo-credentials">
+              <p class="demo-title">Demo Credentials:</p>
+              <div class="demo-row" onclick="fillDemoCredentials('demo@importiq.com', 'demo123')">
+                <i class="fas fa-user"></i>
+                <span>demo@importiq.com / demo123</span>
+              </div>
+            </div>
+          </div>
+        </div>
         
-        <div class="brand-features">
-          <div class="feature-item">
-            <i class="fas fa-calculator"></i>
-            <span>Real-time cost calculations</span>
+        <!-- Sign Up Form -->
+        <div id="signupForm" class="auth-form">
+          <div class="auth-header">
+            <h2>Create account</h2>
+            <p>Start using ImportIQ today</p>
           </div>
-          <div class="feature-item">
-            <i class="fas fa-clock"></i>
-            <span>Offline support</span>
+          
+          <div class="auth-body">
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <input type="text" id="signupName" placeholder="Full name" class="auth-input" autocomplete="name">
+            </div>
+            
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <input type="email" id="signupEmail" placeholder="Email address" class="auth-input" autocomplete="email">
+            </div>
+            
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <input type="password" id="signupPassword" placeholder="Password" class="auth-input" autocomplete="new-password">
+              <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <input type="password" id="confirmPassword" placeholder="Confirm password" class="auth-input" autocomplete="new-password">
+              <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+            
+            <div class="terms-checkbox">
+              <label class="checkbox-container">
+                <input type="checkbox" id="acceptTerms">
+                <span class="checkmark"></span>
+                <span class="checkbox-text">I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a></span>
+              </label>
+            </div>
+            
+            <button onclick="showSignup()" class="btn primary auth-btn" id="signupBtn">
+              <span class="btn-text">Create Account</span>
+              <span class="btn-loader" style="display: none;">
+                <i class="fas fa-circle-notch fa-spin"></i>
+              </span>
+            </button>
+
+            <!-- Divider -->
+            <div class="divider">
+              <span class="divider-text">OR</span>
+            </div>
+            
+            <!-- Google Sign-Up Button (use same function) -->
+            <button onclick="googleSignInSignup()" class="btn google-btn" id="googleSignUpBtn">
+              <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+              <span>Sign up with Google</span>
+              <span class="btn-loader" style="display: none;">
+                <i class="fas fa-circle-notch fa-spin"></i>
+              </span>
+            </button>
+          
+            <div class="auth-footer">
+              <p>Already have an account? <a href="#" onclick="toggleAuthForm('login')">Sign in</a></p>
+            </div>
           </div>
-          <div class="feature-item">
-            <i class="fas fa-shield-alt"></i>
-            <span>Secure cloud sync</span>
+        </div>
+        
+        <!-- Forgot Password Form -->
+        <div id="forgotForm" class="auth-form">
+          <div class="auth-header">
+            <h2>Reset password</h2>
+            <p>We'll send you a reset link</p>
           </div>
-          <div class="feature-item">
-            <i class="fas fa-mobile-alt"></i>
-            <span>Works on all devices</span>
+          
+          <div class="auth-body">
+            <div class="input-group">
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <input type="email" id="resetEmail" placeholder="Email address" class="auth-input">
+            </div>
+            
+            <button onclick="sendResetLink()" class="btn primary auth-btn">
+              <i class="fas fa-paper-plane"></i> Send Reset Link
+            </button>
+            
+            <button onclick="toggleAuthForm('login')" class="btn secondary auth-btn" style="margin-top: 10px;">
+              <i class="fas fa-arrow-left"></i> Back to Sign In
+            </button>
           </div>
         </div>
       </div>
     </div>
     
-    <!-- Right Side - Auth Forms -->
-    <div class="auth-card">
-      <!-- Login Form (default) -->
-      <div id="loginForm" class="auth-form active">
-        <div class="auth-header">
-          <h2>Welcome back</h2>
-          <p>Sign in to continue to ImportIQ</p>
-        </div>
-        
-        <div class="auth-body">
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <input type="email" id="email" placeholder="Email address" class="auth-input" autocomplete="email">
-          </div>
-          
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-lock"></i>
-            </div>
-            <input type="password" id="password" placeholder="Password" class="auth-input" autocomplete="current-password">
-            <button type="button" class="password-toggle" onclick="togglePassword('password')">
-              <i class="fas fa-eye"></i>
-            </button>
-          </div>
-          
-          <div class="remember-forgot">
-            <label class="checkbox-container">
-              <input type="checkbox" id="rememberMe">
-              <span class="checkmark"></span>
-              <span class="checkbox-text">Remember me</span>
-            </label>
-            <a href="#" class="forgot-link" onclick="showForgotPassword()">Forgot password?</a>
-          </div>
-          
-          <button onclick="login()" class="btn primary auth-btn" id="loginBtn">
-            <span class="btn-text">Sign In</span>
-            <span class="btn-loader" style="display: none;">
-              <i class="fas fa-circle-notch fa-spin"></i>
-            </span>
-          </button>
-
-          <!-- Divider -->
-          <div class="divider">
-            <span class="divider-text">OR</span>
-          </div>
-          
-          <!-- Google Sign-In Button -->
-          <button onclick="googleSignInLogin()" class="btn google-btn" id="googleSignInBtn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
-            <span>Continue with Google</span>
-            <span class="btn-loader" style="display: none;">
-              <i class="fas fa-circle-notch fa-spin"></i>
-            </span>
-          </button>
-
-        <div class="auth-footer">
-          <p>Don't have an account? <a href="#" onclick="toggleAuthForm('signup')">Create account</a></p>
-        </div>
-        
-        <!-- Demo Credentials (for testing) -->
-        <div class="demo-credentials">
-          <p class="demo-title">Demo Credentials:</p>
-          <div class="demo-row" onclick="fillDemoCredentials('demo@importiq.com', 'demo123')">
-            <i class="fas fa-user"></i>
-            <span>demo@importiq.com / demo123</span>
-          </div>
-        </div>
-      </div> <!-- Close loginForm -->
-      
-      <!-- Sign Up Form -->
-      <div id="signupForm" class="auth-form">
-        <div class="auth-header">
-          <h2>Create account</h2>
-          <p>Start using ImportIQ today</p>
-        </div>
-        
-        <div class="auth-body">
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-user"></i>
-            </div>
-            <input type="text" id="signupName" placeholder="Full name" class="auth-input" autocomplete="name">
-          </div>
-          
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <input type="email" id="signupEmail" placeholder="Email address" class="auth-input" autocomplete="email">
-          </div>
-          
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-lock"></i>
-            </div>
-            <input type="password" id="signupPassword" placeholder="Password" class="auth-input" autocomplete="new-password">
-            <button type="button" class="password-toggle" onclick="togglePassword('signupPassword')">
-              <i class="fas fa-eye"></i>
-            </button>
-          </div>
-          
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-lock"></i>
-            </div>
-            <input type="password" id="confirmPassword" placeholder="Confirm password" class="auth-input" autocomplete="new-password">
-            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">
-              <i class="fas fa-eye"></i>
-            </button>
-          </div>
-          
-          <div class="terms-checkbox">
-            <label class="checkbox-container">
-              <input type="checkbox" id="acceptTerms">
-              <span class="checkmark"></span>
-              <span class="checkbox-text">I agree to the <a href="#" onclick="showTerms()">Terms of Service</a> and <a href="#" onclick="showPrivacy()">Privacy Policy</a></span>
-            </label>
-          </div>
-          
-          <button onclick="showSignup()" class="btn primary auth-btn" id="signupBtn">
-            <span class="btn-text">Create Account</span>
-            <span class="btn-loader" style="display: none;">
-              <i class="fas fa-circle-notch fa-spin"></i>
-            </span>
-          </button>
-
-          <!-- Divider -->
-          <div class="divider">
-            <span class="divider-text">OR</span>
-          </div>
-          
-          <!-- Google Sign-Up Button (use same function) -->
-          <button onclick="googleSignInSignup()" class="btn google-btn" id="googleSignUpBtn">
-            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
-            <span>Sign up with Google</span>
-            <span class="btn-loader" style="display: none;">
-              <i class="fas fa-circle-notch fa-spin"></i>
-            </span>
-          </button>
-        
-        <div class="auth-footer">
-          <p>Already have an account? <a href="#" onclick="toggleAuthForm('login')">Sign in</a></p>
-        </div>
-      </div> <!-- Close signupForm -->
-      
-      <!-- Forgot Password Form -->
-      <div id="forgotForm" class="auth-form">
-        <div class="auth-header">
-          <h2>Reset password</h2>
-          <p>We'll send you a reset link</p>
-        </div>
-        
-        <div class="auth-body">
-          <div class="input-group">
-            <div class="input-icon">
-              <i class="fas fa-envelope"></i>
-            </div>
-            <input type="email" id="resetEmail" placeholder="Email address" class="auth-input">
-          </div>
-          
-          <button onclick="sendResetLink()" class="btn primary auth-btn">
-            <i class="fas fa-paper-plane"></i> Send Reset Link
-          </button>
-          
-          <button onclick="toggleAuthForm('login')" class="btn secondary auth-btn" style="margin-top: 10px;">
-            <i class="fas fa-arrow-left"></i> Back to Sign In
-          </button>
-        </div> <!-- Close auth-body -->
-      </div> <!-- Close forgotForm -->
-    </div> <!-- Close auth-card -->
-  </div> <!-- Close auth-container -->
-  
-  <!-- Toast Notification Container -->
-  <div id="toastContainer" class="toast-container"></div>
-</div> <!-- Close authSection -->
+    <!-- Toast Notification Container -->
+    <div id="toastContainer" class="toast-container"></div>
+  </div>
 
   <!-- Main App -->
   <div id="appSection" class="app-container" style="display: none;">
@@ -389,7 +391,6 @@
         <h3><i class="fas fa-plus-circle"></i> New Product</h3>
       </div>
       <div class="modal-body">
-        <!-- Your existing modal content -->
         <div class="grid">
           <div class="form-section">
             <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
@@ -507,13 +508,11 @@
 
   <!-- Edit Product Modal -->
   <div id="editModal" class="modal">
-    <!-- Similar structure to new modal but with edit IDs -->
     <div class="modal-content">
       <div class="modal-header">
         <h3><i class="fas fa-edit"></i> Edit Product</h3>
       </div>
       <div class="modal-body">
-        <!-- Same form fields with edit IDs -->
         <div class="grid">
           <div class="form-section">
             <h4><i class="fas fa-info-circle"></i> Basic Info</h4>
@@ -667,14 +666,14 @@
   <script src="app.js"></script>
   
   <!-- Service Worker Registration -->
- <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/ImportIQ/sw.js').catch(err => {
-        console.log('ServiceWorker registration skipped:', err);
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/ImportIQ/sw.js').catch(err => {
+          console.log('ServiceWorker registration skipped:', err);
+        });
       });
-    });
-  }
-</script>
+    }
+  </script>
 </body>
 </html>
