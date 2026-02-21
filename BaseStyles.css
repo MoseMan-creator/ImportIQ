@@ -577,13 +577,14 @@ body {
 }
 
 /* Floating Action Button */
+/* Floating Action Button */
 .fab {
     display: none;
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 60px;
-    height: 60px;
+    width: 56px;  /* Reduced from 60px */
+    height: 56px; /* Reduced from 60px */
     border-radius: 50%;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
@@ -592,7 +593,7 @@ body {
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 24px; /* Explicit font size */
     z-index: 100;
     transition: all 0.3s;
 }
@@ -600,6 +601,25 @@ body {
 .fab:hover {
     transform: scale(1.1);
     box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.7);
+}
+
+.fab i {
+    font-size: 24px; /* Control icon size separately */
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .fab {
+        bottom: 20px;
+        right: 20px;
+        width: 48px;  /* Smaller on mobile */
+        height: 48px;
+        font-size: 20px;
+    }
+    
+    .fab i {
+        font-size: 20px;
+    }
 }
 
 /* Scroll Hint */
