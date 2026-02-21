@@ -271,7 +271,88 @@
 
   <!-- Main App -->
   <div id="appSection" class="app-container" style="display: none;">
-   <!-- Header -->
+      <!-- Header -->
+   <style>
+      /* INLINE HEADER FIX - THIS WILL DEFINITELY WORK */
+      .app-header {
+         height: 56px !important;
+         min-height: 56px !important;
+         padding: 0 20px !important;
+         background: white !important;
+         display: flex !important;
+         justify-content: space-between !important;
+         align-items: center !important;
+         border-radius: 16px !important;
+         margin-bottom: 16px !important;
+         box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+      }
+      .app-header h2 {
+         font-size: 1.3rem !important;
+         margin: 0 !important;
+         display: flex !important;
+         align-items: center !important;
+         gap: 8px !important;
+      }
+      .header-controls {
+         display: flex !important;
+         align-items: center !important;
+         gap: 12px !important;
+      }
+      .header-icon-btn, .connection-status {
+         width: 40px !important;
+         height: 40px !important;
+         border-radius: 50% !important;
+         display: flex !important;
+         align-items: center !important;
+         justify-content: center !important;
+         border: none !important;
+         background: #f3f4f6 !important;
+         cursor: pointer !important;
+      }
+      .connection-status.online {
+         background: #10b981 !important;
+         color: white !important;
+      }
+      .user-menu {
+         display: flex !important;
+         align-items: center !important;
+         background: #f3f4f6 !important;
+         border-radius: 40px !important;
+         padding: 4px 8px 4px 4px !important;
+         height: 40px !important;
+      }
+      .user-avatar {
+         width: 32px !important;
+         height: 32px !important;
+         border-radius: 50% !important;
+         background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+         display: flex !important;
+         align-items: center !important;
+         justify-content: center !important;
+         color: white !important;
+      }
+      .user-email {
+         margin: 0 8px !important;
+         font-size: 0.9rem !important;
+         max-width: 140px !important;
+         overflow: hidden !important;
+         text-overflow: ellipsis !important;
+         white-space: nowrap !important;
+      }
+      .logout-btn {
+         width: 32px !important;
+         height: 32px !important;
+         border-radius: 50% !important;
+         border: none !important;
+         background: transparent !important;
+         color: #6b7280 !important;
+         cursor: pointer !important;
+         display: flex !important;
+         align-items: center !important;
+         justify-content: center !important;
+      }
+   </style>
+    <!-- Header -->
         <div class="app-header">
           <h2>
             <i class="fas fa-chart-line"></i>
