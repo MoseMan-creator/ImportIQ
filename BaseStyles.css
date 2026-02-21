@@ -1041,42 +1041,46 @@ body.dark-mode .modal-actions .btn.secondary {
     }
     
     .app-header {
-        padding: 6px 12px;
-        min-height: 48px;
+        padding: 4px 10px !important;  /* Force our compact styles */
+        min-height: 40px !important;
     }
     
     .app-header h2 {
-        font-size: 1.1rem;
+        font-size: 1rem;
+    }
+    
+    .app-header h2 i {
+        font-size: 0.9rem;
     }
     
     .header-icon-btn {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
     
     .connection-status {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
     }
     
     .user-menu {
-        height: 32px;
+        height: 30px;
     }
     
     .user-avatar {
-        width: 28px;
-        height: 28px;
-        font-size: 0.8rem;
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
     }
     
     .user-email {
-        max-width: 80px;
-        font-size: 0.8rem;
+        max-width: 70px;
+        font-size: 0.75rem;
     }
     
     .logout-btn {
-        width: 28px;
-        height: 28px;
+        width: 26px;
+        height: 26px;
     }
     
     .toolbar {
@@ -1111,20 +1115,20 @@ body.dark-mode .modal-actions .btn.secondary {
 }
 
 @media (max-width: 480px) {
+    .app-header {
+        padding: 2px 8px !important;
+        min-height: 36px !important;
+    }
+    
     .app-header h2 span {
         display: none;
     }
     
     .user-email {
-        max-width: 60px;
+        max-width: 50px;
     }
     
     .header-controls {
-        gap: 4px;
+        gap: 2px;
     }
-}
-
-/* Remove floating dark mode toggle */
-.dark-mode-toggle {
-    display: none !important;
 }
