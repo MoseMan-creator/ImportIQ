@@ -1550,6 +1550,80 @@ function googleSignInSignup() {
   googleSignIn('googleSignUpBtn');
 }
 
+// Dark Mode Toggle Function
+function toggleDarkMode() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('darkModeToggle');
+    const textSpan = toggleBtn.querySelector('span');
+    
+    // Toggle dark mode class
+    body.classList.toggle('dark-mode');
+    
+    // Update button text and icon
+    if (body.classList.contains('dark-mode')) {
+        textSpan.textContent = 'Light Mode';
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        textSpan.textContent = 'Dark Mode';
+        localStorage.setItem('darkMode', 'disabled');
+    }
+}
+
+// Load dark mode preference on startup
+function loadDarkModePreference() {
+    const savedMode = localStorage.getItem('darkMode');
+    const body = document.body;
+    const toggleBtn = document.getElementById('darkModeToggle');
+    
+    if (!toggleBtn) return; // Exit if button doesn't exist
+    
+    const textSpan = toggleBtn.querySelector('span');
+    
+    // Check saved preference
+    if (savedMode === 'enabled') {
+        body.classList.add('dark-mode');
+        textSpan.textContent = 'Light Mode';
+    } 
+    // If no saved preference, check system preference
+    else if (!savedMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        body.classList.add('dark-mode');
+        textSpan.textContent = 'Light Mode';
+        localStorage.setItem('darkMode', 'enabled');
+    }
+    else {
+        body.classList.remove('dark-mode');
+        textSpan.textContent = 'Dark Mode';
+    }
+}
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+    // Only change if user hasn't manually set a preference
+    if (!localStorage.getItem('darkMode')) {
+        if (e.matches) {
+            document.body.classList.add('dark-mode');
+            const toggleBtn = document.getElementById('darkModeToggle');
+            if (toggleBtn) {
+                toggleBtn.querySelector('span').textContent = 'Light Mode';
+            }
+        } else {
+            document.body.classList.remove('dark-mode');
+            const toggleBtn = document.getElementById('darkModeToggle');
+            if (toggleBtn) {
+                toggleBtn.querySelector('span').textContent = 'Dark Mode';
+            }
+        }
+    }
+});
+
+// Initialize dark mode when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadDarkModePreference();
+});
+
+// Make function globally available
+window.toggleDarkMode = toggleDarkMode;
+
 // Make functions globally available
 window.googleSignIn = googleSignIn;
 window.googleSignInLogin = googleSignInLogin;
