@@ -1290,3 +1290,84 @@ body.dark-mode .modal-actions .btn.secondary {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* ===== FINAL UI TWEAKS ===== */
+
+/* Fix online indicator - absolutely no text */
+.connection-status {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0 !important; /* Hide any text */
+}
+
+.connection-status i {
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+}
+
+/* Fix dark mode button size - match connection status */
+.header-icon-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+.header-icon-btn i {
+    font-size: 1.1rem !important;
+}
+
+/* Ensure user menu matches the new size */
+.user-menu {
+    height: 36px !important;
+}
+
+.user-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+}
+
+.user-email {
+    font-size: 0.85rem !important;
+    max-width: 120px !important;
+}
+
+.logout-btn {
+    width: 28px !important;
+    height: 28px !important;
+    min-width: 28px !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .connection-status,
+    .header-icon-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+    }
+    
+    .user-menu {
+        height: 32px !important;
+    }
+    
+    .user-avatar,
+    .logout-btn {
+        width: 24px !important;
+        height: 24px !important;
+        min-width: 24px !important;
+    }
+    
+    .user-email {
+        max-width: 80px !important;
+        font-size: 0.75rem !important;
+    }
+}
