@@ -1248,3 +1248,45 @@ body.dark-mode .modal-actions .btn.secondary {
     height: 100% !important;
     line-height: 1 !important;
 }
+
+/* ===== FINAL HEADER ALIGNMENT FIX ===== */
+.app-header .user-menu {
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 8px 0 4px !important;
+    margin: 0 !important;
+}
+
+.app-header .user-avatar {
+    height: 32px !important;
+    width: 32px !important;
+    min-height: 32px !important;
+    min-width: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+}
+
+.app-header .user-email {
+    height: 32px !important;
+    line-height: 32px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+    margin: 0 4px !important;
+}
+
+.app-header .logout-btn {
+    height: 32px !important;
+    width: 32px !important;
+    min-height: 32px !important;
+    min-width: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
