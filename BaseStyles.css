@@ -659,62 +659,116 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Tooltip styling with animation */
-.fab .tooltip {
-    position: absolute;
-    right: 70px;
-    background: #1f2937;
+/* Floating Action Button with Animations - FULLY RESPONSIVE */
+.fab {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 64px;  /* Base size for large screens */
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    pointer-events: none;
+    border: none;
+    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.5);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-size: 0;
+    text-indent: -9999px;
+    animation: slideInUp 0.5s ease-out, pulse 2s infinite;
+}
+
+/* Icon size */
+.fab i {
+    font-size: 28px;  /* Base icon size */
     text-indent: 0;
-    letter-spacing: 0.3px;
+    transition: transform 0.3s ease;
 }
 
-/* Tooltip arrow */
-.fab .tooltip::after {
-    content: '';
-    position: absolute;
-    right: -5px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 0;
-    height: 0;
-    border-top: 6px solid transparent;
-    border-bottom: 6px solid transparent;
-    border-left: 6px solid #1f2937;
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Large Desktop (1200px and up) */
+@media (min-width: 1200px) {
+    .fab {
+        bottom: 40px;
+        right: 40px;
+        width: 70px;
+        height: 70px;
+    }
+    
+    .fab i {
+        font-size: 32px;
+    }
 }
 
-/* Tooltip hover animation */
-.fab:hover .tooltip {
-    opacity: 1;
-    visibility: visible;
-    right: 80px;
+/* Desktop (992px to 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+    .fab {
+        bottom: 35px;
+        right: 35px;
+        width: 64px;
+        height: 64px;
+    }
+    
+    .fab i {
+        font-size: 28px;
+    }
 }
 
-/* Click/Tap animation */
-.fab:active {
-    transform: scale(0.9);
-    transition: transform 0.1s;
+/* Tablet (768px to 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .fab {
+        display: flex;
+        bottom: 30px;
+        right: 30px;
+        width: 56px;
+        height: 56px;
+    }
+    
+    .fab i {
+        font-size: 24px;
+    }
+    
+    /* Show tooltip on tablet */
+    .fab .tooltip {
+        display: block;
+        font-size: 11px;
+        padding: 5px 10px;
+    }
 }
 
-/* Mobile adjustments */
-@media (max-width: 768px) {
+/* Mobile Large (576px to 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+    .fab {
+        display: flex;
+        bottom: 25px;
+        right: 25px;
+        width: 52px;
+        height: 52px;
+    }
+    
+    .fab i {
+        font-size: 22px;
+    }
+    
+    /* Hide tooltip on mobile */
+    .fab .tooltip {
+        display: none;
+    }
+}
+
+/* Mobile Small (up to 575px) */
+@media (max-width: 575px) {
     .fab {
         display: flex;
         bottom: 20px;
         right: 20px;
         width: 48px;
         height: 48px;
-        animation: slideInUp 0.5s ease-out, pulse 2s infinite;
     }
     
     .fab i {
@@ -722,16 +776,183 @@ body {
     }
     
     .fab .tooltip {
-        display: none; /* Hide tooltip on mobile */
-    }
-    
-    /* Simpler animation on mobile for performance */
-    .fab:hover {
-        transform: scale(1.05);
+        display: none; /* Definitely hide tooltip on small mobile */
     }
 }
 
-/* Optional: Ripple effect on click */
+/* Very Small Devices (up to 360px) */
+@media (max-width: 360px) {
+    .fab {
+        bottom: 15px;
+        right: 15px;
+        width: 42px;
+        height: 42px;
+    }
+    
+    .fab i {
+        font-size: 18px;
+    }
+}
+
+/* Landscape mode on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .fab {
+        bottom: 15px;
+        right: 15px;
+        width: 44px;
+        height: 44px;
+    }
+    
+    .fab i {
+        font-size: 18px;
+    }
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Hover effects (only on devices that support hover) */
+@media (hover: hover) {
+    .fab:hover {
+        transform: scale(1.1) rotate(90deg);
+        box-shadow: 0 20px 30px -5px rgba(99, 102, 241, 0.8);
+        background: linear-gradient(135deg, #8b5cf6, #6366f1);
+        animation: none; /* Stop pulse on hover */
+    }
+    
+    .fab:hover i {
+        animation: spin 0.5s ease-in-out;
+    }
+    
+    /* Tooltip styling - only shown on hover-capable devices */
+    .fab .tooltip {
+        position: absolute;
+        right: 80px;
+        background: #1f2937;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        pointer-events: none;
+        text-indent: 0;
+        letter-spacing: 0.3px;
+    }
+    
+    .fab .tooltip::after {
+        content: '';
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-top: 6px solid transparent;
+        border-bottom: 6px solid transparent;
+        border-left: 6px solid #1f2937;
+    }
+    
+    .fab:hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+        right: 90px;
+    }
+}
+
+/* Touch devices - simpler interactions */
+@media (hover: none) {
+    .fab:active {
+        transform: scale(0.95);
+        transition: transform 0.1s;
+    }
+    
+    .fab .tooltip {
+        display: none; /* No tooltips on touch devices */
+    }
+}
+
+/* Tablet tooltip size adjustment */
+@media (min-width: 768px) and (max-width: 991px) and (hover: hover) {
+    .fab .tooltip {
+        font-size: 12px;
+        padding: 6px 12px;
+        right: 70px;
+    }
+    
+    .fab:hover .tooltip {
+        right: 80px;
+    }
+}
+
+/* High-resolution screens */
+@media (min-width: 1400px) {
+    .fab {
+        bottom: 50px;
+        right: 50px;
+        width: 80px;
+        height: 80px;
+    }
+    
+    .fab i {
+        font-size: 36px;
+    }
+    
+    .fab .tooltip {
+        font-size: 16px;
+        padding: 10px 20px;
+        right: 100px;
+    }
+    
+    .fab:hover .tooltip {
+        right: 110px;
+    }
+}
+
+/* Tablet and Desktop tooltip visibility */
+@media (min-width: 768px) {
+    .fab .tooltip {
+        display: block; /* Show tooltip on tablet and up */
+    }
+}
+
+/* Click/Tap animation for all devices */
+.fab:active {
+    transform: scale(0.92);
+    transition: transform 0.1s;
+}
+
+/* Ripple effect */
 .fab::after {
     content: '';
     position: absolute;
@@ -759,19 +980,6 @@ body {
 
 .fab:focus:not(:active)::after {
     animation: ripple 0.6s ease-out;
-}
-
-/* Floating animation (optional - add if you want it to float) */
-@keyframes float {
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
 }
 
 /* Uncomment below if you want floating effect instead of pulse */
