@@ -1561,6 +1561,8 @@ function toggleDarkMode() {
     } else {
         localStorage.setItem('darkMode', 'disabled');
     }
+    
+    // No text updates needed since we're using icons only
 }
 
 // Load dark mode preference on startup
@@ -1569,26 +1571,24 @@ function loadDarkModePreference() {
     const body = document.body;
     const toggleBtn = document.getElementById('darkModeToggle');
     
-    if (!toggleBtn) return; // Exit if button doesn't exist
-    
-    const textSpan = toggleBtn.querySelector('span');
-    
-    // Check saved preference
+    // Check if dark mode should be enabled
     if (savedMode === 'enabled') {
         body.classList.add('dark-mode');
-        textSpan.textContent = 'Light Mode';
     } 
     // If no saved preference, check system preference
     else if (!savedMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         body.classList.add('dark-mode');
-        textSpan.textContent = 'Light Mode';
         localStorage.setItem('darkMode', 'enabled');
     }
-    else {
-        body.classList.remove('dark-mode');
-        textSpan.textContent = 'Dark Mode';
-    }
+    
+    // Update toggle button icon state (no text to set)
+    // The button just uses sun/moon icons, no text content needed
 }
+
+// Initialize dark mode when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadDarkModePreference();
+});
 
 // Listen for system theme changes
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
