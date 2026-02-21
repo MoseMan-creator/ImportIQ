@@ -63,43 +63,44 @@ body {
 .app-header {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 12px 20px;
-    margin-bottom: 20px;
-    box-shadow: var(--shadow);
+    padding: 8px 16px;  /* Reduced padding */
+    margin-bottom: 12px;  /* Reduced margin */
+    box-shadow: var(--shadow-sm);  /* Lighter shadow */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
+    min-height: 52px;  /* Fixed height */
 }
 
 .app-header h2 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     font-weight: 700;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     margin: 0;
     white-space: nowrap;
 }
 
 .app-header h2 i {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
 }
 
 /* Header Controls */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;  /* Reduced gap */
 }
 
 /* Header Icon Button (for dark mode) */
 .header-icon-btn {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     background: #f3f4f6;
     border: none;
@@ -118,7 +119,7 @@ body {
 }
 
 .header-icon-btn i {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .header-icon-btn .sun {
@@ -144,15 +145,17 @@ body.dark-mode .header-icon-btn .moon {
     display: inline-block;
 }
 
-/* Connection Status - Compact */
+/* Connection Status - Fixed */
 .connection-status {
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 1rem;
+    padding: 0;  /* Remove any padding */
+    margin: 0;   /* Remove any margin */
 }
 
 .connection-status.online {
@@ -167,17 +170,18 @@ body.dark-mode .header-icon-btn .moon {
 
 .connection-status i {
     font-size: 1rem;
+    margin: 0;  /* Remove icon margin */
 }
 
 /* User Menu */
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     background: #f3f4f6;
-    padding: 3px;
+    padding: 2px;
     border-radius: 30px;
-    height: 36px;
+    height: 34px;
 }
 
 .user-avatar {
@@ -189,14 +193,14 @@ body.dark-mode .header-icon-btn .moon {
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .user-email {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: var(--text-primary);
-    max-width: 120px;
+    max-width: 110px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -245,25 +249,64 @@ body.dark-mode .logout-btn:hover {
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .app-header {
-        padding: 10px 16px;
+        padding: 6px 12px;
+        min-height: 48px;
     }
     
     .app-header h2 {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
+    }
+    
+    .app-header h2 i {
+        font-size: 1rem;
+    }
+    
+    .header-icon-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .connection-status {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .user-menu {
+        height: 32px;
+    }
+    
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
     }
     
     .user-email {
         max-width: 80px;
+        font-size: 0.8rem;
+    }
+    
+    .logout-btn {
+        width: 28px;
+        height: 28px;
     }
 }
 
 @media (max-width: 480px) {
+    .app-header {
+        padding: 4px 10px;
+    }
+    
     .app-header h2 span {
         display: none; /* Hide "Dashboard" text on very small screens */
     }
     
     .user-email {
         max-width: 60px;
+    }
+    
+    .header-controls {
+        gap: 4px;
     }
 }
 
