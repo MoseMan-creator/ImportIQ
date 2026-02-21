@@ -70,46 +70,46 @@ body {
 .app-header {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 8px 16px;
+    padding: 6px 12px;  /* Even smaller padding */
     margin-bottom: 12px;
     box-shadow: var(--shadow-sm);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    min-height: 52px;
+    gap: 8px;
+    min-height: 44px;  /* Smaller fixed height */
     flex-shrink: 0;
 }
 
 .app-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     margin: 0;
     white-space: nowrap;
 }
 
 .app-header h2 i {
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 /* Header Controls */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;  /* Tighter gap */
     flex-shrink: 0;
 }
 
 /* Header Icon Button (for dark mode) */
 .header-icon-btn {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: #f3f4f6;
     border: none;
@@ -117,19 +117,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--text-primary);
     transition: all 0.2s ease;
     padding: 0;
     flex-shrink: 0;
 }
 
-.header-icon-btn:hover {
-    background: #e5e7eb;
-    transform: scale(1.05);
-}
-
 .header-icon-btn i {
-    font-size: 1rem;
+    font-size: 0.95rem;
 }
 
 .header-icon-btn .sun {
@@ -155,15 +149,14 @@ body.dark-mode .header-icon-btn .moon {
     display: inline-block;
 }
 
-/* Connection Status */
+/* Connection Status - FIXED: icon only, no text */
 .connection-status {
-    width: 34px;
-    height: 34px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
     padding: 0;
     margin: 0;
     flex-shrink: 0;
@@ -180,49 +173,54 @@ body.dark-mode .header-icon-btn .moon {
 }
 
 .connection-status i {
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin: 0;
 }
 
-/* User Menu */
+/* Hide any text inside connection-status */
+.connection-status span {
+    display: none;
+}
+
+/* User Menu - More compact */
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     background: #f3f4f6;
     padding: 2px;
     border-radius: 30px;
-    height: 34px;
+    height: 32px;
     flex-shrink: 0;
 }
 
 .user-avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     flex-shrink: 0;
 }
 
 .user-email {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 500;
     color: var(--text-primary);
-    max-width: 110px;
+    max-width: 90px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 4px;
+    padding: 0 2px;
 }
 
 .logout-btn {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     background: transparent;
     border: none;
@@ -241,6 +239,71 @@ body.dark-mode .header-icon-btn .moon {
     background: rgba(239, 68, 68, 0.1);
 }
 
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 4px 10px;
+        min-height: 40px;
+    }
+    
+    .app-header h2 {
+        font-size: 1rem;
+    }
+    
+    .app-header h2 i {
+        font-size: 0.9rem;
+    }
+    
+    .header-icon-btn {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .connection-status {
+        width: 30px;
+        height: 30px;
+    }
+    
+    .user-menu {
+        height: 30px;
+    }
+    
+    .user-avatar {
+        width: 26px;
+        height: 26px;
+        font-size: 0.75rem;
+    }
+    
+    .user-email {
+        max-width: 70px;
+        font-size: 0.75rem;
+    }
+    
+    .logout-btn {
+        width: 26px;
+        height: 26px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header h2 span {
+        display: none; /* Hide "Dashboard" text */
+    }
+    
+    .user-email {
+        max-width: 50px;
+    }
+}
+
+/* Dark mode styles */
+body.dark-mode .app-header {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+body.dark-mode .user-menu {
+    background: #374151;
+}
 /* ===== TOOLBAR ===== */
 .toolbar {
     background: white;
