@@ -576,7 +576,7 @@ body {
     color: white;
 }
 
-/* Floating Action Button */
+/* Floating Action Button with Animations */
 .fab {
     display: none;
     position: fixed;
@@ -593,19 +593,73 @@ body {
     align-items: center;
     justify-content: center;
     z-index: 100;
-    transition: all 0.3s;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     /* Hide any text directly in the button */
     font-size: 0;
     text-indent: -9999px;
+    /* Animation for entrance */
+    animation: slideInUp 0.5s ease-out;
 }
 
-/* Show only the icon */
+/* Entrance animation */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Hover animation - bounce and rotate */
+.fab:hover {
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 20px 30px -5px rgba(99, 102, 241, 0.8);
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+}
+
+/* Icon animation on hover */
+.fab:hover i {
+    animation: spin 0.5s ease-in-out;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Pulse animation for attention */
+.fab {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(99, 102, 241, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+    }
+}
+
+/* Stop pulsing on hover */
+.fab:hover {
+    animation: none;
+}
+
+/* Icon styles */
 .fab i {
     font-size: 24px;
     text-indent: 0;
+    transition: transform 0.3s ease;
 }
 
-/* Hide the tooltip by default (shown on hover) */
+/* Tooltip styling with animation */
 .fab .tooltip {
     position: absolute;
     right: 70px;
@@ -614,20 +668,42 @@ body {
     padding: 6px 12px;
     border-radius: 20px;
     font-size: 12px;
+    font-weight: 500;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     pointer-events: none;
-    /* Override the text hiding */
     text-indent: 0;
-    font-size: 12px;
+    letter-spacing: 0.3px;
 }
 
+/* Tooltip arrow */
+.fab .tooltip::after {
+    content: '';
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #1f2937;
+}
+
+/* Tooltip hover animation */
 .fab:hover .tooltip {
     opacity: 1;
     visibility: visible;
-    right: 75px;
+    right: 80px;
+}
+
+/* Click/Tap animation */
+.fab:active {
+    transform: scale(0.9);
+    transition: transform 0.1s;
 }
 
 /* Mobile adjustments */
@@ -638,6 +714,7 @@ body {
         right: 20px;
         width: 48px;
         height: 48px;
+        animation: slideInUp 0.5s ease-out, pulse 2s infinite;
     }
     
     .fab i {
@@ -647,7 +724,60 @@ body {
     .fab .tooltip {
         display: none; /* Hide tooltip on mobile */
     }
+    
+    /* Simpler animation on mobile for performance */
+    .fab:hover {
+        transform: scale(1.05);
+    }
 }
+
+/* Optional: Ripple effect on click */
+.fab::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(20, 20);
+        opacity: 0;
+    }
+}
+
+.fab:focus:not(:active)::after {
+    animation: ripple 0.6s ease-out;
+}
+
+/* Floating animation (optional - add if you want it to float) */
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+/* Uncomment below if you want floating effect instead of pulse */
+/* .fab {
+    animation: float 3s ease-in-out infinite;
+} */
 
 /* Scroll Hint */
 .scroll-hint {
