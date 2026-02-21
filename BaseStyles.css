@@ -1493,8 +1493,7 @@ body.dark-mode * {
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {
     background: linear-gradient(135deg, #4f46e5, #0d9488); /* Darker when active */
-}
-*/
+/*}*/
 
 /* ===== DARK MODE ===== */
 /* Dark mode class that can be toggled */
