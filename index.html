@@ -623,14 +623,14 @@
   <script src="app.js"></script>
   
   <!-- Service Worker Registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(err => {
-          console.log('ServiceWorker registration skipped:', err);
-        });
+ <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/ImportIQ/sw.js').catch(err => {
+        console.log('ServiceWorker registration skipped:', err);
       });
-    }
-  </script>
+    });
+  }
+</script>
 </body>
 </html>
