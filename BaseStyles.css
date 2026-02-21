@@ -1134,32 +1134,92 @@ body.dark-mode .modal-actions .btn.secondary {
     }
 }
 
-/* ===== FORCE HEADER COMPACT ===== */
+/* ===== FORCE HEADER ALIGNMENT ===== */
 .app-header {
-    line-height: 1 !important;
-}
-
-.app-header h2,
-.app-header .header-controls,
-.app-header .user-menu,
-.app-header .user-email,
-.app-header button {
-    line-height: 1 !important;
-}
-
-.app-header h2 i,
-.app-header .connection-status i,
-.app-header .logout-btn i {
-    line-height: 1 !important;
-    display: inline-block !important;
-    vertical-align: middle !important;
-}
-
-/* Ensure all flex items align properly */
-.header-controls {
+    display: flex !important;
     align-items: center !important;
+    justify-content: space-between !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    padding: 0 12px !important;
+    overflow: visible !important;
 }
 
+.app-header h2 {
+    display: flex !important;
+    align-items: center !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+}
+
+.app-header h2 i {
+    display: inline-flex !important;
+    align-items: center !important;
+    height: 40px !important;
+    line-height: 1 !important;
+}
+
+.app-header .header-controls {
+    display: flex !important;
+    align-items: center !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Force all buttons to be centered */
+.header-icon-btn,
+.connection-status,
 .user-menu {
+    display: flex !important;
     align-items: center !important;
+    justify-content: center !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    margin: auto 0 !important; /* This centers vertically */
+}
+
+/* User menu specific */
+.user-menu {
+    height: 32px !important;
+    padding: 0 2px 0 0 !important;
+}
+
+.user-avatar,
+.logout-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 28px !important;
+    min-height: 28px !important;
+    max-height: 28px !important;
+    margin: auto 0 !important;
+}
+
+.user-email {
+    display: flex !important;
+    align-items: center !important;
+    height: 28px !important;
+    line-height: 1 !important;
+    margin: auto 0 !important;
+}
+
+/* Ensure all icons are centered */
+.header-icon-btn i,
+.connection-status i,
+.logout-btn i {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+    line-height: 1 !important;
 }
