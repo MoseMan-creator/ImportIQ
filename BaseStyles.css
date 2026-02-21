@@ -1133,3 +1133,33 @@ body.dark-mode .modal-actions .btn.secondary {
         gap: 2px;
     }
 }
+
+/* ===== FORCE HEADER COMPACT ===== */
+.app-header {
+    line-height: 1 !important;
+}
+
+.app-header h2,
+.app-header .header-controls,
+.app-header .user-menu,
+.app-header .user-email,
+.app-header button {
+    line-height: 1 !important;
+}
+
+.app-header h2 i,
+.app-header .connection-status i,
+.app-header .logout-btn i {
+    line-height: 1 !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+/* Ensure all flex items align properly */
+.header-controls {
+    align-items: center !important;
+}
+
+.user-menu {
+    align-items: center !important;
+}
