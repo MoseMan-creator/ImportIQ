@@ -280,36 +280,32 @@
 
   <!-- Main App -->
   <div id="appSection" class="app-container" style="display: none;">
-    <!-- Header -->
+   <!-- Header -->
       <div class="app-header">
         <h2>
           <i class="fas fa-chart-line"></i>
-          ImportIQ Dashboard
+          ImportIQ
         </h2>
         
         <div class="header-controls">
-          <!-- Dark Mode Toggle -->
-          <div class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
+          <!-- Dark Mode Toggle (Integrated) -->
+          <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
             <i class="fas fa-sun sun"></i>
             <i class="fas fa-moon moon"></i>
-          </div>
+          </button>
           
           <!-- Connection Status -->
           <div id="connectionStatus" class="connection-status online">
             <i class="fas fa-wifi"></i>
-            <span>Online</span>
           </div>
           
-          <!-- User Info -->
-          <div class="user-info">
+          <!-- User Menu -->
+          <div class="user-menu">
             <div class="user-avatar">
               <i class="fas fa-user"></i>
             </div>
-            <div class="user-details">
-              <span class="user-greeting">Welcome,</span>
-              <span class="user-email" id="userEmail"></span>
-            </div>
-            <button onclick="logout()" class="btn logout-btn" title="Logout">
+            <span class="user-email" id="userEmail"></span>
+            <button onclick="logout()" class="logout-btn" title="Logout">
               <i class="fas fa-sign-out-alt"></i>
             </button>
           </div>
