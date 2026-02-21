@@ -1579,3 +1579,210 @@ body.dark-mode .dark-mode-toggle {
         right: 15px;
     }
 }
+
+/* ===== DARK MODE MODAL FIXES ===== */
+body.dark-mode .modal-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+body.dark-mode .modal-header {
+    background: var(--surface);
+    border-bottom-color: var(--border);
+}
+
+body.dark-mode .modal-header h3 {
+    color: var(--text-primary);
+}
+
+body.dark-mode .modal-header h3 i {
+    color: var(--primary);
+}
+
+body.dark-mode .modal-body {
+    background: var(--surface);
+}
+
+body.dark-mode .form-section {
+    background: var(--surface-hover);
+    border-color: var(--border);
+}
+
+body.dark-mode .form-section h4 {
+    color: var(--text-primary);
+}
+
+body.dark-mode .form-section h4 i {
+    color: var(--primary);
+}
+
+body.dark-mode .form-group label {
+    color: var(--text-secondary);
+}
+
+body.dark-mode .form-group input,
+body.dark-mode .form-group select {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+body.dark-mode .form-group input:focus,
+body.dark-mode .form-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
+}
+
+body.dark-mode .form-group input::placeholder {
+    color: var(--text-tertiary);
+}
+
+body.dark-mode .field-note {
+    color: var(--text-tertiary);
+}
+
+body.dark-mode .duties-grid select option {
+    background: var(--surface);
+    color: var(--text-primary);
+}
+
+/* Choices.js dropdown dark mode */
+body.dark-mode .choices__inner {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+body.dark-mode .choices__list--dropdown {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+body.dark-mode .choices__list--dropdown .choices__item {
+    color: var(--text-primary);
+}
+
+body.dark-mode .choices__list--dropdown .choices__item--selectable:hover {
+    background: var(--surface-hover);
+}
+
+body.dark-mode .choices__input {
+    background: var(--surface);
+    color: var(--text-primary);
+}
+
+/* Preview section in modal */
+body.dark-mode .preview {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+body.dark-mode .preview h4 {
+    color: white;
+}
+
+body.dark-mode .preview-row {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .preview-row .highlight {
+    color: #fcd34d;
+}
+
+body.dark-mode .info-banner {
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+}
+
+body.dark-mode .info-banner i {
+    color: #fcd34d;
+}
+
+/* Modal actions */
+body.dark-mode .modal-actions {
+    background: var(--surface);
+    border-top-color: var(--border);
+}
+
+body.dark-mode .modal-actions .btn.secondary {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+    border-color: var(--border);
+}
+
+body.dark-mode .modal-actions .btn.secondary:hover {
+    background: #374151;
+}
+
+body.dark-mode .modal-actions .btn.primary {
+    background: linear-gradient(135deg, #818cf8, #6366f1);
+    color: white;
+}
+
+/* Add Duty Modal specific */
+body.dark-mode #addDutyModal .form-group label {
+    color: var(--text-secondary);
+}
+
+body.dark-mode #addDutyModal input {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+/* Close button in toasts (if in modal) */
+body.dark-mode .toast {
+    background: var(--surface);
+    color: var(--text-primary);
+    border-left-color: var(--primary);
+}
+
+body.dark-mode .toast-message {
+    color: var(--text-primary);
+}
+
+body.dark-mode .toast-close {
+    color: var(--text-tertiary);
+}
+
+body.dark-mode .toast-close:hover {
+    color: var(--text-primary);
+}
+
+/* Fix for disabled selects */
+body.dark-mode select:disabled {
+    background: var(--surface-hover);
+    color: var(--text-tertiary);
+}
+
+/* Fix for "Other Duty" input group */
+body.dark-mode #newOtherDutyGroup label,
+body.dark-mode #editOtherDutyGroup label {
+    color: var(--text-secondary);
+}
+
+body.dark-mode #newOtherDuty,
+body.dark-mode #editOtherDuty {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text-primary);
+}
+
+/* Choices.js dark mode fixes */
+body.dark-mode .choices {
+    color: var(--text-primary);
+}
+
+body.dark-mode .choices__placeholder {
+    color: var(--text-tertiary);
+}
+
+body.dark-mode .choices__item--choice {
+    color: var(--text-primary);
+}
+
+body.dark-mode .choices__list--dropdown .choices__item--selectable.is-highlighted {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+}
+
