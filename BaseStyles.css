@@ -66,23 +66,24 @@ body {
     flex: 1;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER - ULTRA COMPACT ===== */
 .app-header {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 6px 12px;  /* Even smaller padding */
-    margin-bottom: 12px;
+    padding: 4px 10px !important;
+    margin-bottom: 10px !important;
     box-shadow: var(--shadow-sm);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    min-height: 44px;  /* Smaller fixed height */
+    gap: 4px;
+    min-height: 40px !important;
+    height: 40px !important;
     flex-shrink: 0;
 }
 
 .app-header h2 {
-    font-size: 1.1rem;
+    font-size: 1rem !important;
     font-weight: 700;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
@@ -92,24 +93,25 @@ body {
     gap: 4px;
     margin: 0;
     white-space: nowrap;
+    line-height: 1;
 }
 
 .app-header h2 i {
-    font-size: 1rem;
+    font-size: 0.9rem !important;
 }
 
 /* Header Controls */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 4px;  /* Tighter gap */
+    gap: 2px !important;
     flex-shrink: 0;
 }
 
 /* Header Icon Button (for dark mode) */
 .header-icon-btn {
-    width: 32px;
-    height: 32px;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 50%;
     background: #f3f4f6;
     border: none;
@@ -123,36 +125,13 @@ body {
 }
 
 .header-icon-btn i {
-    font-size: 0.95rem;
+    font-size: 0.85rem !important;
 }
 
-.header-icon-btn .sun {
-    color: #f59e0b;
-    display: inline-block;
-}
-
-.header-icon-btn .moon {
-    color: #6366f1;
-    display: none;
-}
-
-/* Dark mode icon states */
-body.dark-mode .header-icon-btn {
-    background: #374151;
-}
-
-body.dark-mode .header-icon-btn .sun {
-    display: none;
-}
-
-body.dark-mode .header-icon-btn .moon {
-    display: inline-block;
-}
-
-/* Connection Status - FIXED: icon only, no text */
+/* Connection Status - ICON ONLY */
 .connection-status {
-    width: 32px;
-    height: 32px;
+    width: 28px !important;
+    height: 28px !important;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -173,16 +152,17 @@ body.dark-mode .header-icon-btn .moon {
 }
 
 .connection-status i {
-    font-size: 0.95rem;
+    font-size: 0.85rem !important;
     margin: 0;
 }
 
 /* Hide any text inside connection-status */
-.connection-status span {
-    display: none;
+.connection-status span,
+.connection-status .text {
+    display: none !important;
 }
 
-/* User Menu - More compact */
+/* User Menu - Ultra compact */
 .user-menu {
     display: flex;
     align-items: center;
@@ -190,37 +170,38 @@ body.dark-mode .header-icon-btn .moon {
     background: #f3f4f6;
     padding: 2px;
     border-radius: 30px;
-    height: 32px;
+    height: 28px !important;
     flex-shrink: 0;
 }
 
 .user-avatar {
-    width: 28px;
-    height: 28px;
+    width: 24px !important;
+    height: 24px !important;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.8rem;
+    font-size: 0.7rem !important;
     flex-shrink: 0;
 }
 
 .user-email {
-    font-size: 0.8rem;
+    font-size: 0.7rem !important;
     font-weight: 500;
     color: var(--text-primary);
-    max-width: 90px;
+    max-width: 80px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     padding: 0 2px;
+    line-height: 1;
 }
 
 .logout-btn {
-    width: 28px;
-    height: 28px;
+    width: 24px !important;
+    height: 24px !important;
     border-radius: 50%;
     background: transparent;
     border: none;
@@ -234,65 +215,13 @@ body.dark-mode .header-icon-btn .moon {
     flex-shrink: 0;
 }
 
+.logout-btn i {
+    font-size: 0.75rem !important;
+}
+
 .logout-btn:hover {
     color: var(--danger);
     background: rgba(239, 68, 68, 0.1);
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .app-header {
-        padding: 4px 10px;
-        min-height: 40px;
-    }
-    
-    .app-header h2 {
-        font-size: 1rem;
-    }
-    
-    .app-header h2 i {
-        font-size: 0.9rem;
-    }
-    
-    .header-icon-btn {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .connection-status {
-        width: 30px;
-        height: 30px;
-    }
-    
-    .user-menu {
-        height: 30px;
-    }
-    
-    .user-avatar {
-        width: 26px;
-        height: 26px;
-        font-size: 0.75rem;
-    }
-    
-    .user-email {
-        max-width: 70px;
-        font-size: 0.75rem;
-    }
-    
-    .logout-btn {
-        width: 26px;
-        height: 26px;
-    }
-}
-
-@media (max-width: 480px) {
-    .app-header h2 span {
-        display: none; /* Hide "Dashboard" text */
-    }
-    
-    .user-email {
-        max-width: 50px;
-    }
 }
 
 /* Dark mode styles */
@@ -304,6 +233,76 @@ body.dark-mode .app-header {
 body.dark-mode .user-menu {
     background: #374151;
 }
+
+body.dark-mode .header-icon-btn {
+    background: #374151;
+}
+
+/* Mobile - Even more compact */
+@media (max-width: 768px) {
+    .app-header {
+        padding: 2px 8px !important;
+        min-height: 36px !important;
+        height: 36px !important;
+    }
+    
+    .app-header h2 {
+        font-size: 0.9rem !important;
+    }
+    
+    .app-header h2 i {
+        font-size: 0.8rem !important;
+    }
+    
+    .header-icon-btn {
+        width: 26px !important;
+        height: 26px !important;
+    }
+    
+    .connection-status {
+        width: 26px !important;
+        height: 26px !important;
+    }
+    
+    .user-menu {
+        height: 26px !important;
+    }
+    
+    .user-avatar {
+        width: 22px !important;
+        height: 22px !important;
+        font-size: 0.65rem !important;
+    }
+    
+    .user-email {
+        max-width: 60px;
+        font-size: 0.65rem !important;
+    }
+    
+    .logout-btn {
+        width: 22px !important;
+        height: 22px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        padding: 2px 6px !important;
+    }
+    
+    .app-header h2 span {
+        display: none;
+    }
+    
+    .user-email {
+        max-width: 40px;
+    }
+    
+    .header-controls {
+        gap: 1px !important;
+    }
+}
+
 /* ===== TOOLBAR ===== */
 .toolbar {
     background: white;
