@@ -582,8 +582,8 @@ body {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    width: 56px;  /* Reduced from 60px */
-    height: 56px; /* Reduced from 60px */
+    width: 56px;
+    height: 56px;
     border-radius: 50%;
     background: linear-gradient(135deg, #6366f1, #8b5cf6);
     color: white;
@@ -592,32 +592,60 @@ body {
     cursor: pointer;
     align-items: center;
     justify-content: center;
-    font-size: 24px; /* Explicit font size */
     z-index: 100;
     transition: all 0.3s;
+    /* Hide any text directly in the button */
+    font-size: 0;
+    text-indent: -9999px;
 }
 
-.fab:hover {
-    transform: scale(1.1);
-    box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.7);
-}
-
+/* Show only the icon */
 .fab i {
-    font-size: 24px; /* Control icon size separately */
+    font-size: 24px;
+    text-indent: 0;
+}
+
+/* Hide the tooltip by default (shown on hover) */
+.fab .tooltip {
+    position: absolute;
+    right: 70px;
+    background: #1f2937;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    pointer-events: none;
+    /* Override the text hiding */
+    text-indent: 0;
+    font-size: 12px;
+}
+
+.fab:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+    right: 75px;
 }
 
 /* Mobile adjustments */
 @media (max-width: 768px) {
     .fab {
+        display: flex;
         bottom: 20px;
         right: 20px;
-        width: 48px;  /* Smaller on mobile */
+        width: 48px;
         height: 48px;
-        font-size: 20px;
     }
     
     .fab i {
         font-size: 20px;
+    }
+    
+    .fab .tooltip {
+        display: none; /* Hide tooltip on mobile */
     }
 }
 
