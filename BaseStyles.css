@@ -66,50 +66,50 @@ body {
     flex: 1;
 }
 
-/* ===== HEADER ===== */
+/* ===== HEADER - BALANCED ===== */
 .app-header {
     background: white;
     border-radius: var(--radius-lg);
-    padding: 6px 12px;  /* Even smaller padding */
-    margin-bottom: 12px;
+    padding: 0 16px;
+    margin-bottom: 16px;
     box-shadow: var(--shadow-sm);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
-    min-height: 44px;  /* Smaller fixed height */
+    height: 56px;
+    min-height: 56px;
     flex-shrink: 0;
 }
 
 .app-header h2 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     font-weight: 700;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 8px;
     margin: 0;
     white-space: nowrap;
 }
 
 .app-header h2 i {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
 /* Header Controls */
 .header-controls {
     display: flex;
     align-items: center;
-    gap: 4px;  /* Tighter gap */
+    gap: 12px;
     flex-shrink: 0;
 }
 
-/* Header Icon Button (for dark mode) */
+/* Header Icon Button */
 .header-icon-btn {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     background: #f3f4f6;
     border: none;
@@ -119,11 +119,15 @@ body {
     justify-content: center;
     transition: all 0.2s ease;
     padding: 0;
-    flex-shrink: 0;
+}
+
+.header-icon-btn:hover {
+    background: #e5e7eb;
+    transform: scale(1.05);
 }
 
 .header-icon-btn i {
-    font-size: 0.95rem;
+    font-size: 1.2rem;
 }
 
 .header-icon-btn .sun {
@@ -136,7 +140,6 @@ body {
     display: none;
 }
 
-/* Dark mode icon states */
 body.dark-mode .header-icon-btn {
     background: #374151;
 }
@@ -149,17 +152,14 @@ body.dark-mode .header-icon-btn .moon {
     display: inline-block;
 }
 
-/* Connection Status - FIXED: icon only, no text */
+/* Connection Status */
 .connection-status {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    margin: 0;
-    flex-shrink: 0;
 }
 
 .connection-status.online {
@@ -173,54 +173,45 @@ body.dark-mode .header-icon-btn .moon {
 }
 
 .connection-status i {
-    font-size: 0.95rem;
-    margin: 0;
+    font-size: 1.2rem;
 }
 
-/* Hide any text inside connection-status */
-.connection-status span {
-    display: none;
-}
-
-/* User Menu - More compact */
+/* User Menu */
 .user-menu {
     display: flex;
     align-items: center;
-    gap: 2px;
+    gap: 8px;
     background: #f3f4f6;
-    padding: 2px;
-    border-radius: 30px;
-    height: 32px;
-    flex-shrink: 0;
+    padding: 4px 8px 4px 4px;
+    border-radius: 40px;
+    height: 40px;
 }
 
 .user-avatar {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
-    font-size: 0.8rem;
-    flex-shrink: 0;
+    font-size: 0.9rem;
 }
 
 .user-email {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--text-primary);
-    max-width: 90px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    padding: 0 2px;
 }
 
 .logout-btn {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
     background: transparent;
     border: none;
@@ -231,7 +222,6 @@ body.dark-mode .header-icon-btn .moon {
     justify-content: center;
     transition: all 0.2s ease;
     padding: 0;
-    flex-shrink: 0;
 }
 
 .logout-btn:hover {
@@ -239,11 +229,69 @@ body.dark-mode .header-icon-btn .moon {
     background: rgba(239, 68, 68, 0.1);
 }
 
+.logout-btn i {
+    font-size: 1rem;
+}
+
+/* Dark mode styles */
+body.dark-mode .app-header {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+body.dark-mode .user-menu {
+    background: #374151;
+}
+
+body.dark-mode .user-email {
+    color: var(--text-primary);
+}
+
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .app-header {
-        padding: 4px 10px;
-        min-height: 40px;
+        height: 52px;
+        min-height: 52px;
+        padding: 0 12px;
+    }
+    
+    .app-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .header-icon-btn,
+    .connection-status {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .user-menu {
+        height: 36px;
+        padding: 3px 6px 3px 3px;
+    }
+    
+    .user-avatar {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+    }
+    
+    .user-email {
+        max-width: 100px;
+        font-size: 0.85rem;
+    }
+    
+    .logout-btn {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-header {
+        height: 48px;
+        min-height: 48px;
+        padding: 0 10px;
     }
     
     .app-header h2 {
@@ -251,21 +299,18 @@ body.dark-mode .header-icon-btn .moon {
     }
     
     .app-header h2 i {
-        font-size: 0.9rem;
+        font-size: 1rem;
     }
     
-    .header-icon-btn {
-        width: 30px;
-        height: 30px;
-    }
-    
+    .header-icon-btn,
     .connection-status {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
     }
     
     .user-menu {
-        height: 30px;
+        height: 32px;
+        gap: 4px;
     }
     
     .user-avatar {
@@ -283,26 +328,6 @@ body.dark-mode .header-icon-btn .moon {
         width: 26px;
         height: 26px;
     }
-}
-
-@media (max-width: 480px) {
-    .app-header h2 span {
-        display: none; /* Hide "Dashboard" text */
-    }
-    
-    .user-email {
-        max-width: 50px;
-    }
-}
-
-/* Dark mode styles */
-body.dark-mode .app-header {
-    background: var(--surface);
-    border-color: var(--border);
-}
-
-body.dark-mode .user-menu {
-    background: #374151;
 }
 
 /* ===== TOOLBAR ===== */
