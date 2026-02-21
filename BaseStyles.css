@@ -1371,3 +1371,205 @@ body.dark-mode .modal-actions .btn.secondary {
         font-size: 0.75rem !important;
     }
 }
+
+/* ===== MOBILE RESPONSIVENESS FIXES ===== */
+
+/* Small phones (up to 480px) */
+@media screen and (max-width: 480px) {
+    /* Header adjustments */
+    .app-header {
+        padding: 0 8px !important;
+        height: 48px !important;
+        min-height: 48px !important;
+    }
+    
+    .app-header h2 {
+        font-size: 1rem !important;
+    }
+    
+    .app-header h2 span {
+        display: none !important; /* Hide "ImportIQ" text, keep icon */
+    }
+    
+    .app-header h2 i {
+        font-size: 1.2rem !important;
+        margin-right: 0 !important;
+    }
+    
+    /* Header controls */
+    .header-controls {
+        gap: 4px !important;
+    }
+    
+    .connection-status,
+    .header-icon-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+    }
+    
+    .connection-status i,
+    .header-icon-btn i {
+        font-size: 0.9rem !important;
+    }
+    
+    /* User menu - show only avatar on very small screens */
+    .user-menu {
+        height: 32px !important;
+        padding: 2px !important;
+    }
+    
+    .user-email {
+        display: none !important; /* Hide email on very small screens */
+    }
+    
+    .user-avatar {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+    }
+    
+    .logout-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+    }
+    
+    /* Toolbar adjustments */
+    .toolbar {
+        padding: 8px !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+    
+    .toolbar .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        margin: 0 !important;
+    }
+    
+    .status {
+        width: 100% !important;
+        margin-left: 0 !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Table adjustments */
+    .table-container {
+        min-height: 200px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .scroll-hint {
+        display: block !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+/* Medium phones (481px to 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .app-header {
+        padding: 0 12px !important;
+        height: 52px !important;
+        min-height: 52px !important;
+    }
+    
+    .app-header h2 {
+        font-size: 1.1rem !important;
+    }
+    
+    .connection-status,
+    .header-icon-btn {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .user-menu {
+        height: 36px !important;
+    }
+    
+    .user-avatar {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
+    .user-email {
+        max-width: 80px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .logout-btn {
+        width: 28px !important;
+        height: 28px !important;
+    }
+    
+    .toolbar {
+        padding: 10px !important;
+        flex-wrap: wrap !important;
+    }
+    
+    .toolbar .btn {
+        flex: 1 1 auto !important;
+    }
+}
+
+/* Landscape mode on phones */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .app-header {
+        height: 44px !important;
+        min-height: 44px !important;
+    }
+    
+    #appSection {
+        padding: 8px !important;
+    }
+    
+    .table-container {
+        max-height: 200px !important;
+    }
+}
+
+/* Ensure the FAB is properly positioned on mobile */
+@media screen and (max-width: 768px) {
+    .fab {
+        display: flex !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+    
+    .fab i {
+        font-size: 20px !important;
+    }
+    
+    /* Hide tooltip on mobile */
+    .fab .tooltip {
+        display: none !important;
+    }
+}
+
+/* Fix for iOS zoom on input focus */
+@media screen and (-webkit-min-device-pixel-ratio: 0) { 
+    select:focus,
+    textarea:focus,
+    input:focus {
+        font-size: 16px !important;
+    }
+}
+
+/* Improve touch targets on mobile */
+@media (hover: none) and (pointer: coarse) {
+    .btn, 
+    .header-icon-btn,
+    .logout-btn,
+    .fab {
+        min-height: 44px !important;
+        min-width: 44px !important;
+    }
+    
+    .user-menu {
+        min-height: 40px !important;
+    }
+}
