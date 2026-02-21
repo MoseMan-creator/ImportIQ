@@ -1,3 +1,24 @@
+/* Add at the very top of your CSS file */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#appSection {
+    min-height: 100vh;
+    height: auto;
+    display: block;
+    background: white;
+}
+
+/* Ensure the table container doesn't collapse */
+.table-container {
+    min-height: 400px;
+    height: auto;
+    overflow: auto;
+}
+
 :root {
   /* Modern Color Palette */
   --primary: #6366f1;
@@ -938,37 +959,38 @@ body {
     color: #14b8a6;
 }
 
-/* Auth Card */
-/* Make auth card scrollable */
+/* Auth Card - FIXED */
 .auth-card {
     flex: 1;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background: white;
     display: flex;
-    align-items: flex-start; /* Changed from center to flex-start */
+    align-items: flex-start;
     justify-content: center;
     padding: 40px;
     border-left: 1px solid rgba(255, 255, 255, 0.2);
-    overflow-y: auto !important; /* Force vertical scroll */
-    max-height: 100vh; /* Limit height */
+    overflow: visible; /* Changed from auto */
+    height: auto; /* Let it grow naturally */
+    min-height: 100%; /* Ensure it takes height */
 }
 
-/* Make auth forms scrollable internally */
+/* Auth Forms - FIXED */
 .auth-form {
     width: 100%;
     max-width: 400px;
     display: none;
-    max-height: 100%;
-    overflow-y: auto !important;
+    height: auto; /* Let content determine height */
+    overflow: visible; /* Changed from auto */
     padding: 10px 0;
 }
 
-/* Ensure the active form displays properly */
+/* Active form - FIXED */
 .auth-form.active {
     display: block !important;
     opacity: 1 !important;
     visibility: visible !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
 }
 
 /* Add some bottom padding to see content better */
