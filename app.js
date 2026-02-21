@@ -1553,18 +1553,12 @@ function googleSignInSignup() {
 // Dark Mode Toggle Function
 function toggleDarkMode() {
     const body = document.body;
-    const toggleBtn = document.getElementById('darkModeToggle');
-    const textSpan = toggleBtn.querySelector('span');
-    
-    // Toggle dark mode class
     body.classList.toggle('dark-mode');
     
-    // Update button text and icon
+    // Save preference
     if (body.classList.contains('dark-mode')) {
-        textSpan.textContent = 'Light Mode';
         localStorage.setItem('darkMode', 'enabled');
     } else {
-        textSpan.textContent = 'Dark Mode';
         localStorage.setItem('darkMode', 'disabled');
     }
 }
