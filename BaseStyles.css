@@ -1573,3 +1573,26 @@ body.dark-mode .modal-actions .btn.secondary {
         min-height: 40px !important;
     }
 }
+
+/* Add to BaseStyles.css */
+#authSection {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+}
+
+#authSection[style*="display: flex"] {
+    display: flex !important;
+}
+
+#appSection {
+    display: none;
+}
+
+#appSection[style*="display: block"] {
+    display: block !important;
+}
