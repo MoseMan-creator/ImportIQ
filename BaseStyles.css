@@ -577,7 +577,6 @@ body {
 }
 
 /* Floating Action Button */
-/* Floating Action Button */
 .fab {
     display: none;
     position: fixed;
@@ -636,35 +635,3 @@ body {
     50% { transform: translateX(5px); }
 }
 
-/* Mobile Responsive */
-@media (max-width: 768px) {
-    .app-header {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .auth-container {
-        flex-direction: column;
-        height: 100%;
-        max-height: none;
-        margin: 0;
-        border-radius: 0;
-    }
-    
-    .auth-brand {
-        padding: 30px;
-    }
-    
-    .brand-features {
-        grid-template-columns: 1fr;
-    }
-    
-    .fab {
-        display: flex;
-        bottom: 20px;
-        right: 20px;
-        width: 56px;
-        height: 56px;
-        font-size: 1.5rem;
-    }
-}
