@@ -1383,3 +1383,49 @@ body {
     background-size: 1000px 100%;
     animation: shimmer 2s infinite;
 }
+
+/* ===== EMERGENCY AUTH FORM FIX ===== */
+/* Force signup form to be visible */
+#signupForm.active,
+#loginForm.active,
+#forgotForm.active {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    position: relative !important;
+    z-index: 1000 !important;
+    background: transparent !important;
+}
+
+/* Ensure the auth card shows the form */
+.auth-card {
+    overflow-y: auto !important;
+    background: white !important;
+}
+
+/* Make sure the form body is visible */
+#signupForm .auth-body,
+#loginForm .auth-body,
+#forgotForm .auth-body {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Force all form elements to be visible */
+#signupForm input,
+#signupForm button,
+#signupForm .input-group,
+#signupForm .checkbox-container,
+#signupForm .auth-footer {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* Debug border to see the form (remove after fixing) */
+#signupForm.active {
+    border: 3px solid red !important;
+    background: white !important;
+    padding: 20px !important;
+    min-height: 500px !important;
+}
