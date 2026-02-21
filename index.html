@@ -275,17 +275,17 @@
       <div class="app-header">
         <h2>
           <i class="fas fa-chart-line"></i>
-          ImportIQ
+          <span>ImportIQ</span>
         </h2>
         
         <div class="header-controls">
-          <!-- Dark Mode Toggle (Integrated) -->
-          <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
+          <!-- Dark Mode Toggle -->
+          <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle">
             <i class="fas fa-sun sun"></i>
             <i class="fas fa-moon moon"></i>
           </button>
           
-          <!-- Connection Status -->
+          <!-- Connection Status - ICON ONLY -->
           <div id="connectionStatus" class="connection-status online">
             <i class="fas fa-wifi"></i>
           </div>
@@ -296,7 +296,7 @@
               <i class="fas fa-user"></i>
             </div>
             <span class="user-email" id="userEmail"></span>
-            <button onclick="logout()" class="logout-btn" title="Logout">
+            <button class="logout-btn" onclick="logout()" title="Logout">
               <i class="fas fa-sign-out-alt"></i>
             </button>
           </div>
