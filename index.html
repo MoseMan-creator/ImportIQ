@@ -54,54 +54,6 @@
   <!-- ImportIQ Styles -->
   <link rel="stylesheet" href="BaseStyles.css">
   <link rel="stylesheet" href="ModalStyles.css">
-  
-  <!-- Critical CSS Fix - Add this right after your styles -->
- <!-- <style>
-    /* CRITICAL FIX - Ensures app is visible */
-    html, body {
-      height: 100% !important;
-      min-height: 100vh !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      overflow: auto !important;
-    }
-    
-    body {
-      padding: 20px !important;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    }
-    
-    #appSection {
-      display: block !important;
-      min-height: calc(100vh - 40px) !important;
-      max-width: 1600px !important;
-      margin: 0 auto !important;
-      background: white !important;
-      border-radius: 16px !important;
-      padding: 20px !important;
-      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1) !important;
-    }
-    
-    /* Force table to be visible */
-    .table-container {
-      display: block !important;
-      overflow-x: auto !important;
-      margin-top: 20px !important;
-      border: 1px solid #e5e7eb !important;
-      border-radius: 8px !important;
-      background: white !important;
-    }
-    
-    #productTable {
-      width: 100% !important;
-      border-collapse: collapse !important;
-    }
-    
-    /* Hide auth section when not needed */
-    #authSection {
-      display: none !important;
-    }
-  </style> -->
 </head>
   
 <body>
@@ -655,11 +607,11 @@
     </div>
   </div>
 
-  <!-- Floating Action Button -->
-  <button class="fab" onclick="openNew()" aria-label="Add new product">
-    <span class="tooltip">Add New Product</span>
-    <i class="fas fa-plus"></i>
-  </button>
+  <!-- Floating Action Button - CORRECT VERSION -->
+    <button class="fab" onclick="openNew()" aria-label="Add new product">
+        <i class="fas fa-plus"></i>
+        <span class="tooltip">Add New Product</span>
+    </button>
   
   <!-- Scripts -->
   <script src="firebase-config.js"></script>
