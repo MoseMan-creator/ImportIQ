@@ -273,34 +273,7 @@
     animation: pulse 1.5s ease-in-out infinite;
   }
 
-  /* Floating Action Button for mobile */
-  .fab {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    background: var(--primary);
-    color: white;
-    border: none;
-    box-shadow: var(--shadow-lg);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    z-index: 100;
-  }
-
-  .fab:hover {
-    transform: scale(1.1);
-    background: var(--primary-dark);
-  }
-
-  .fab:active {
-    transform: scale(0.95);
-  }
-
-  @media (max-width: 768px) {
+   @media (max-width: 768px) {
     .fab {
       display: flex;
       align-items: center;
