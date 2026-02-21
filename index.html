@@ -16,35 +16,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
   <!-- PWA Manifest -->
-  <!-- <link rel="manifest" href="manifest.json"> -->
   <link rel="manifest" href="data:application/manifest+json,{
-  &quot;name&quot;: &quot;ImportIQ&quot;,
-  &quot;short_name&quot;: &quot;ImportIQ&quot;,
-  &quot;description&quot;: &quot;Smart Import Cost Calculator&quot;,
-  &quot;start_url&quot;: &quot;/ImportIQ/&quot;,
-  &quot;display&quot;: &quot;standalone&quot;,
-  &quot;background_color&quot;: &quot;#0f172a&quot;,
-  &quot;theme_color&quot;: &quot;#6366f1&quot;,
-  &quot;icons&quot;: [{
-    &quot;src&quot;: &quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>&quot;,
-    &quot;sizes&quot;: &quot;192x192&quot;,
-    &quot;type&quot;: &quot;image/svg+xml&quot;
-  }]
-}">
+    &quot;name&quot;: &quot;ImportIQ&quot;,
+    &quot;short_name&quot;: &quot;ImportIQ&quot;,
+    &quot;description&quot;: &quot;Smart Import Cost Calculator&quot;,
+    &quot;start_url&quot;: &quot;/ImportIQ/&quot;,
+    &quot;display&quot;: &quot;standalone&quot;,
+    &quot;background_color&quot;: &quot;#0f172a&quot;,
+    &quot;theme_color&quot;: &quot;#6366f1&quot;,
+    &quot;icons&quot;: [{
+      &quot;src&quot;: &quot;data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>&quot;,
+      &quot;sizes&quot;: &quot;192x192&quot;,
+      &quot;type&quot;: &quot;image/svg+xml&quot;
+    }]
+  }">
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#6366f1">
 
   <!-- iOS Specific -->
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="ImportIQ">
 
-  <!-- Favicon (emoji fallback) -->
- <!-- <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
-   -->
-  <!-- Replace all icon links with this single line -->
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
   
   <!-- Firebase SDKs -->
@@ -58,6 +54,54 @@
   <!-- ImportIQ Styles -->
   <link rel="stylesheet" href="BaseStyles.css">
   <link rel="stylesheet" href="ModalStyles.css">
+  
+  <!-- Critical CSS Fix - Add this right after your styles -->
+  <style>
+    /* CRITICAL FIX - Ensures app is visible */
+    html, body {
+      height: 100% !important;
+      min-height: 100vh !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: auto !important;
+    }
+    
+    body {
+      padding: 20px !important;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    }
+    
+    #appSection {
+      display: block !important;
+      min-height: calc(100vh - 40px) !important;
+      max-width: 1600px !important;
+      margin: 0 auto !important;
+      background: white !important;
+      border-radius: 16px !important;
+      padding: 20px !important;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1) !important;
+    }
+    
+    /* Force table to be visible */
+    .table-container {
+      display: block !important;
+      overflow-x: auto !important;
+      margin-top: 20px !important;
+      border: 1px solid #e5e7eb !important;
+      border-radius: 8px !important;
+      background: white !important;
+    }
+    
+    #productTable {
+      width: 100% !important;
+      border-collapse: collapse !important;
+    }
+    
+    /* Hide auth section when not needed */
+    #authSection {
+      display: none !important;
+    }
+  </style>
 </head>
   
 <body>
