@@ -1244,6 +1244,84 @@ function checkMobile() {
   }
 }
 
+// Check if mobile and switch to card view
+function checkMobileView() {
+    const isMobile = window.innerWidth <= 768;
+    const table = document.getElementById('productTable');
+    const container = document.querySelector('.table-container');
+    
+    if (isMobile) {
+        // Create mobile grid if it doesn't exist
+        if (!document.querySelector('.mobile-product-grid')) {
+            const mobileGrid = document.createElement('div');
+            mobileGrid.className = 'mobile-product-grid';
+            container.appendChild(mobileGrid);
+        }
+        renderMobileProducts();
+    }
+}
+
+// Render products as cards on mobile
+function renderMobileProducts() {
+    const mobileGrid = document.querySelector('.mobile-product-grid');
+    if (!mobileGrid) return;
+    
+    // Get products from table (or you can use your data array)
+    const tbody = document.querySelector('#productTable tbody');
+    const rows = tbody.querySelectorAll('tr');
+    
+    if (rows.length === 1 && rows[0].querySelector('td[colspan]')) {
+        mobileGrid.innerHTML = '<div class="empty-state">No products yet</div>';
+        return;
+    }
+    
+    let html = '';
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length > 1) {
+            html += `
+                <div class="product-card">
+                    <div class="product-card-header">
+                        <h3>${cells[0]?.textContent || 'Unnamed'}</h3>
+                        <span class="product-quantity">Qty: ${cells[1]?.textContent || 1}</span>
+                    </div>
+                    <div class="product-card-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Cost</span>
+                            <span class="detail-value">${cells[3]?.textContent || '$0.00'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Landed</span>
+                            <span class="detail-value">${cells[10]?.textContent || '$0.00'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Selling</span>
+                            <span class="detail-value highlight">${cells[13]?.textContent || '$0.00'}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Profit</span>
+                            <span class="detail-value positive">${cells[14]?.textContent || '$0.00'}</span>
+                        </div>
+                    </div>
+                    <div class="product-card-actions">
+                        <button class="edit-btn" onclick="editProduct('${cells[20]?.querySelector('button')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || ''}')">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="delete-btn" onclick="deleteProduct('${cells[20]?.querySelector('button:last-child')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || ''}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+    });
+    mobileGrid.innerHTML = html;
+}
+
+// Call on load and resize
+window.addEventListener('load', checkMobileView);
+window.addEventListener('resize', checkMobileView);
+
 // Authentication UI Functions
 function toggleAuthForm(formType) {
     document.querySelectorAll('.auth-form').forEach(form => {
