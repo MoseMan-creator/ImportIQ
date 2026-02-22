@@ -1518,9 +1518,11 @@ function showAuthSection() {
     document.getElementById('password').value = '';
 }
 
-// Google Sign-In Function - Updated for both buttons
+// Google Sign-In Function - COMPLETE FIX
 async function googleSignIn(buttonId = 'googleSignInBtn') {
-  // Determine which button was clicked
+  console.log('Google Sign-In clicked:', buttonId);
+  
+  // Find the button that was clicked
   const googleBtn = document.getElementById(buttonId);
   if (!googleBtn) {
     console.error('Google button not found');
@@ -1528,32 +1530,26 @@ async function googleSignIn(buttonId = 'googleSignInBtn') {
   }
   
   // Show loading state
-  googleBtn.classList.add('loading');
-  const btnText = googleBtn.querySelector('span:not(.btn-loader)');
-  const btnLoader = googleBtn.querySelector('.btn-loader');
-  if (btnText) btnText.style.opacity = '0.5';
-  if (btnLoader) btnLoader.style.display = 'inline-block';
+  const originalHTML = googleBtn.innerHTML;
+  googleBtn.disabled = true;
+  googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
   
   try {
-    // Configure Google Provider
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    googleProvider.addScope('profile');
-    googleProvider.addScope('email');
-    googleProvider.setCustomParameters({
-      prompt: 'select_account'
-    });
-    
-    // Check if mobile for better UX
+    // Check if we're on mobile for better UX
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     
     let result;
+    
     if (isMobile) {
-      // Use redirect for mobile (better UX)
-      await firebase.auth().signInWithRedirect(googleProvider);
-      return; // The redirect will happen, so we stop here
+      // Use redirect for mobile (better UX, no popup blockers)
+      console.log('Using redirect for mobile');
+      await auth.signInWithRedirect(googleProvider);
+      // The page will redirect, so we don't need to handle result here
+      return;
     } else {
       // Use popup for desktop
-      result = await firebase.auth().signInWithPopup(googleProvider);
+      console.log('Using popup for desktop');
+      result = await auth.signInWithPopup(googleProvider);
     }
     
     // Handle successful sign-in (for popup)
@@ -1562,13 +1558,140 @@ async function googleSignIn(buttonId = 'googleSignInBtn') {
   } catch (error) {
     console.error('Google Sign-In Error:', error);
     handleGoogleSignInError(error);
-  } finally {
-    // Reset button state (won't execute on redirect)
-    googleBtn.classList.remove('loading');
-    if (btnText) btnText.style.opacity = '1';
-    if (btnLoader) btnLoader.style.display = 'none';
+    
+    // Reset button on error (won't run on redirect)
+    googleBtn.disabled = false;
+    googleBtn.innerHTML = originalHTML;
   }
 }
+
+// Handle redirect result (call this when page loads)
+async function handleRedirectResult() {
+  try {
+    const result = await auth.getRedirectResult();
+    
+    if (result.user) {
+      console.log('Redirect sign-in successful');
+      await handleGoogleSignInResult(result);
+    } else if (result.credential) {
+      // This means the redirect sign-in was successful but we need to handle it
+      console.log('Redirect result with credential');
+      await handleGoogleSignInResult(result);
+    }
+  } catch (error) {
+    console.error('Redirect error:', error);
+    // Don't show error toast for cancelled redirects
+    if (error.code !== 'auth/popup-closed-by-user') {
+      handleGoogleSignInError(error);
+    }
+  }
+}
+
+// Handle successful Google Sign-In
+async function handleGoogleSignInResult(result) {
+  console.log('Handling Google sign-in result');
+  
+  // Get user info
+  const user = result.user;
+  const isNewUser = result.additionalUserInfo?.isNewUser || false;
+  
+  console.log('User:', user.email, 'New user:', isNewUser);
+  
+  // Show success message
+  showToast(`Welcome ${user.displayName || 'back'} to ImportIQ!`, 'success');
+  
+  // Create/update user profile in Firestore
+  try {
+    const userProfile = {
+      email: user.email,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+      lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+      authProvider: 'google'
+    };
+    
+    if (isNewUser) {
+      // New user - create full profile
+      await db.collection('userProfiles').doc(user.uid).set({
+        ...userProfile,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        preferences: {
+          currency: 'USD',
+          defaultMarkup: 30,
+          defaultVAT: 17.5
+        }
+      });
+      showToast('Account created successfully!', 'success');
+    } else {
+      // Existing user - update last login
+      await db.collection('userProfiles').doc(user.uid).set(userProfile, { merge: true });
+    }
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    // Non-critical error, don't block login
+  }
+  
+  // The app will automatically switch to main view via auth state observer
+}
+
+// Handle Google Sign-In Errors
+function handleGoogleSignInError(error) {
+  let errorMessage = 'Sign-in failed. Please try again.';
+  
+  switch (error.code) {
+    case 'auth/popup-closed-by-user':
+      errorMessage = 'Sign-in was cancelled. Please try again.';
+      break;
+      
+    case 'auth/popup-blocked':
+      errorMessage = 'Popup was blocked. Please allow popups for this site or try the redirect method.';
+      break;
+      
+    case 'auth/cancelled-popup-request':
+      errorMessage = 'Another sign-in request is already in progress.';
+      break;
+      
+    case 'auth/account-exists-with-different-credential':
+      errorMessage = 'An account already exists with the same email address using a different sign-in method. Try signing in with email/password.';
+      break;
+      
+    case 'auth/network-request-failed':
+      errorMessage = 'Network connection lost. Please check your internet and try again.';
+      break;
+      
+    case 'auth/user-disabled':
+      errorMessage = 'This account has been disabled. Please contact support.';
+      break;
+      
+    case 'auth/unauthorized-domain':
+      errorMessage = 'This domain is not authorized for Google Sign-In. Please add it to the Firebase console.';
+      break;
+      
+    default:
+      console.error('Unhandled error:', error);
+  }
+  
+  showToast(errorMessage, 'error');
+}
+
+// Convenience functions for different buttons
+function googleSignInLogin() {
+  googleSignIn('googleSignInBtn');
+}
+
+function googleSignInSignup() {
+  googleSignIn('googleSignUpBtn');
+}
+
+// Check for redirect result on page load
+document.addEventListener('DOMContentLoaded', () => {
+  handleRedirectResult();
+});
+
+// Make functions globally available
+window.googleSignIn = googleSignIn;
+window.googleSignInLogin = googleSignInLogin;
+window.googleSignInSignup = googleSignInSignup;
 
 // Handle Google Sign-In Result
 async function handleGoogleSignInResult(result) {
