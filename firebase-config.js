@@ -14,14 +14,14 @@ const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Enable Google Sign-In provider
+// IMPORTANT: Configure Google Auth Provider properly
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-// Optional: Add scopes if needed
+// Add required scopes
 googleProvider.addScope('profile');
 googleProvider.addScope('email');
 
-// Optional: Set custom parameters
+// Set custom parameters to always force account selection
 googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
@@ -30,16 +30,15 @@ googleProvider.setCustomParameters({
 const PRODUCTS_COLLECTION = "products";
 const DUTY_COLLECTION = "dutyCategories";
 
-// Enable offline persistence
+// Enable offline persistence with error handling
 db.enablePersistence()
   .catch((err) => {
     if (err.code === 'failed-precondition') {
-      // Multiple tabs open, persistence can only be enabled in one tab at a time
       console.log('Persistence failed: Multiple tabs open');
     } else if (err.code === 'unimplemented') {
-      // The current browser doesn't support persistence
       console.log('Persistence not supported');
     }
   });
 
-
+// Make provider available globally
+window.googleProvider = googleProvider;
