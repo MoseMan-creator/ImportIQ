@@ -19,6 +19,35 @@ body {
     line-height: 1.5;
 }
 
+.fab {
+    bottom: 50px; /* raised higher */
+    right: 40px;  /* moved slightly inward */
+}
+
+/* Tablets and small laptops */
+@media (max-width: 991px) {
+    .fab {
+        bottom: 45px;
+        right: 30px;
+    }
+}
+
+/* Small screens (up to 767px) */
+@media (max-width: 767px) {
+    .fab {
+        bottom: 40px; /* higher to avoid overlap */
+        right: 24px;  /* closer to content, away from scrollbar */
+    }
+}
+
+/* Very small phones (up to 480px) */
+@media (max-width: 480px) {
+    .fab {
+        bottom: 36px; /* lifted a bit more */
+        right: 16px;  /* tucked in further */
+    }
+}
+
 /* ===== VARIABLES ===== */
 :root {
     /* Colors */
