@@ -3037,19 +3037,22 @@ body.card-mode .table-view {
     }
 }
 
-/* ===== MOBILE STACKING FIX ===== */
+/* ===== MOBILE STACKING - POLISHED ===== */
 @media screen and (max-width: 480px) {
     .app-header {
         flex-direction: column !important;
         align-items: center !important;
         height: auto !important;
-        padding: 10px !important;
-        gap: 8px !important;
+        min-height: auto !important;
+        padding: 12px !important;
+        gap: 12px !important;
+        border: none !important; /* Remove the red test border */
     }
     
     .app-header h2 {
         margin: 0 !important;
         text-align: center !important;
+        font-size: 1.3rem !important;
     }
     
     .header-controls {
@@ -3061,19 +3064,72 @@ body.card-mode .table-view {
         width: 100% !important;
     }
     
-    /* Stack email under the controls */
+    /* Keep top row controls nicely sized */
+    .header-icon-btn,
+    .connection-status {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+    }
+    
+    /* User menu (email and logout) stacks below */
     .user-menu {
         width: 100% !important;
         justify-content: center !important;
         margin-top: 4px !important;
-        order: 3 !important;
+        padding: 4px 12px !important;
+        height: 48px !important;
+        background: #f0f2f5 !important;
+        border-radius: 40px !important;
+    }
+    
+    .user-email {
+        max-width: 200px !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .logout-btn {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
     }
 }
 
-/* Test with a bright border to verify CSS is working */
-@media screen and (max-width: 480px) {
+/* Even smaller screens */
+@media screen and (max-width: 360px) {
     .app-header {
-        border: 2px solid red !important; /* Temporary - remove after testing */
+        padding: 8px !important;
+        gap: 8px !important;
+    }
+    
+    .header-icon-btn,
+    .connection-status {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .user-menu {
+        height: 44px !important;
+        padding: 2px 8px !important;
+    }
+    
+    .user-avatar {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .user-email {
+        max-width: 140px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .logout-btn {
+        width: 32px !important;
+        height: 32px !important;
     }
 }
 
+/* Dark mode support */
+body.dark-mode .user-menu {
+    background: #2d2d2d !important;
+}
