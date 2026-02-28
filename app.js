@@ -1602,13 +1602,6 @@ function createMobileGrid() {
     }
 }
 
-// Optimized refresh function
-const refreshData = debounce(() => {
-    console.log('Refreshing data...');
-    loadProducts();
-    loadDutyCategories();
-}, 300);
-
 // Real-time quantity update in new product modal
 function setupQuantityListener() {
     const quantityInput = document.getElementById('newQuantity');
