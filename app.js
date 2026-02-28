@@ -1389,6 +1389,243 @@ function toggleCard(headerElement) {
 // Call on load and resize
 window.addEventListener('load', checkMobileView);
 window.addEventListener('resize', checkMobileView);
+
+// Cache DOM elements for better performance
+let productTableBody = null;
+let mobileProductGrid = null;
+
+// Debounce function to prevent too many refreshes
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Optimized loadProducts function
+async function loadProducts() {
+    console.log('Loading products...');
+    
+    const user = firebase.auth().currentUser;
+    if (!user) return;
+    
+    // Show loading state
+    showLoadingState();
+    
+    try {
+        const snapshot = await db.collection(PRODUCTS_COLLECTION)
+            .where('userId', '==', user.uid)
+            .orderBy('createdAt', 'desc')
+            .get();
+        
+        if (snapshot.empty) {
+            showEmptyState();
+            return;
+        }
+        
+        // Batch DOM updates for better performance
+        const fragment = document.createDocumentFragment();
+        const mobileFragment = document.createDocumentFragment();
+        
+        snapshot.forEach(doc => {
+            const product = doc.data();
+            const row = createProductRow(doc.id, product);
+            fragment.appendChild(row);
+            
+            // Also create mobile card if needed
+            if (window.innerWidth <= 768) {
+                const card = createMobileCard(doc.id, product);
+                mobileFragment.appendChild(card);
+            }
+        });
+        
+        // Update table
+        if (!productTableBody) {
+            productTableBody = document.querySelector('#productTable tbody');
+        }
+        productTableBody.innerHTML = '';
+        productTableBody.appendChild(fragment);
+        
+        // Update mobile grid
+        if (window.innerWidth <= 768) {
+            if (!mobileProductGrid) {
+                mobileProductGrid = document.querySelector('.mobile-product-grid');
+                if (!mobileProductGrid) {
+                    createMobileGrid();
+                }
+            }
+            if (mobileProductGrid) {
+                mobileProductGrid.innerHTML = '';
+                mobileProductGrid.appendChild(mobileFragment);
+            }
+        }
+        
+        showStatus(`Loaded ${snapshot.size} products`, 'success');
+        
+    } catch (error) {
+        console.error("Error loading products:", error);
+        showErrorState();
+    }
+}
+
+// Create mobile card element
+function createMobileCard(id, product) {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.setAttribute('data-id', id);
+    
+    // Calculate values
+    const cifUSD = (parseFloat(product.cost) || 0) + (parseFloat(product.shipping) || 0);
+    const cifBBD = cifUSD * (parseFloat(product.rate) || 2);
+    const dutyPercent = parseFloat(product.duty) || 0;
+    const vatPercent = parseFloat(product.vat) || 0;
+    const markupPercent = parseFloat(product.markup) || 0;
+    
+    // Calculate duty
+    let dutyAmount = 0;
+    if (cifUSD > 30) {
+        dutyAmount = cifBBD * (dutyPercent / 100);
+    }
+    
+    // Calculate VAT on customs
+    const vatAmount = (cifBBD + dutyAmount) * (vatPercent / 100);
+    
+    // Total landed cost
+    const landedCost = cifBBD + dutyAmount + vatAmount + 
+                      (parseFloat(product.carrier) || 0) + 
+                      (parseFloat(product.handling) || 0);
+    
+    // Selling price
+    const sellingPrice = landedCost * (1 + (markupPercent / 100));
+    
+    // Final price
+    const finalVatAmount = product.vatApply === 'Yes' ? sellingPrice * 0.175 : 0;
+    const finalPrice = sellingPrice + finalVatAmount;
+    
+    card.innerHTML = `
+        <div class="product-card-header" onclick="toggleCard(this)">
+            <h3>${product.item || 'Unnamed'}</h3>
+            <span class="product-quantity">Qty: ${product.quantity || 1}</span>
+            <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
+        </div>
+        
+        <div class="product-card-quick-info">
+            <div class="quick-info-item">
+                <span class="quick-info-label">Cost</span>
+                <span class="quick-info-value cost">$${(product.cost || 0).toFixed(2)}</span>
+            </div>
+            <div class="quick-info-item">
+                <span class="quick-info-label">Selling</span>
+                <span class="quick-info-value selling">BBD $${sellingPrice.toFixed(2)}</span>
+            </div>
+            <div class="quick-info-item">
+                <span class="quick-info-label">Profit</span>
+                <span class="quick-info-value profit">BBD $${(finalPrice - landedCost).toFixed(2)}</span>
+            </div>
+        </div>
+        
+        <div class="product-card-details">
+            <div class="details-grid">
+                <div class="detail-item">
+                    <span class="detail-label">Shipping</span>
+                    <span class="detail-value">$${(product.shipping || 0).toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Duty %</span>
+                    <span class="detail-value">${dutyPercent}%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">VAT %</span>
+                    <span class="detail-value">${vatPercent}%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Handling</span>
+                    <span class="detail-value">BBD $${(product.handling || 0).toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Declared</span>
+                    <span class="detail-value">$${(product.declared || cifUSD).toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Rate</span>
+                    <span class="detail-value">${(product.rate || 2).toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Landed</span>
+                    <span class="detail-value">BBD $${landedCost.toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Carrier</span>
+                    <span class="detail-value">BBD $${(product.carrier || 0).toFixed(2)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Markup</span>
+                    <span class="detail-value">${markupPercent}%</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Margin</span>
+                    <span class="detail-value">${((finalPrice - landedCost) / landedCost * 100).toFixed(1)}%</span>
+                </div>
+                <div class="detail-item full-width">
+                    <span class="detail-label">Final Price</span>
+                    <span class="detail-value highlight">BBD $${finalPrice.toFixed(2)}</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="product-card-actions">
+            <button class="edit-btn" onclick="editProduct('${id}')">
+                <i class="fas fa-edit"></i> Edit
+            </button>
+            <button class="delete-btn" onclick="deleteProduct('${id}')">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </div>
+    `;
+    
+    return card;
+}
+
+// Create mobile grid if it doesn't exist
+function createMobileGrid() {
+    const container = document.querySelector('.table-container');
+    if (container && !document.querySelector('.mobile-product-grid')) {
+        const grid = document.createElement('div');
+        grid.className = 'mobile-product-grid';
+        container.appendChild(grid);
+        mobileProductGrid = grid;
+    }
+}
+
+// Optimized refresh function
+const refreshData = debounce(() => {
+    console.log('Refreshing data...');
+    loadProducts();
+    loadDutyCategories();
+}, 300);
+
+// Real-time quantity update in new product modal
+function setupQuantityListener() {
+    const quantityInput = document.getElementById('newQuantity');
+    if (quantityInput) {
+        quantityInput.addEventListener('input', debounce(() => {
+            calculateNewPreview();
+        }, 150));
+    }
+}
+
+// Call this when opening new product modal
+function openNew() {
+    // ... existing code ...
+    setupQuantityListener();
+    calculateNewPreview();
+}
+
 // Authentication UI Functions
 function toggleAuthForm(formType) {
     document.querySelectorAll('.auth-form').forEach(form => {
