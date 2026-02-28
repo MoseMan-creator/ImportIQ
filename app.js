@@ -608,7 +608,6 @@ function createProductRow(id, product) {
   return row;
 }
 
-// Open new product modal
 function openNew() {
   console.log('Opening new product modal');
   
@@ -649,34 +648,15 @@ function openNew() {
       field.removeEventListener('input', calculateNewPreview);
       field.addEventListener('input', calculateNewPreview);
     }
-  });
+  }); // ← This closes the forEach
   
-  // Set up quantity listener and calculate preview ONCE (outside the loop)
+  // Set up quantity listener and calculate preview ONCE
   setupQuantityListener();
   calculateNewPreview();
   
   // Open modal
   openModal('newModal');
-}
-  
-  const dutySelect = document.getElementById('newDutySelect');
-  if (dutySelect) {
-    dutySelect.removeEventListener('change', calculateNewPreview);
-    dutySelect.addEventListener('change', calculateNewPreview);
-  }
-  
-  const otherDuty = document.getElementById('newOtherDuty');
-  if (otherDuty) {
-    otherDuty.removeEventListener('input', calculateNewPreview);
-    otherDuty.addEventListener('input', calculateNewPreview);
-  }
-  
-  // Open modal
-  openModal('newModal');
-  
-  // Initial calculation
-  calculateNewPreview();
-}
+} // ← This closes the function - make sure you have exactly ONE here
 
 // Calculate preview for new product
 function calculateNewPreview() {
