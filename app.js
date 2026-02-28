@@ -1778,6 +1778,162 @@ function updateConnectionStatus() {
     }
 }
 
+// ===== MOBILE HEADER RESTRUCTURE =====
+function restructureHeaderForMobile() {
+    if (window.innerWidth > 600) return; // Only run on mobile
+    
+    console.log('📱 Restructuring header for mobile...');
+    
+    const header = document.querySelector('.app-header');
+    if (!header) return;
+    
+    // Check if already restructured
+    if (header.hasAttribute('data-mobile-restructured')) return;
+    header.setAttribute('data-mobile-restructured', 'true');
+    
+    // Get elements
+    const h2 = header.querySelector('h2');
+    const controls = header.querySelector('.header-controls');
+    const userMenu = header.querySelector('.user-menu');
+    
+    if (!h2 || !controls || !userMenu) return;
+    
+    // Clear header
+    header.innerHTML = '';
+    
+    // Create row 1: Logo + controls
+    const row1 = document.createElement('div');
+    row1.style.cssText = `
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        margin-bottom: 10px !important;
+    `;
+    
+    // Clone h2 (remove any nested controls if present)
+    const newH2 = h2.cloneNode(true);
+    newH2.style.cssText = `
+        margin: 0 !important;
+        font-size: 1.3rem !important;
+    `;
+    
+    // Clone controls
+    const newControls = controls.cloneNode(true);
+    newControls.style.cssText = `
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        margin: 0 !important;
+    `;
+    
+    // Style icons in controls
+    newControls.querySelectorAll('.header-icon-btn, .connection-status').forEach(el => {
+        el.style.cssText = `
+            width: 38px !important;
+            height: 38px !important;
+            min-width: 38px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        `;
+    });
+    
+    row1.appendChild(newH2);
+    row1.appendChild(newControls);
+    
+    // Create row 2: User menu
+    const row2 = document.createElement('div');
+    row2.style.cssText = `
+        display: flex !important;
+        justify-content: center !important;
+        width: 100% !important;
+    `;
+    
+    // Clone user menu
+    const newUserMenu = userMenu.cloneNode(true);
+    newUserMenu.style.cssText = `
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        max-width: 350px !important;
+        padding: 6px 16px !important;
+        background: #f0f2f5 !important;
+        border-radius: 40px !important;
+        margin: 0 auto !important;
+    `;
+    
+    // Style user menu elements
+    const avatar = newUserMenu.querySelector('.user-avatar');
+    if (avatar) {
+        avatar.style.cssText = `
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        `;
+    }
+    
+    const email = newUserMenu.querySelector('.user-email');
+    if (email) {
+        email.style.cssText = `
+            flex: 1 !important;
+            max-width: 180px !important;
+            font-size: 0.85rem !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+            margin: 0 8px !important;
+        `;
+    }
+    
+    const logout = newUserMenu.querySelector('.logout-btn');
+    if (logout) {
+        logout.style.cssText = `
+            width: 34px !important;
+            height: 34px !important;
+            min-width: 34px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        `;
+    }
+    
+    row2.appendChild(newUserMenu);
+    
+    // Add rows to header
+    header.appendChild(row1);
+    header.appendChild(row2);
+    
+    // Add dark mode support
+    if (document.body.classList.contains('dark-mode')) {
+        newUserMenu.style.background = '#2d2d2d !important';
+    }
+    
+    console.log('✅ Mobile restructuring complete');
+}
+
+// Run on load and resize
+document.addEventListener('DOMContentLoaded', restructureHeaderForMobile);
+window.addEventListener('resize', () => {
+    // If going from mobile to desktop, reload to restore original structure
+    if (window.innerWidth > 600) {
+        location.reload();
+    } else {
+        restructureHeaderForMobile();
+    }
+});
+
+// Also run when auth state changes (user logs in)
+const originalShowAppSection = showAppSection;
+showAppSection = function() {
+    originalShowAppSection();
+    setTimeout(restructureHeaderForMobile, 100);
+};
+
 // ===== EVENT LISTENERS =====
 window.addEventListener('load', () => {
     checkOverflow();
