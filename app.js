@@ -4,6 +4,26 @@ let dutyCategories = [];
 let choicesInstances = {};
 let isOfflineMode = false;
 
+// Debounce function - define this FIRST
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Define refreshData EARLY (after debounce but before any code that uses it)
+const refreshData = debounce(() => {
+    console.log('Refreshing data...');
+    if (typeof loadProducts === 'function') loadProducts();
+    if (typeof loadDutyCategories === 'function') loadDutyCategories();
+}, 300);
+
 // Make functions globally available
 window.openNew = openNew;
 window.editProduct = editProduct;
