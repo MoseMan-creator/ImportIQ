@@ -3159,3 +3159,47 @@ body.card-mode .table-view {
 body.dark-mode .user-menu {
     background: #2d2d2d !important;
 }
+
+/* ===== MOBILE STACKING - FINAL FIX ===== */
+@media screen and (max-width: 600px) {
+    /* Remove overflow hidden from header */
+    .app-header {
+        overflow: visible !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 12px 8px !important;
+        gap: 12px !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        border: 3px solid red !important; /* You can remove this after testing */
+    }
+    
+    /* Ensure controls are visible */
+    .header-controls {
+        overflow: visible !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 10px !important;
+        width: 100% !important;
+    }
+    
+    /* Make user menu full width and visible */
+    .user-menu {
+        overflow: visible !important;
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+        justify-content: center !important;
+        background: #f0f2f5 !important;
+        border-radius: 40px !important;
+        padding: 4px 12px !important;
+    }
+    
+    /* Ensure all child elements are visible */
+    .user-avatar,
+    .user-email,
+    .logout-btn {
+        overflow: visible !important;
+        display: flex !important;
+    }
+}
