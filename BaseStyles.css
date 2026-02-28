@@ -2808,3 +2808,50 @@ body.card-mode .card-view {
     gap: 16px;
     padding: 8px 0;
 }
+
+/* Add to BaseStyles.css */
+.table-view {
+    display: block !important;
+    height: auto !important;
+    min-height: 400px !important;
+    width: 100% !important;
+    position: relative !important;
+}
+
+.table-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 400px !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    position: relative !important;
+}
+
+#productTable {
+    display: table !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100px !important;
+    table-layout: auto !important;
+}
+
+#productTable thead {
+    display: table-header-group !important;
+}
+
+#productTable tbody {
+    display: table-row-group !important;
+}
+
+#productTable tr {
+    display: table-row !important;
+    height: auto !important;
+}
+
+#productTable td, 
+#productTable th {
+    display: table-cell !important;
+    padding: 12px 8px !important;
+}
+
