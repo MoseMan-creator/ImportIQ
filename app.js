@@ -1488,40 +1488,86 @@ function showPrivacy() {
     showToast('Privacy Policy would open here', 'info');
 }
 
-// ===== GOOGLE SIGN-IN =====
+// ===== GOOGLE SIGN-IN - ENHANCED =====
 async function googleSignIn(buttonId = 'googleSignInBtn') {
-    console.log('Google Sign-In clicked:', buttonId);
+    console.log('🔵 Google Sign-In clicked:', buttonId);
     
     const googleBtn = document.getElementById(buttonId);
     if (!googleBtn) {
-        console.error('Google button not found');
+        console.error('🔴 Google button not found');
+        alert('Error: Google button not found');
         return;
     }
     
+    // Show loading state
     const originalHTML = googleBtn.innerHTML;
     googleBtn.disabled = true;
     googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
     
     try {
+        // Check if we're on mobile
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        console.log('📱 Is mobile:', isMobile);
+        
+        // Check if popups are blocked
+        const testPopup = window.open('about:blank', '_blank');
+        if (!testPopup && !isMobile) {
+            console.warn('⚠️ Popup blocked');
+            alert('Please allow popups for this site to use Google Sign-In');
+            googleBtn.disabled = false;
+            googleBtn.innerHTML = originalHTML;
+            return;
+        }
+        if (testPopup) testPopup.close();
         
         if (isMobile) {
-            console.log('Using redirect for mobile');
+            console.log('🔄 Using redirect for mobile');
             await auth.signInWithRedirect(googleProvider);
+            // The page will redirect, so we don't need to reset button
             return;
         } else {
-            console.log('Using popup for desktop');
+            console.log('🔄 Using popup for desktop');
             const result = await auth.signInWithPopup(googleProvider);
+            console.log('✅ Sign-in successful:', result.user.email);
             await handleGoogleSignInResult(result);
         }
     } catch (error) {
-        console.error('Google Sign-In Error:', error);
-        handleGoogleSignInError(error);
+        console.error('🔴 Google Sign-In Error:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
         
+        let errorMessage = 'Sign-in failed. ';
+        
+        switch (error.code) {
+            case 'auth/popup-closed-by-user':
+                errorMessage += 'Popup was closed before completing sign-in.';
+                break;
+            case 'auth/popup-blocked':
+                errorMessage += 'Popup was blocked. Please allow popups for this site.';
+                break;
+            case 'auth/unauthorized-domain':
+                errorMessage += 'This domain is not authorized. Please add it to Firebase Console.';
+                break;
+            case 'auth/network-request-failed':
+                errorMessage += 'Network error. Check your connection.';
+                break;
+            default:
+                errorMessage += error.message;
+        }
+        
+        alert(errorMessage);
+        showToast(errorMessage, 'error');
+        
+        // Reset button
         googleBtn.disabled = false;
         googleBtn.innerHTML = originalHTML;
     }
 }
+
+// Make sure these are defined
+window.googleSignIn = googleSignIn;
+window.googleSignInLogin = function() { googleSignIn('googleSignInBtn'); };
+window.googleSignInSignup = function() { googleSignIn('googleSignUpBtn'); };
 
 async function handleRedirectResult() {
     try {
