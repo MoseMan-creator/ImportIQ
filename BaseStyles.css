@@ -3037,3 +3037,43 @@ body.card-mode .table-view {
     }
 }
 
+/* ===== MOBILE STACKING FIX ===== */
+@media screen and (max-width: 480px) {
+    .app-header {
+        flex-direction: column !important;
+        align-items: center !important;
+        height: auto !important;
+        padding: 10px !important;
+        gap: 8px !important;
+    }
+    
+    .app-header h2 {
+        margin: 0 !important;
+        text-align: center !important;
+    }
+    
+    .header-controls {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+    }
+    
+    /* Stack email under the controls */
+    .user-menu {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-top: 4px !important;
+        order: 3 !important;
+    }
+}
+
+/* Test with a bright border to verify CSS is working */
+@media screen and (max-width: 480px) {
+    .app-header {
+        border: 2px solid red !important; /* Temporary - remove after testing */
+    }
+}
+
