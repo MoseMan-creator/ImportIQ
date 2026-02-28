@@ -2691,3 +2691,64 @@ html, body {
     }
 }
 
+/* ===== VIEW TOGGLE STYLES ===== */
+.view-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.table-view, .card-view {
+    display: none;
+}
+
+.table-view.active, .card-view.active {
+    display: block;
+}
+
+/* Table view for desktop */
+.table-view {
+    display: block;
+}
+
+/* Card view for mobile (default) */
+.card-view {
+    display: block;
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+    .card-view {
+        display: none;
+    }
+    .table-view {
+        display: block;
+    }
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+    .table-view {
+        display: none;
+    }
+    .card-view {
+        display: block;
+    }
+}
+
+/* When user manually toggles */
+body.table-mode .table-view {
+    display: block !important;
+}
+
+body.table-mode .card-view {
+    display: none !important;
+}
+
+body.card-mode .card-view {
+    display: block !important;
+}
+
+body.card-mode .table-view {
+    display: none !important;
+}
