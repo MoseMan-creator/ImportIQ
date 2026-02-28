@@ -2170,3 +2170,85 @@ html, body {
         height: 44px !important;
     }
 }
+
+/* ===== REMOVE HEADER-TABLE GAP ===== */
+
+/* Reset all possible spacing sources */
+.app-header {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.toolbar {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+.table-container {
+    margin-top: 0 !important;
+}
+
+/* Ensure no empty elements are creating space */
+.app-header + *:not(.toolbar) {
+    display: none !important;
+}
+
+/* If toolbar is the direct sibling, ensure no gap */
+.app-header + .toolbar {
+    margin-top: 0 !important;
+}
+
+/* Mobile-specific spacing fix */
+@media screen and (max-width: 768px) {
+    .app-header {
+        margin-bottom: 0 !important;
+    }
+    
+    .toolbar {
+        margin-top: 0 !important;
+        margin-bottom: 8px !important; /* Keep slight separation but not too much */
+        padding: 10px !important;
+    }
+}/* ===== REMOVE HEADER-TABLE GAP ===== */
+
+/* Reset all possible spacing sources */
+.app-header {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.toolbar {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+
+.table-container {
+    margin-top: 0 !important;
+}
+
+/* Ensure no empty elements are creating space */
+.app-header + *:not(.toolbar) {
+    display: none !important;
+}
+
+/* If toolbar is the direct sibling, ensure no gap */
+.app-header + .toolbar {
+    margin-top: 0 !important;
+}
+
+/* Mobile-specific spacing fix */
+@media screen and (max-width: 768px) {
+    .app-header {
+        margin-bottom: 0 !important;
+    }
+    
+    .toolbar {
+        margin-top: 0 !important;
+        margin-bottom: 8px !important; /* Keep slight separation but not too much */
+        padding: 10px !important;
+    }
+}
