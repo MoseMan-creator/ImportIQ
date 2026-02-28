@@ -2752,3 +2752,59 @@ body.card-mode .card-view {
 body.card-mode .table-view {
     display: none !important;
 }
+
+/* ===== VIEW TOGGLE STYLES ===== */
+/* Default: table visible, cards hidden on desktop */
+.table-view {
+    display: block !important;
+}
+
+.card-view {
+    display: none !important;
+}
+
+/* Mobile default: cards visible, table hidden */
+@media (max-width: 768px) {
+    .table-view {
+        display: none !important;
+    }
+    
+    .card-view {
+        display: block !important;
+    }
+}
+
+/* When table mode is manually selected */
+body.table-mode .table-view {
+    display: block !important;
+}
+
+body.table-mode .card-view {
+    display: none !important;
+}
+
+/* When card mode is manually selected */
+body.card-mode .table-view {
+    display: none !important;
+}
+
+body.card-mode .card-view {
+    display: block !important;
+}
+
+/* Ensure the table container is visible */
+.table-container {
+    background: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Ensure mobile grid is visible when needed */
+.mobile-product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 0;
+}
