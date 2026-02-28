@@ -1669,34 +1669,32 @@ function toggleView() {
         body.classList.remove('card-mode');
         body.classList.add('table-mode');
         icon.className = 'fas fa-id-card';
-        text.textContent = 'Card View';
-        showStatus('Switched to table view', 'info');
+        text.textContent = 'Cards';
+        showStatus('Table view', 'info');
     } else if (currentView === 'table') {
         // Switch to card view
         currentView = 'card';
         body.classList.remove('table-mode');
         body.classList.add('card-mode');
         icon.className = 'fas fa-table';
-        text.textContent = 'Table View';
-        showStatus('Switched to card view', 'info');
+        text.textContent = 'Table';
+        showStatus('Card view', 'info');
     } else {
         // Switch to auto (responsive)
         currentView = 'auto';
         body.classList.remove('table-mode', 'card-mode');
         
-        // Update icon based on screen size
         if (window.innerWidth <= 768) {
-            icon.className = 'fas fa-id-card';
-            text.textContent = 'Table View';
-        } else {
             icon.className = 'fas fa-table';
-            text.textContent = 'Card View';
+            text.textContent = 'Table';
+        } else {
+            icon.className = 'fas fa-id-card';
+            text.textContent = 'Cards';
         }
-        showStatus('Auto mode (responsive)', 'info');
+        showStatus('Auto mode', 'info');
     }
     
     localStorage.setItem('viewMode', currentView);
-    loadProducts(); // Reload to apply view
 }
 
 // Initialize view on load
@@ -1708,22 +1706,25 @@ function initializeView() {
     const icon = toggleBtn.querySelector('i');
     const text = toggleBtn.querySelector('span');
     
+    // Remove any existing mode classes
+    body.classList.remove('table-mode', 'card-mode');
+    
     if (currentView === 'table') {
         body.classList.add('table-mode');
         icon.className = 'fas fa-id-card';
-        text.textContent = 'Card View';
+        text.textContent = 'Cards';
     } else if (currentView === 'card') {
         body.classList.add('card-mode');
         icon.className = 'fas fa-table';
-        text.textContent = 'Table View';
+        text.textContent = 'Table';
     } else {
-        // Auto mode - responsive
+        // Auto mode - cards on mobile, table on desktop
         if (window.innerWidth <= 768) {
-            icon.className = 'fas fa-id-card';
-            text.textContent = 'Table View';
-        } else {
             icon.className = 'fas fa-table';
-            text.textContent = 'Card View';
+            text.textContent = 'Table';
+        } else {
+            icon.className = 'fas fa-id-card';
+            text.textContent = 'Cards';
         }
     }
 }
