@@ -2891,3 +2891,63 @@ body.card-mode .card-view {
 .toolbar {
     flex-shrink: 0 !important;
 }
+
+/* ===== VIEW TOGGLE STYLES - CARDS DEFAULT ON MOBILE ===== */
+
+/* Desktop default: table visible */
+@media (min-width: 769px) {
+    .table-view {
+        display: block !important;
+    }
+    .card-view {
+        display: none !important;
+    }
+}
+
+/* Mobile default: cards visible */
+@media (max-width: 768px) {
+    .table-view {
+        display: none !important;
+    }
+    .card-view {
+        display: block !important;
+    }
+}
+
+/* When user manually switches */
+body.table-mode .table-view {
+    display: block !important;
+}
+
+body.table-mode .card-view {
+    display: none !important;
+}
+
+body.card-mode .card-view {
+    display: block !important;
+}
+
+body.card-mode .table-view {
+    display: none !important;
+}
+
+/* Desktop card grid */
+@media (min-width: 769px) {
+    .card-view .mobile-product-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)) !important;
+        gap: 20px !important;
+        padding: 20px 0 !important;
+    }
+    
+    /* Make cards slightly larger on desktop */
+    .card-view .product-card {
+        margin: 0 !important;
+        transition: transform 0.2s ease !important;
+    }
+    
+    .card-view .product-card:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2) !important;
+    }
+}
