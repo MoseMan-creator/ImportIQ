@@ -271,32 +271,27 @@
 
 <!-- Main App -->
 <div id="appSection" class="app-container" style="display: none;">
-    <!-- TOP ROW: Logo only -->
-    <div class="app-header-top">
+    <!-- SINGLE ROW: Logo + Icons + User Menu all in one line -->
+    <div class="app-header-single">
+        <!-- Logo on left -->
         <h1 class="app-logo">
             <i class="fas fa-chart-line"></i>
             <span>ImportIQ</span>
         </h1>
-    </div>
-    
-    <!-- MIDDLE ROW: Dark mode toggle and online indicator -->
-    <div class="app-header-middle">
-        <div class="header-controls">
-            <!-- Dark Mode Toggle -->
+        
+        <!-- Icons in middle (centered) -->
+        <div class="header-icons">
             <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
                 <i class="fas fa-sun sun"></i>
                 <i class="fas fa-moon moon"></i>
             </button>
             
-            <!-- Connection Status -->
             <div id="connectionStatus" class="connection-status online" title="Online">
                 <i class="fas fa-wifi"></i>
             </div>
         </div>
-    </div>
-    
-    <!-- BOTTOM ROW: User info (email + logout) -->
-    <div class="app-header-bottom">
+        
+        <!-- User menu on right -->
         <div class="user-menu">
             <div class="user-avatar">
                 <i class="fas fa-user"></i>
@@ -323,25 +318,33 @@
     </div>
 
     <!-- Table Container -->
-    <div class="table-container">
-        <table id="productTable">
-            <thead>
-                <tr>
-                    <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
-                    <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
-                    <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
-                    <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
-                    <th>Final</th><th>Total Final</th><th>Actions</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+    <div class="table-view active">
+        <div class="table-container">
+            <table id="productTable">
+                <thead>
+                    <tr>
+                        <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
+                        <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
+                        <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
+                        <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
+                        <th>Final</th><th>Total Final</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
+    
+    <!-- Card View -->
+    <div class="card-view">
+        <div class="mobile-product-grid"></div>
+    </div>
+    
     <div class="scroll-hint">
         <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
     </div>
 </div>
-
+  
 <!-- Card View (mobile) -->
 <div class="card-view">
   <div class="mobile-product-grid"></div>
