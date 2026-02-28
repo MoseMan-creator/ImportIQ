@@ -1488,86 +1488,63 @@ function showPrivacy() {
     showToast('Privacy Policy would open here', 'info');
 }
 
-// ===== GOOGLE SIGN-IN - ENHANCED =====
+// ===== GOOGLE SIGN-IN =====
 async function googleSignIn(buttonId = 'googleSignInBtn') {
-    console.log('🔵 Google Sign-In clicked:', buttonId);
+    console.log('Google Sign-In clicked:', buttonId);
     
     const googleBtn = document.getElementById(buttonId);
     if (!googleBtn) {
-        console.error('🔴 Google button not found');
-        alert('Error: Google button not found');
+        console.error('Google button not found');
+        showToast('Error: Google button not found', 'error');
         return;
     }
     
-    // Show loading state
     const originalHTML = googleBtn.innerHTML;
     googleBtn.disabled = true;
     googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting...';
     
     try {
-        // Check if we're on mobile
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        console.log('📱 Is mobile:', isMobile);
-        
-        // Check if popups are blocked
-        const testPopup = window.open('about:blank', '_blank');
-        if (!testPopup && !isMobile) {
-            console.warn('⚠️ Popup blocked');
-            alert('Please allow popups for this site to use Google Sign-In');
-            googleBtn.disabled = false;
-            googleBtn.innerHTML = originalHTML;
-            return;
+        // Ensure provider exists
+        if (!window.googleProvider) {
+            window.googleProvider = new firebase.auth.GoogleAuthProvider();
+            window.googleProvider.addScope('profile');
+            window.googleProvider.addScope('email');
+            window.googleProvider.setCustomParameters({
+                prompt: 'select_account'
+            });
         }
-        if (testPopup) testPopup.close();
+        
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
         if (isMobile) {
-            console.log('🔄 Using redirect for mobile');
-            await auth.signInWithRedirect(googleProvider);
-            // The page will redirect, so we don't need to reset button
+            console.log('Using redirect for mobile');
+            await auth.signInWithRedirect(window.googleProvider);
             return;
         } else {
-            console.log('🔄 Using popup for desktop');
-            const result = await auth.signInWithPopup(googleProvider);
-            console.log('✅ Sign-in successful:', result.user.email);
+            console.log('Using popup for desktop');
+            const result = await auth.signInWithPopup(window.googleProvider);
             await handleGoogleSignInResult(result);
         }
     } catch (error) {
-        console.error('🔴 Google Sign-In Error:', error);
-        console.error('Error code:', error.code);
-        console.error('Error message:', error.message);
+        console.error('Google Sign-In Error:', error);
         
-        let errorMessage = 'Sign-in failed. ';
-        
-        switch (error.code) {
-            case 'auth/popup-closed-by-user':
-                errorMessage += 'Popup was closed before completing sign-in.';
-                break;
-            case 'auth/popup-blocked':
-                errorMessage += 'Popup was blocked. Please allow popups for this site.';
-                break;
-            case 'auth/unauthorized-domain':
-                errorMessage += 'This domain is not authorized. Please add it to Firebase Console.';
-                break;
-            case 'auth/network-request-failed':
-                errorMessage += 'Network error. Check your connection.';
-                break;
-            default:
-                errorMessage += error.message;
+        let errorMessage = 'Sign-in failed. Please try again.';
+        if (error.code === 'auth/popup-closed-by-user') {
+            errorMessage = 'Sign-in was cancelled.';
+        } else if (error.code === 'auth/popup-blocked') {
+            errorMessage = 'Popup was blocked. Please allow popups.';
+        } else if (error.code === 'auth/unauthorized-domain') {
+            errorMessage = 'Domain not authorized. Please check Firebase settings.';
+        } else if (error.message) {
+            errorMessage = error.message;
         }
         
-        alert(errorMessage);
         showToast(errorMessage, 'error');
         
-        // Reset button
         googleBtn.disabled = false;
         googleBtn.innerHTML = originalHTML;
     }
 }
-
-// Make sure these are defined
-window.googleSignIn = googleSignIn;
-window.googleSignInLogin = function() { googleSignIn('googleSignInBtn'); };
-window.googleSignInSignup = function() { googleSignIn('googleSignUpBtn'); };
 
 async function handleRedirectResult() {
     try {
@@ -1582,7 +1559,7 @@ async function handleRedirectResult() {
     } catch (error) {
         console.error('Redirect error:', error);
         if (error.code !== 'auth/popup-closed-by-user') {
-            handleGoogleSignInError(error);
+            showToast('Redirect sign-in failed: ' + error.message, 'error');
         }
     }
 }
@@ -1593,7 +1570,6 @@ async function handleGoogleSignInResult(result) {
     const user = result.user;
     const isNewUser = result.additionalUserInfo?.isNewUser || false;
     
-    console.log('User:', user.email, 'New user:', isNewUser);
     showToast(`Welcome ${user.displayName || 'back'} to ImportIQ!`, 'success');
     
     try {
@@ -1624,38 +1600,6 @@ async function handleGoogleSignInResult(result) {
     }
 }
 
-function handleGoogleSignInError(error) {
-    let errorMessage = 'Sign-in failed. Please try again.';
-    
-    switch (error.code) {
-        case 'auth/popup-closed-by-user':
-            errorMessage = 'Sign-in was cancelled. Please try again.';
-            break;
-        case 'auth/popup-blocked':
-            errorMessage = 'Popup was blocked. Please allow popups for this site.';
-            break;
-        case 'auth/cancelled-popup-request':
-            errorMessage = 'Another sign-in request is already in progress.';
-            break;
-        case 'auth/account-exists-with-different-credential':
-            errorMessage = 'An account already exists with the same email address using a different sign-in method.';
-            break;
-        case 'auth/network-request-failed':
-            errorMessage = 'Network connection lost. Please check your internet.';
-            break;
-        case 'auth/user-disabled':
-            errorMessage = 'This account has been disabled. Please contact support.';
-            break;
-        case 'auth/unauthorized-domain':
-            errorMessage = 'This domain is not authorized for Google Sign-In.';
-            break;
-        default:
-            console.error('Unhandled error:', error);
-    }
-    
-    showToast(errorMessage, 'error');
-}
-
 function googleSignInLogin() {
     googleSignIn('googleSignInBtn');
 }
@@ -1663,6 +1607,16 @@ function googleSignInLogin() {
 function googleSignInSignup() {
     googleSignIn('googleSignUpBtn');
 }
+
+// Handle redirect result on page load
+document.addEventListener('DOMContentLoaded', function() {
+    handleRedirectResult();
+});
+
+// Make functions globally available
+window.googleSignIn = googleSignIn;
+window.googleSignInLogin = googleSignInLogin;
+window.googleSignInSignup = googleSignInSignup;
 
 // ===== DARK MODE =====
 function toggleDarkMode() {
