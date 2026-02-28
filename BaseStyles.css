@@ -2497,3 +2497,79 @@ body.dark-mode .delete-btn {
     background: #374151 !important;
     color: #9ca3af !important;
 }
+
+/* ===== DARK MODE QUICK INFO FIXES ===== */
+body.dark-mode .quick-info-value {
+    color: #f9fafb !important;
+}
+
+body.dark-mode .quick-info-value.cost {
+    color: #f87171 !important; /* Lighter red for dark mode */
+}
+
+body.dark-mode .quick-info-value.selling {
+    color: #4ade80 !important; /* Lighter green for dark mode */
+}
+
+body.dark-mode .quick-info-value.profit {
+    color: #818cf8 !important; /* Lighter purple for dark mode */
+}
+
+/* Ensure labels are visible */
+body.dark-mode .quick-info-label {
+    color: #9ca3af !important;
+}
+
+/* Fix detail items in dark mode */
+body.dark-mode .detail-item {
+    background: #1f2937 !important;
+    border: 1px solid #374151 !important;
+}
+
+body.dark-mode .detail-label {
+    color: #9ca3af !important;
+}
+
+body.dark-mode .detail-value {
+    color: #f9fafb !important;
+}
+
+body.dark-mode .detail-value.highlight {
+    color: #818cf8 !important;
+}
+
+/* Fix product card header in dark mode */
+body.dark-mode .product-card-header {
+    background: linear-gradient(135deg, #1f2937, #111827) !important;
+}
+
+body.dark-mode .product-card-header h3 {
+    color: #f9fafb !important;
+}
+
+/* Fix quick info container */
+body.dark-mode .product-card-quick-info {
+    background: #1f2937 !important;
+    border-bottom-color: #374151 !important;
+}
+
+/* Fix expanded state */
+body.dark-mode .product-card.expanded .product-card-header {
+    background: #1f2937 !important;
+    border-bottom-color: #818cf8 !important;
+}
+
+body.dark-mode .product-card-details {
+    background: #111827 !important;
+}
+
+body.dark-mode .product-card-actions {
+    background: #1f2937 !important;
+    border-top-color: #374151 !important;
+}
+
+/* Fix empty state */
+body.dark-mode .empty-state {
+    color: #9ca3af !important;
+    background: #1f2937 !important;
+}
