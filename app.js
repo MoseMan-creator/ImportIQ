@@ -651,6 +651,14 @@ function openNew() {
     }
   });
   
+  // Set up quantity listener and calculate preview ONCE (outside the loop)
+  setupQuantityListener();
+  calculateNewPreview();
+  
+  // Open modal
+  openModal('newModal');
+}
+  
   const dutySelect = document.getElementById('newDutySelect');
   if (dutySelect) {
     dutySelect.removeEventListener('change', calculateNewPreview);
@@ -1616,16 +1624,6 @@ function createMobileGrid() {
     }
 }
 
-// Optimized refresh function
-const refreshData = debounce(() => {
-    console.log('Refreshing data...');
-    loadProducts();
-    loadDutyCategories();
-}, 300);
-
-// Make it globally available for onclick events
-window.refreshData = refreshData;
-
 // Real-time quantity update in new product modal
 function setupQuantityListener() {
     const quantityInput = document.getElementById('newQuantity');
@@ -1634,13 +1632,6 @@ function setupQuantityListener() {
             calculateNewPreview();
         }, 150));
     }
-}
-
-// Call this when opening new product modal
-function openNew() {
-    // ... existing code ...
-    setupQuantityListener();
-    calculateNewPreview();
 }
 
 // Authentication UI Functions
