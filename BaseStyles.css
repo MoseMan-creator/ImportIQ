@@ -2952,3 +2952,141 @@ body.card-mode .table-view {
     }
 }
 
+/* ===== CLEAN HEADER LAYOUT ===== */
+.app-header {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+/* Top row with logo and icons */
+.app-header > div:first-child {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+}
+
+/* Logo styling */
+.app-header h2 {
+    margin: 0 !important;
+    font-size: 1.3rem !important;
+    font-weight: 600 !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Icons container */
+.app-header .header-controls,
+.app-header > div:first-child > div:last-child {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Icon buttons */
+.header-icon-btn,
+.connection-status {
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.header-icon-btn {
+    background: #f3f4f6 !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.connection-status.online {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+/* User menu row (email and logout) */
+.user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    margin-top: 12px !important;
+}
+
+.user-menu > div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    background: #f3f4f6 !important;
+    border-radius: 40px !important;
+    padding: 6px 16px !important;
+}
+
+.user-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+}
+
+.user-email {
+    flex: 1 !important;
+    text-align: center !important;
+    font-size: 0.9rem !important;
+    color: #111827 !important;
+    font-weight: 500 !important;
+    margin: 0 10px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.logout-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+/* Dark mode support */
+body.dark-mode .app-header {
+    background: #1f2937 !important;
+}
+
+body.dark-mode .user-menu > div {
+    background: #2d2d2d !important;
+}
+
+body.dark-mode .user-email {
+    color: #f9fafb !important;
+}
+
+body.dark-mode .header-icon-btn {
+    background: #374151 !important;
+}
