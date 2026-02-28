@@ -2573,3 +2573,121 @@ body.dark-mode .empty-state {
     color: #9ca3af !important;
     background: #1f2937 !important;
 }
+
+/* ===== FIX CONTAINER EXPANSION ===== */
+#appSection {
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.app-container {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+.mobile-product-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    height: auto !important;
+    padding-bottom: 80px !important; /* Space for FAB */
+}
+
+.table-container {
+    height: auto !important;
+    min-height: auto !important;
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* ===== FIX OVERFLOW ISSUES ===== */
+html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    position: relative !important;
+}
+
+#appSection {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box !important;
+}
+
+/* Fix email truncation */
+.user-email {
+    max-width: 120px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    display: inline-block !important;
+}
+
+/* Fix FAB positioning */
+.fab {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    box-sizing: content-box !important;
+}
+
+/* Mobile-specific overflow fixes */
+@media screen and (max-width: 768px) {
+    #appSection {
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+    
+    .user-email {
+        max-width: 80px !important;
+    }
+    
+    .fab {
+        bottom: 16px !important;
+        right: 16px !important;
+        width: 52px !important;
+        height: 52px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #appSection {
+        padding-left: 8px !important;
+        padding-right: 8px !important;
+    }
+    
+    .user-email {
+        max-width: 60px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    .fab {
+        bottom: 12px !important;
+        right: 12px !important;
+        width: 48px !important;
+        height: 48px !important;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .user-email {
+        max-width: 40px !important;
+    }
+    
+    .app-header h2 span {
+        display: none !important;
+    }
+}
+
