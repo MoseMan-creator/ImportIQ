@@ -2952,7 +2952,7 @@ body.card-mode .table-view {
     }
 }
 
-/* ===== MOBILE HEADER STACKING ===== */
+/* ===== MOBILE HEADER STACKING - FIXED ===== */
 @media screen and (max-width: 480px) {
     .app-header {
         flex-direction: column !important;
@@ -2969,39 +2969,55 @@ body.card-mode .table-view {
     }
     
     .header-controls {
+        display: flex !important;
         justify-content: center !important;
+        align-items: center !important;
         flex-wrap: wrap !important;
+        gap: 8px !important;
     }
     
-    /* Stack email under the controls */
+    /* Keep all controls visible */
+    .header-icon-btn,
+    .connection-status {
+        width: 40px !important;
+        height: 40px !important;
+        min-width: 40px !important;
+    }
+    
+    /* User menu should be full width on small screens */
     .user-menu {
         width: 100% !important;
-        justify-content: center !important;
+        justify-content: space-between !important;
         margin-top: 4px !important;
-        order: 3 !important; /* Pushes it to bottom */
+        padding: 4px 8px !important;
+        height: 48px !important;
     }
     
-    /* Make email more visible when stacked */
+    /* Make sure logout button is visible */
+    .logout-btn {
+        display: flex !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+    }
+    
     .user-email {
-        max-width: 150px !important;
+        max-width: 180px !important;
         font-size: 0.9rem !important;
     }
 }
 
 /* Even smaller screens */
 @media screen and (max-width: 360px) {
-    .header-controls {
-        gap: 4px !important;
-    }
-    
-    .connection-status,
-    .header-icon-btn {
+    .header-icon-btn,
+    .connection-status {
         width: 36px !important;
         height: 36px !important;
+        min-width: 36px !important;
     }
     
     .user-menu {
-        padding: 2px !important;
+        height: 44px !important;
     }
     
     .user-avatar {
@@ -3009,8 +3025,14 @@ body.card-mode .table-view {
         height: 32px !important;
     }
     
+    .logout-btn {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+    }
+    
     .user-email {
-        max-width: 120px !important;
+        max-width: 140px !important;
         font-size: 0.8rem !important;
     }
 }
