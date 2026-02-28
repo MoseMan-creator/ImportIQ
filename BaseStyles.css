@@ -2952,64 +2952,65 @@ body.card-mode .table-view {
     }
 }
 
-/* ===== MOBILE STACKING - FIXED ORDER ===== */
+/* ===== MOBILE STACKING - PERMANENT FIX ===== */
 @media screen and (max-width: 600px) {
     /* Header as vertical stack */
     .app-header {
         display: flex !important;
         flex-direction: column !important;
-        align-items: center !important;
+        align-items: stretch !important;
         height: auto !important;
         min-height: auto !important;
         padding: 10px !important;
-        gap: 8px !important;
-        overflow: visible !important;
+        gap: 10px !important;
         margin-bottom: 10px !important;
+        overflow: visible !important;
     }
     
-    /* Row 1: Logo on left, icons on right */
+    /* Make h2 a flex container with logo and controls */
     .app-header h2 {
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
         width: 100% !important;
         margin: 0 !important;
-        font-size: 1.3rem !important;
+        padding: 0 !important;
     }
     
-    /* Icons next to logo */
-    .header-controls {
+    /* Move controls inside h2 styling */
+    .app-header h2 .header-controls {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
         gap: 8px !important;
-        margin-left: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
-    .header-icon-btn,
-    .connection-status {
+    /* Style individual icons */
+    .app-header h2 .header-controls .header-icon-btn,
+    .app-header h2 .header-controls .connection-status {
         width: 38px !important;
         height: 38px !important;
         min-width: 38px !important;
     }
     
-    /* Row 2: Email + Logout in their own row */
+    /* User menu as its own row below */
     .user-menu {
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
-        justify-content: center !important;
+        justify-content: space-between !important;
         width: 100% !important;
-        max-width: 320px !important;
-        height: 44px !important;
-        margin: 4px auto !important;
-        padding: 4px 12px !important;
+        max-width: 350px !important;
+        margin: 5px auto 0 !important;
+        padding: 8px 16px !important;
         background: #f0f2f5 !important;
         border-radius: 40px !important;
-        gap: 10px !important;
-        order: 2 !important; /* Keeps it above toolbar */
+        order: 2 !important;
     }
     
+    /* User menu elements */
     .user-avatar {
         width: 34px !important;
         height: 34px !important;
@@ -3023,6 +3024,7 @@ body.card-mode .table-view {
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
+        margin: 0 8px !important;
     }
     
     .logout-btn {
@@ -3030,46 +3032,33 @@ body.card-mode .table-view {
         height: 34px !important;
         min-width: 34px !important;
         display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
     
-    /* Make sure toolbar has top margin to clear the stacked header */
+    /* Adjust toolbar */
     .toolbar {
-        margin-top: 8px !important;
+        margin-top: 15px !important;
         clear: both !important;
-        position: relative !important;
-        z-index: 1 !important;
-    }
-    
-    /* Ensure FAB doesn't interfere */
-    .fab {
-        bottom: 20px !important;
-        right: 20px !important;
-        z-index: 100 !important;
     }
 }
 
 /* Extra small screens */
 @media screen and (max-width: 380px) {
-    .app-header {
-        padding: 8px !important;
-        gap: 6px !important;
-    }
-    
     .app-header h2 {
         font-size: 1.1rem !important;
     }
     
-    .header-icon-btn,
-    .connection-status {
+    .app-header h2 .header-controls .header-icon-btn,
+    .app-header h2 .header-controls .connection-status {
         width: 34px !important;
         height: 34px !important;
         min-width: 34px !important;
     }
     
     .user-menu {
-        max-width: 280px !important;
-        height: 40px !important;
-        padding: 2px 8px !important;
+        max-width: 300px !important;
+        padding: 6px 12px !important;
     }
     
     .user-avatar {
@@ -3092,3 +3081,4 @@ body.card-mode .table-view {
 body.dark-mode .user-menu {
     background: #2d2d2d !important;
 }
+
