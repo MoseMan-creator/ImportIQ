@@ -1181,12 +1181,6 @@ function closeModal(modalId) {
   }
 }
 
-// Refresh data
-function refreshData() {
-  console.log('Refreshing data');
-  loadProducts();
-}
-
 // Show status message
 function showStatus(message, type) {
   console.log('Status:', type, message);
@@ -1601,6 +1595,16 @@ function createMobileGrid() {
         mobileProductGrid = grid;
     }
 }
+
+// Optimized refresh function
+const refreshData = debounce(() => {
+    console.log('Refreshing data...');
+    loadProducts();
+    loadDutyCategories();
+}, 300);
+
+// Make it globally available for onclick events
+window.refreshData = refreshData;
 
 // Real-time quantity update in new product modal
 function setupQuantityListener() {
