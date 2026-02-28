@@ -463,27 +463,28 @@ async function loadProducts() {
             const row = createProductRow(doc.id, product);
             fragment.appendChild(row);
             
-            if (window.innerWidth <= 768) {
-                const card = createMobileCard(doc.id, product);
-                mobileFragment.appendChild(card);
-            }
+            // Always create mobile cards (they'll be shown/hidden by CSS)
+            const card = createMobileCard(doc.id, product);
+            mobileFragment.appendChild(card);
         });
         
+        // Update table view
         if (!productTableBody) {
             productTableBody = document.querySelector('#productTable tbody');
         }
-        productTableBody.innerHTML = '';
-        productTableBody.appendChild(fragment);
+        if (productTableBody) {
+            productTableBody.innerHTML = '';
+            productTableBody.appendChild(fragment);
+        }
         
-        if (window.innerWidth <= 768) {
-            if (!mobileProductGrid) {
-                mobileProductGrid = document.querySelector('.mobile-product-grid');
-                if (!mobileProductGrid) createMobileGrid();
-            }
-            if (mobileProductGrid) {
-                mobileProductGrid.innerHTML = '';
-                mobileProductGrid.appendChild(mobileFragment);
-            }
+        // Update card view
+        if (!mobileProductGrid) {
+            mobileProductGrid = document.querySelector('.mobile-product-grid');
+            if (!mobileProductGrid) createMobileGrid();
+        }
+        if (mobileProductGrid) {
+            mobileProductGrid.innerHTML = '';
+            mobileProductGrid.appendChild(mobileFragment);
         }
         
         showStatus(`Loaded ${snapshot.size} products`, 'success');
@@ -1650,6 +1651,104 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e =
         }
     }
 });
+
+// ===== VIEW TOGGLE =====
+let currentView = localStorage.getItem('viewMode') || 'auto'; // auto, table, card
+
+function toggleView() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('viewToggle');
+    if (!toggleBtn) return;
+    
+    const icon = toggleBtn.querySelector('i');
+    const text = toggleBtn.querySelector('span');
+    
+    if (currentView === 'auto') {
+        // Switch to table view
+        currentView = 'table';
+        body.classList.remove('card-mode');
+        body.classList.add('table-mode');
+        icon.className = 'fas fa-id-card';
+        text.textContent = 'Card View';
+        showStatus('Switched to table view', 'info');
+    } else if (currentView === 'table') {
+        // Switch to card view
+        currentView = 'card';
+        body.classList.remove('table-mode');
+        body.classList.add('card-mode');
+        icon.className = 'fas fa-table';
+        text.textContent = 'Table View';
+        showStatus('Switched to card view', 'info');
+    } else {
+        // Switch to auto (responsive)
+        currentView = 'auto';
+        body.classList.remove('table-mode', 'card-mode');
+        
+        // Update icon based on screen size
+        if (window.innerWidth <= 768) {
+            icon.className = 'fas fa-id-card';
+            text.textContent = 'Table View';
+        } else {
+            icon.className = 'fas fa-table';
+            text.textContent = 'Card View';
+        }
+        showStatus('Auto mode (responsive)', 'info');
+    }
+    
+    localStorage.setItem('viewMode', currentView);
+    loadProducts(); // Reload to apply view
+}
+
+// Initialize view on load
+function initializeView() {
+    const body = document.body;
+    const toggleBtn = document.getElementById('viewToggle');
+    if (!toggleBtn) return;
+    
+    const icon = toggleBtn.querySelector('i');
+    const text = toggleBtn.querySelector('span');
+    
+    if (currentView === 'table') {
+        body.classList.add('table-mode');
+        icon.className = 'fas fa-id-card';
+        text.textContent = 'Card View';
+    } else if (currentView === 'card') {
+        body.classList.add('card-mode');
+        icon.className = 'fas fa-table';
+        text.textContent = 'Table View';
+    } else {
+        // Auto mode - responsive
+        if (window.innerWidth <= 768) {
+            icon.className = 'fas fa-id-card';
+            text.textContent = 'Table View';
+        } else {
+            icon.className = 'fas fa-table';
+            text.textContent = 'Card View';
+        }
+    }
+}
+
+// Update view on resize for auto mode
+window.addEventListener('resize', () => {
+    if (currentView === 'auto') {
+        const toggleBtn = document.getElementById('viewToggle');
+        if (!toggleBtn) return;
+        
+        const icon = toggleBtn.querySelector('i');
+        const text = toggleBtn.querySelector('span');
+        
+        if (window.innerWidth <= 768) {
+            icon.className = 'fas fa-id-card';
+            text.textContent = 'Table View';
+        } else {
+            icon.className = 'fas fa-table';
+            text.textContent = 'Card View';
+        }
+    }
+});
+
+// Make function globally available
+window.toggleView = toggleView;
 
 // ===== UTILITY FUNCTIONS =====
 function checkOverflow() {
