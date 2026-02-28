@@ -2952,7 +2952,7 @@ body.card-mode .table-view {
     }
 }
 
-/* ===== MOBILE STACKING - FINAL LAYOUT ===== */
+/* ===== MOBILE STACKING - FIXED ORDER ===== */
 @media screen and (max-width: 600px) {
     /* Header as vertical stack */
     .app-header {
@@ -2961,12 +2961,13 @@ body.card-mode .table-view {
         align-items: center !important;
         height: auto !important;
         min-height: auto !important;
-        padding: 12px !important;
-        gap: 12px !important;
+        padding: 10px !important;
+        gap: 8px !important;
         overflow: visible !important;
+        margin-bottom: 10px !important;
     }
     
-    /* Row 1: Logo + Icons side by side */
+    /* Row 1: Logo on left, icons on right */
     .app-header h2 {
         display: flex !important;
         align-items: center !important;
@@ -2976,7 +2977,7 @@ body.card-mode .table-view {
         font-size: 1.3rem !important;
     }
     
-    /* Icons stay next to logo */
+    /* Icons next to logo */
     .header-controls {
         display: flex !important;
         flex-direction: row !important;
@@ -2987,9 +2988,9 @@ body.card-mode .table-view {
     
     .header-icon-btn,
     .connection-status {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
     }
     
     /* Row 2: Email + Logout in their own row */
@@ -2999,69 +3000,91 @@ body.card-mode .table-view {
         align-items: center !important;
         justify-content: center !important;
         width: 100% !important;
-        max-width: 350px !important;
-        height: 48px !important;
-        margin: 0 auto !important;
-        padding: 4px 16px !important;
+        max-width: 320px !important;
+        height: 44px !important;
+        margin: 4px auto !important;
+        padding: 4px 12px !important;
         background: #f0f2f5 !important;
         border-radius: 40px !important;
-        gap: 12px !important;
-        order: 3 !important; /* Forces it to bottom */
+        gap: 10px !important;
+        order: 2 !important; /* Keeps it above toolbar */
     }
     
     .user-avatar {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
     }
     
     .user-email {
         flex: 1 !important;
-        max-width: 200px !important;
-        font-size: 0.9rem !important;
+        max-width: 180px !important;
+        font-size: 0.85rem !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
         white-space: nowrap !important;
     }
     
     .logout-btn {
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
+        display: flex !important;
+    }
+    
+    /* Make sure toolbar has top margin to clear the stacked header */
+    .toolbar {
+        margin-top: 8px !important;
+        clear: both !important;
+        position: relative !important;
+        z-index: 1 !important;
+    }
+    
+    /* Ensure FAB doesn't interfere */
+    .fab {
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 100 !important;
     }
 }
 
 /* Extra small screens */
 @media screen and (max-width: 380px) {
+    .app-header {
+        padding: 8px !important;
+        gap: 6px !important;
+    }
+    
     .app-header h2 {
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
     }
     
     .header-icon-btn,
     .connection-status {
-        width: 36px !important;
-        height: 36px !important;
+        width: 34px !important;
+        height: 34px !important;
+        min-width: 34px !important;
     }
     
     .user-menu {
-        max-width: 300px !important;
-        height: 44px !important;
-        padding: 2px 12px !important;
+        max-width: 280px !important;
+        height: 40px !important;
+        padding: 2px 8px !important;
     }
     
     .user-avatar {
-        width: 32px !important;
-        height: 32px !important;
+        width: 30px !important;
+        height: 30px !important;
     }
     
     .user-email {
-        max-width: 150px !important;
-        font-size: 0.8rem !important;
+        max-width: 140px !important;
+        font-size: 0.75rem !important;
     }
     
     .logout-btn {
-        width: 32px !important;
-        height: 32px !important;
+        width: 30px !important;
+        height: 30px !important;
     }
 }
 
