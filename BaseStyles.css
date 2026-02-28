@@ -3037,78 +3037,102 @@ body.card-mode .table-view {
     }
 }
 
-/* ===== MOBILE STACKING - POLISHED ===== */
-@media screen and (max-width: 480px) {
+/* ===== ULTIMATE MOBILE STACKING - FORCE OVERRIDE ===== */
+@media screen and (max-width: 600px) {
+    /* Force header to stack vertically */
     .app-header {
+        display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
+        justify-content: center !important;
         height: auto !important;
         min-height: auto !important;
-        padding: 12px !important;
+        padding: 12px 8px !important;
         gap: 12px !important;
-        border: none !important; /* Remove the red test border */
+        flex-wrap: wrap !important;
     }
     
+    /* Center the logo */
     .app-header h2 {
-        margin: 0 !important;
+        width: 100% !important;
         text-align: center !important;
+        margin: 0 0 4px 0 !important;
         font-size: 1.3rem !important;
     }
     
+    /* Controls container - first row (icons) */
     .header-controls {
         display: flex !important;
-        flex-wrap: wrap !important;
+        flex-direction: row !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 8px !important;
+        flex-wrap: wrap !important;
         width: 100% !important;
+        gap: 10px !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
-    /* Keep top row controls nicely sized */
+    /* Keep icons side by side */
     .header-icon-btn,
     .connection-status {
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
+        display: flex !important;
+        width: 42px !important;
+        height: 42px !important;
+        min-width: 42px !important;
+        margin: 0 !important;
     }
     
-    /* User menu (email and logout) stacks below */
+    /* User menu - second row (email and logout) */
     .user-menu {
-        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
         justify-content: center !important;
-        margin-top: 4px !important;
-        padding: 4px 12px !important;
+        align-items: center !important;
+        width: 100% !important;
+        max-width: 280px !important;
         height: 48px !important;
+        margin: 4px auto 0 !important;
+        padding: 4px 12px !important;
         background: #f0f2f5 !important;
         border-radius: 40px !important;
+        gap: 8px !important;
+    }
+    
+    .user-avatar {
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
     }
     
     .user-email {
-        max-width: 200px !important;
         font-size: 0.9rem !important;
+        max-width: 160px !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        white-space: nowrap !important;
+        display: block !important;
     }
     
     .logout-btn {
         width: 36px !important;
         height: 36px !important;
         min-width: 36px !important;
+        display: flex !important;
     }
 }
 
-/* Even smaller screens */
-@media screen and (max-width: 360px) {
-    .app-header {
-        padding: 8px !important;
-        gap: 8px !important;
-    }
-    
+/* Extra small screens */
+@media screen and (max-width: 380px) {
     .header-icon-btn,
     .connection-status {
-        width: 36px !important;
-        height: 36px !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
     }
     
     .user-menu {
+        max-width: 260px !important;
         height: 44px !important;
         padding: 2px 8px !important;
     }
@@ -3116,20 +3140,22 @@ body.card-mode .table-view {
     .user-avatar {
         width: 32px !important;
         height: 32px !important;
+        min-width: 32px !important;
     }
     
     .user-email {
-        max-width: 140px !important;
+        max-width: 130px !important;
         font-size: 0.8rem !important;
     }
     
     .logout-btn {
         width: 32px !important;
         height: 32px !important;
+        min-width: 32px !important;
     }
 }
 
-/* Dark mode support */
+/* Dark mode */
 body.dark-mode .user-menu {
     background: #2d2d2d !important;
 }
