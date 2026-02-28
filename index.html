@@ -303,40 +303,48 @@
       </div>
     </div>
     
-    <!-- Toolbar -->
-    <div class="toolbar">
-      <button class="btn primary" onclick="openNew()">
-        <i class="fas fa-plus"></i> New Product
-      </button>
-      <button id="refreshBtn" class="btn secondary" onclick="refreshData()">
-        <i class="fas fa-sync-alt"></i> Refresh
-      </button>
-      <span id="status" class="status"></span>
-      <!-- Add this to your toolbar, right after the refresh button -->
-      <button id="viewToggle" class="btn secondary" onclick="toggleView()">
-          <i class="fas fa-table"></i> <span>Card View</span>
-      </button>
-    </div>
+   <!-- Toolbar -->
+<div class="toolbar">
+  <button class="btn primary" onclick="openNew()">
+    <i class="fas fa-plus"></i> New Product
+  </button>
+  <button id="refreshBtn" class="btn secondary" onclick="refreshData()">
+    <i class="fas fa-sync-alt"></i> Refresh
+  </button>
+  
+  <!-- View Toggle Button -->
+  <button id="viewToggle" class="btn secondary" onclick="toggleView()">
+    <i class="fas fa-table"></i> <span>Card View</span>
+  </button>
+  
+  <span id="status" class="status"></span>
+</div>
 
-    <!-- Table Container -->
-    <div class="table-container">
-      <table id="productTable">
-        <thead>
-          <tr>
-            <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
-            <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
-            <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
-            <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
-            <th>Final</th><th>Total Final</th><th>Actions</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </div>
-    <div class="scroll-hint">
-      <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
-    </div>
-  </div> <!-- This closes appSection properly -->
+<!-- Table View (desktop) -->
+<div class="table-view active">
+  <div class="table-container">
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
+          <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
+          <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
+          <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
+          <th>Final</th><th>Total Final</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="scroll-hint">
+    <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
+  </div>
+</div>
+
+<!-- Card View (mobile) -->
+<div class="card-view">
+  <div class="mobile-product-grid"></div>
+</div>
   
   <!-- New Product Modal -->
   <div id="newModal" class="modal">
