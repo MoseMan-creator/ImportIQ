@@ -2951,3 +2951,67 @@ body.card-mode .table-view {
         box-shadow: 0 8px 20px rgba(99, 102, 241, 0.2) !important;
     }
 }
+
+/* ===== MOBILE HEADER STACKING ===== */
+@media screen and (max-width: 480px) {
+    .app-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
+        min-height: auto !important;
+        padding: 8px !important;
+        gap: 8px !important;
+    }
+    
+    .app-header h2 {
+        justify-content: center !important;
+        margin-bottom: 4px !important;
+    }
+    
+    .header-controls {
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+    }
+    
+    /* Stack email under the controls */
+    .user-menu {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-top: 4px !important;
+        order: 3 !important; /* Pushes it to bottom */
+    }
+    
+    /* Make email more visible when stacked */
+    .user-email {
+        max-width: 150px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Even smaller screens */
+@media screen and (max-width: 360px) {
+    .header-controls {
+        gap: 4px !important;
+    }
+    
+    .connection-status,
+    .header-icon-btn {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .user-menu {
+        padding: 2px !important;
+    }
+    
+    .user-avatar {
+        width: 32px !important;
+        height: 32px !important;
+    }
+    
+    .user-email {
+        max-width: 120px !important;
+        font-size: 0.8rem !important;
+    }
+}
+
