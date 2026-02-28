@@ -1261,12 +1261,12 @@ function checkMobileView() {
     }
 }
 
-// Render products as cards on mobile
+// Render products as expandable cards on mobile
 function renderMobileProducts() {
     const mobileGrid = document.querySelector('.mobile-product-grid');
     if (!mobileGrid) return;
     
-    // Get products from table (or you can use your data array)
+    // Get products from table
     const tbody = document.querySelector('#productTable tbody');
     const rows = tbody.querySelectorAll('tr');
     
@@ -1276,38 +1276,92 @@ function renderMobileProducts() {
     }
     
     let html = '';
-    rows.forEach(row => {
+    rows.forEach((row, index) => {
         const cells = row.querySelectorAll('td');
         if (cells.length > 1) {
+            const productId = cells[20]?.querySelector('button')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || '';
+            
             html += `
-                <div class="product-card">
-                    <div class="product-card-header">
+                <div class="product-card" data-id="${productId}" data-index="${index}">
+                    <!-- Clickable Header -->
+                    <div class="product-card-header" onclick="toggleCard(this)">
                         <h3>${cells[0]?.textContent || 'Unnamed'}</h3>
                         <span class="product-quantity">Qty: ${cells[1]?.textContent || 1}</span>
+                        <span class="expand-icon"><i class="fas fa-chevron-down"></i></span>
                     </div>
+                    
+                    <!-- Quick Info - Always Visible -->
+                    <div class="product-card-quick-info">
+                        <div class="quick-info-item">
+                            <span class="quick-info-label">Cost</span>
+                            <span class="quick-info-value cost">${cells[3]?.textContent || '$0.00'}</span>
+                        </div>
+                        <div class="quick-info-item">
+                            <span class="quick-info-label">Selling</span>
+                            <span class="quick-info-value selling">${cells[13]?.textContent || '$0.00'}</span>
+                        </div>
+                        <div class="quick-info-item">
+                            <span class="quick-info-label">Profit</span>
+                            <span class="quick-info-value profit">${cells[14]?.textContent || '$0.00'}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Info - Hidden by default -->
                     <div class="product-card-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Cost</span>
-                            <span class="detail-value">${cells[3]?.textContent || '$0.00'}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Landed</span>
-                            <span class="detail-value">${cells[10]?.textContent || '$0.00'}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Selling</span>
-                            <span class="detail-value highlight">${cells[13]?.textContent || '$0.00'}</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Profit</span>
-                            <span class="detail-value positive">${cells[14]?.textContent || '$0.00'}</span>
+                        <div class="details-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Shipping</span>
+                                <span class="detail-value">${cells[4]?.textContent || '$0.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Duty %</span>
+                                <span class="detail-value">${cells[5]?.textContent || '0%'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">VAT %</span>
+                                <span class="detail-value">${cells[6]?.textContent || '0%'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Handling</span>
+                                <span class="detail-value">${cells[7]?.textContent || 'BBD $0.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Declared</span>
+                                <span class="detail-value">${cells[8]?.textContent || '$0.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Rate</span>
+                                <span class="detail-value">${cells[9]?.textContent || '2.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Landed</span>
+                                <span class="detail-value">${cells[10]?.textContent || 'BBD $0.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Carrier</span>
+                                <span class="detail-value">${cells[11]?.textContent || 'BBD $0.00'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Markup</span>
+                                <span class="detail-value">${cells[12]?.textContent || '0%'}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Margin</span>
+                                <span class="detail-value">${cells[15]?.textContent || '0%'}</span>
+                            </div>
+                            <div class="detail-item full-width">
+                                <span class="detail-label">Final Price (inc VAT)</span>
+                                <span class="detail-value highlight">${cells[18]?.textContent || 'BBD $0.00'}</span>
+                            </div>
                         </div>
                     </div>
+                    
+                    <!-- Actions - Only visible when expanded -->
                     <div class="product-card-actions">
-                        <button class="edit-btn" onclick="editProduct('${cells[20]?.querySelector('button')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || ''}')">
+                        <button class="edit-btn" onclick="editProduct('${productId}')">
                             <i class="fas fa-edit"></i> Edit
                         </button>
-                        <button class="delete-btn" onclick="deleteProduct('${cells[20]?.querySelector('button:last-child')?.getAttribute('onclick')?.match(/'([^']+)'/)?.[1] || ''}')">
+                        <button class="delete-btn" onclick="deleteProduct('${productId}')">
                             <i class="fas fa-trash"></i> Delete
                         </button>
                     </div>
@@ -1318,10 +1372,23 @@ function renderMobileProducts() {
     mobileGrid.innerHTML = html;
 }
 
+// Toggle card expansion
+function toggleCard(headerElement) {
+    const card = headerElement.closest('.product-card');
+    card.classList.toggle('expanded');
+    
+    // Optional: Close other cards when opening a new one
+    // const allCards = document.querySelectorAll('.product-card');
+    // allCards.forEach(c => {
+    //     if (c !== card && c.classList.contains('expanded')) {
+    //         c.classList.remove('expanded');
+    //     }
+    // });
+}
+
 // Call on load and resize
 window.addEventListener('load', checkMobileView);
 window.addEventListener('resize', checkMobileView);
-
 // Authentication UI Functions
 function toggleAuthForm(formType) {
     document.querySelectorAll('.auth-form').forEach(form => {
