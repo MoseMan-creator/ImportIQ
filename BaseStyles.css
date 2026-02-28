@@ -2855,3 +2855,39 @@ body.card-mode .card-view {
     padding: 12px 8px !important;
 }
 
+/* ===== FORCE TABLE CONTAINER HEIGHT ===== */
+.table-view {
+    display: block !important;
+    height: auto !important;
+    min-height: 400px !important;
+    width: 100% !important;
+}
+
+.table-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 400px !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+}
+
+/* Ensure app section allows content to expand */
+#appSection {
+    height: auto !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.app-container {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+}
+
+/* Toolbar should not shrink */
+.toolbar {
+    flex-shrink: 0 !important;
+}
