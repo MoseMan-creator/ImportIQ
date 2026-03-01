@@ -3432,3 +3432,110 @@ body.dark-mode .header-icon-btn i {
         font-size: 0.85rem !important;
     }
 }
+
+/* ===== FIX EMAIL AND LOGOUT CONTAINER ===== */
+.user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #f3f4f6 !important;
+    padding: 4px 12px 4px 4px !important;
+    border-radius: 40px !important;
+    flex-shrink: 0 !important;
+    min-width: 200px !important;
+    height: 44px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+}
+
+.user-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3) !important;
+}
+
+.user-email {
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    color: #1e293b !important;
+    text-align: center !important;
+    padding: 0 8px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    max-width: 140px !important;
+    line-height: 1.2 !important;
+}
+
+.logout-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.logout-btn:hover {
+    background: #fee2e2 !important;
+    transform: scale(1.1) !important;
+}
+
+/* Dark mode */
+body.dark-mode .user-menu {
+    background: #2d3748 !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+body.dark-mode .user-email {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .logout-btn {
+    color: #f87171 !important;
+}
+
+body.dark-mode .logout-btn:hover {
+    background: #4b5563 !important;
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 600px) {
+    .user-menu {
+        min-width: 160px !important;
+        height: 40px !important;
+    }
+    
+    .user-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+    }
+    
+    .user-email {
+        max-width: 100px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .logout-btn {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+    }
+}
+
