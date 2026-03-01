@@ -3069,15 +3069,30 @@ body.dark-mode .user-email {
     padding: 16px;
   }
   
+  /* Make logo full width and centered */
+  .app-header h2 {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+  
+  /* Controls in their own row below */
   .header-controls {
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
+    gap: 12px;
+  }
+  
+  /* Ensure dark mode toggle is visible */
+  .header-icon-btn {
+    display: flex !important;
   }
   
   .user-menu {
     width: 100%;
-    max-width: 280px;
+    max-width: 300px;
     justify-content: space-between;
+    margin-top: 4px;
   }
 }
