@@ -4374,3 +4374,297 @@ body.dark-mode .app-header-single .user-email {
         max-width: 280px !important;
     }
 }
+
+/* ===== FINAL HEADER FIX - PROPER SPACING ===== */
+.app-header-single {
+    display: flex !important;
+    flex-direction: column !important;
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    gap: 20px !important;
+}
+
+/* Logo - centered on mobile */
+.app-header-single .app-logo {
+    text-align: center !important;
+    margin: 0 !important;
+    font-size: 1.8rem !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+}
+
+.app-header-single .app-logo i {
+    font-size: 2rem !important;
+}
+
+/* Right side wrapper */
+.app-header-single .header-controls-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+/* Icons row - spread out */
+.app-header-single .header-icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    width: 100% !important;
+}
+
+/* Icon buttons - larger for better touch */
+.app-header-single .header-icon-btn,
+.app-header-single .connection-status {
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.app-header-single .header-icon-btn {
+    background: #f3f4f6 !important;
+    border: none !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.app-header-single .header-icon-btn:hover {
+    background: #e5e7eb !important;
+    transform: scale(1.05) !important;
+}
+
+.app-header-single .header-icon-btn i {
+    font-size: 1.3rem !important;
+}
+
+.app-header-single .connection-status.online {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+.app-header-single .connection-status i {
+    font-size: 1.3rem !important;
+}
+
+/* User menu - full width on mobile with good spacing */
+.app-header-single .user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #f3f4f6 !important;
+    padding: 8px 20px 8px 8px !important;
+    border-radius: 60px !important;
+    width: 100% !important;
+    max-width: 380px !important;
+    margin: 0 auto !important;
+    gap: 12px !important;
+}
+
+.app-header-single .user-avatar {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+}
+
+.app-header-single .user-avatar i {
+    font-size: 1.2rem !important;
+}
+
+.app-header-single .user-email {
+    font-size: 1rem !important;
+    color: #111827 !important;
+    font-weight: 500 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0 12px !important;
+}
+
+.app-header-single .logout-btn {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.app-header-single .logout-btn:hover {
+    background: #fee2e2 !important;
+    transform: scale(1.1) !important;
+}
+
+.app-header-single .logout-btn i {
+    font-size: 1.2rem !important;
+}
+
+/* DESKTOP STYLES - everything spread out properly */
+@media (min-width: 769px) {
+    .app-header-single {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 12px 30px !important;
+        gap: 30px !important;
+    }
+    
+    .app-header-single .app-logo {
+        justify-content: flex-start !important;
+        flex: 0 0 auto !important;
+        font-size: 1.6rem !important;
+    }
+    
+    .app-header-single .header-controls-wrapper {
+        flex-direction: row !important;
+        justify-content: flex-end !important;
+        gap: 30px !important;
+        width: auto !important;
+        flex: 1 !important;
+    }
+    
+    .app-header-single .header-icons {
+        width: auto !important;
+        gap: 16px !important;
+        justify-content: flex-end !important;
+    }
+    
+    .app-header-single .user-menu {
+        width: auto !important;
+        min-width: 280px !important;
+        max-width: 350px !important;
+        margin: 0 !important;
+    }
+    
+    .app-header-single .header-icon-btn,
+    .app-header-single .connection-status {
+        width: 48px !important;
+        height: 48px !important;
+        min-width: 48px !important;
+    }
+}
+
+/* DARK MODE */
+body.dark-mode .app-header-single {
+    background: #1f2937 !important;
+}
+
+body.dark-mode .app-header-single .header-icon-btn {
+    background: #374151 !important;
+}
+
+body.dark-mode .app-header-single .header-icon-btn:hover {
+    background: #4b5563 !important;
+}
+
+body.dark-mode .app-header-single .user-menu {
+    background: #374151 !important;
+}
+
+body.dark-mode .app-header-single .user-email {
+    color: #f9fafb !important;
+}
+
+/* LARGE DESKTOPS - even more spacing */
+@media (min-width: 1200px) {
+    .app-header-single {
+        padding: 16px 40px !important;
+        gap: 50px !important;
+    }
+    
+    .app-header-single .header-controls-wrapper {
+        gap: 40px !important;
+    }
+    
+    .app-header-single .header-icons {
+        gap: 20px !important;
+    }
+    
+    .app-header-single .user-menu {
+        min-width: 320px !important;
+    }
+}
+
+/* SMALL SCREEN SPACING */
+@media (max-width: 480px) {
+    .app-header-single {
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+    
+    .app-header-single .app-logo {
+        font-size: 1.6rem !important;
+    }
+    
+    .app-header-single .header-icons {
+        gap: 16px !important;
+    }
+    
+    .app-header-single .header-icon-btn,
+    .app-header-single .connection-status {
+        width: 48px !important;
+        height: 48px !important;
+    }
+    
+    .app-header-single .user-menu {
+        max-width: 320px !important;
+        padding: 6px 16px 6px 6px !important;
+    }
+    
+    .app-header-single .user-email {
+        font-size: 0.9rem !important;
+        max-width: 140px !important;
+    }
+    
+    .app-header-single .user-avatar {
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .app-header-single .logout-btn {
+        width: 36px !important;
+        height: 36px !important;
+    }
+}
+
+/* EXTRA SMALL SCREENS */
+@media (max-width: 360px) {
+    .app-header-single .user-email {
+        max-width: 100px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .app-header-single .user-menu {
+        max-width: 280px !important;
+    }
+}
