@@ -3563,3 +3563,255 @@ body.dark-mode .user-menu {
 body.dark-mode .user-email {
     color: #f9fafb;
 }
+
+/* ===== TWO-ROW HEADER WITH PROPER STYLING ===== */
+.header-row-1 {
+    background: white;
+    border-radius: 16px 16px 0 0;
+    padding: 16px 20px 8px 20px;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.header-row-2 {
+    background: white;
+    border-radius: 0 0 16px 16px;
+    padding: 12px 20px 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.app-logo {
+    margin: 0;
+    font-size: 1.6rem;
+    background: linear-gradient(135deg, #6366f1, #14b8a6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Dark Mode Toggle - styled like before */
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.icon-btn:hover {
+    background: #e5e7eb;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(99, 102, 241, 0.2);
+}
+
+.icon-btn i {
+    font-size: 1.3rem;
+}
+
+.icon-btn .sun {
+    color: #f59e0b;
+}
+
+.icon-btn .moon {
+    color: #6366f1;
+    display: none;
+}
+
+/* Online status icon */
+.status-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-icon.online {
+    background: #10b981;
+    color: white;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+}
+
+.status-icon i {
+    font-size: 1.3rem;
+}
+
+/* User menu - uses container space properly */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f3f4f6;
+    padding: 6px 20px 6px 6px;
+    border-radius: 50px;
+    flex: 1;
+    max-width: 350px;
+    min-width: 240px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+}
+
+.user-menu:hover {
+    background: #e5e7eb;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #6366f1, #14b8a6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+}
+
+.user-avatar i {
+    font-size: 1.1rem;
+}
+
+.user-email {
+    font-size: 0.95rem;
+    color: #111827;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+    text-align: center;
+    padding: 0 4px;
+}
+
+.logout-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: #fee2e2;
+    transform: scale(1.1);
+}
+
+.logout-btn i {
+    font-size: 1.1rem;
+}
+
+/* Desktop - row 2 spreads out */
+@media (min-width: 769px) {
+    .header-row-2 {
+        justify-content: space-between;
+        gap: 24px;
+    }
+    
+    .user-menu {
+        flex: 0 1 auto;
+        min-width: 260px;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .header-row-2 {
+        gap: 16px;
+    }
+    
+    .icon-btn, .status-icon {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .user-menu {
+        width: 100%;
+        max-width: 320px;
+        padding: 5px 16px 5px 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header-row-2 {
+        gap: 12px;
+    }
+    
+    .icon-btn, .status-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .icon-btn i, .status-icon i {
+        font-size: 1.1rem;
+    }
+    
+    .user-menu {
+        padding: 4px 12px 4px 4px;
+    }
+    
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .user-email {
+        font-size: 0.85rem;
+        max-width: 100px;
+    }
+    
+    .logout-btn {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+/* Dark mode */
+body.dark-mode .header-row-1,
+body.dark-mode .header-row-2 {
+    background: #1f2937;
+}
+
+body.dark-mode .icon-btn {
+    background: #374151;
+}
+
+body.dark-mode .icon-btn:hover {
+    background: #4b5563;
+}
+
+body.dark-mode .user-menu {
+    background: #374151;
+}
+
+body.dark-mode .user-menu:hover {
+    background: #4b5563;
+}
+
+body.dark-mode .user-email {
+    color: #f9fafb;
+}
