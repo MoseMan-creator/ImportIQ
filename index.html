@@ -267,35 +267,36 @@
 
 <!-- Main App -->
 <div id="appSection" class="app-container" style="display: none;">
-  <!-- Header -->
-  <div class="app-header">
-    <h2>
+  <!-- HEADER ROW 1: Logo only -->
+  <div class="header-row-1">
+    <h1 class="app-logo">
       <i class="fas fa-chart-line"></i>
       <span>ImportIQ</span>
-    </h2>
+    </h1>
+  </div>
+  
+  <!-- HEADER ROW 2: All controls -->
+  <div class="header-row-2">
+    <!-- Dark Mode Toggle -->
+    <button class="icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
+      <i class="fas fa-sun sun"></i>
+      <i class="fas fa-moon moon"></i>
+    </button>
     
-    <div class="header-controls">
-      <!-- Dark Mode Toggle -->
-      <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
-        <i class="fas fa-sun sun"></i>
-        <i class="fas fa-moon moon"></i>
+    <!-- Connection Status -->
+    <div id="connectionStatus" class="status-icon online" title="Online">
+      <i class="fas fa-wifi"></i>
+    </div>
+    
+    <!-- User Menu -->
+    <div class="user-menu">
+      <div class="user-avatar">
+        <i class="fas fa-user"></i>
+      </div>
+      <span class="user-email" id="userEmail">david.moseley7503@gmail.com</span>
+      <button class="logout-btn" onclick="logout()" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
       </button>
-      
-      <!-- Connection Status -->
-      <div id="connectionStatus" class="connection-status online" title="Online">
-        <i class="fas fa-wifi"></i>
-      </div>
-      
-      <!-- User Menu -->
-      <div class="user-menu">
-        <div class="user-avatar">
-          <i class="fas fa-user"></i>
-        </div>
-        <span class="user-email" id="userEmail"></span>
-        <button class="logout-btn" onclick="logout()" title="Logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </button>
-      </div>
     </div>
   </div>
   
@@ -312,7 +313,7 @@
     </button>
     <span id="status" class="status"></span>
   </div>
-
+  
  <!-- Table View -->
 <div class="table-view">
   <div class="table-container">
