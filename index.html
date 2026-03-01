@@ -268,41 +268,40 @@
  <!-- Main App -->
 <div id="appSection" class="app-container" style="display: none;">
   <!-- HEADER -->
-  <div class="app-header">
-    <!-- Row 1: Logo (centered on mobile, left on desktop) -->
-    <div class="header-row logo-row">
-      <h1 class="app-logo">
-        <i class="fas fa-chart-line"></i>
-        <span>ImportIQ</span>
-      </h1>
+ <!-- SINGLE ROW: Logo + Icons + User Menu all in one line -->
+<div class="app-header-single">
+  <!-- Logo on left -->
+  <h1 class="app-logo">
+    <i class="fas fa-chart-line"></i>
+    <span>ImportIQ</span>
+  </h1>
+  
+  <!-- Right side wrapper for icons and user menu -->
+  <div class="header-controls-wrapper">
+    <!-- Icons -->
+    <div class="header-icons">
+      <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
+        <i class="fas fa-sun sun"></i>
+        <i class="fas fa-moon moon"></i>
+      </button>
+      
+      <div id="connectionStatus" class="connection-status online" title="Online">
+        <i class="fas fa-wifi"></i>
+      </div>
     </div>
     
-    <!-- Row 2: Controls + User (centered) -->
-    <div class="header-row controls-row">
-      <!-- Dark mode + Online indicator -->
-      <div class="header-icons">
-        <button class="icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
-          <i class="fas fa-sun sun"></i>
-          <i class="fas fa-moon moon"></i>
-        </button>
-        
-        <div id="connectionStatus" class="status-icon online" title="Online">
-          <i class="fas fa-wifi"></i>
-        </div>
+    <!-- User menu -->
+    <div class="user-menu">
+      <div class="user-avatar">
+        <i class="fas fa-user"></i>
       </div>
-      
-      <!-- User info (avatar, email, logout) -->
-      <div class="user-info">
-        <div class="user-avatar">
-          <i class="fas fa-user"></i>
-        </div>
-        <span class="user-email" id="userEmail">david.moseley7503@gmail.com</span>
-        <button class="logout-btn" onclick="logout()" title="Logout">
-          <i class="fas fa-sign-out-alt"></i>
-        </button>
-      </div>
+      <span class="user-email" id="userEmail"></span>
+      <button class="logout-btn" onclick="logout()" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
     </div>
   </div>
+</div>
   
   <!-- TOOLBAR -->
   <div class="toolbar">
