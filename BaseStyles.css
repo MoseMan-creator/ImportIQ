@@ -3539,3 +3539,63 @@ body.dark-mode .logout-btn:hover {
     }
 }
 
+/* ===== FIXED USER MENU - NO NESTING ===== */
+.user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #f3f4f6 !important;
+    padding: 4px 12px 4px 4px !important;
+    border-radius: 40px !important;
+    flex-shrink: 0 !important;
+    min-width: 200px !important;
+    height: 44px !important;
+}
+
+.user-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+}
+
+.user-email {
+    font-size: 0.9rem !important;
+    color: #1e293b !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    flex: 1 !important;
+    max-width: 140px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.logout-btn {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+/* Dark mode */
+body.dark-mode .user-menu {
+    background: #374151 !important;
+}
+
+body.dark-mode .user-email {
+    color: #f9fafb !important;
+}
