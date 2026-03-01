@@ -3097,15 +3097,48 @@ body.dark-mode .user-email {
   }
 }
 
-/* Table and Card Views */
-.table-view, .card-view {
-  display: none;
-}
-
-.table-view.active, .card-view.active {
-  display: block;
+/* ===== VIEW TOGGLE STYLES ===== */
+.table-view {
+    display: block !important;
 }
 
 .card-view {
-  padding: 8px 0;
+    display: none !important;
+}
+
+/* When in card mode */
+body.card-mode .table-view {
+    display: none !important;
+}
+
+body.card-mode .card-view {
+    display: block !important;
+}
+
+/* When in table mode */
+body.table-mode .table-view {
+    display: block !important;
+}
+
+body.table-mode .card-view {
+    display: none !important;
+}
+
+/* Auto mode (responsive) - default */
+@media (max-width: 768px) {
+    .table-view {
+        display: none !important;
+    }
+    .card-view {
+        display: block !important;
+    }
+}
+
+@media (min-width: 769px) {
+    .table-view {
+        display: block !important;
+    }
+    .card-view {
+        display: none !important;
+    }
 }
