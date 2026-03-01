@@ -3946,3 +3946,188 @@ body.dark-mode .user-email {
     max-width: 120px;
   }
 }
+
+/* ===== SIMPLE HEADER FIX ===== */
+.app-header-single {
+    display: flex !important;
+    flex-direction: column !important;
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 16px !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Logo row - always centered */
+.app-header-single .app-logo {
+    text-align: center !important;
+    margin: 0 0 12px 0 !important;
+    font-size: 1.5rem !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.app-header-single .app-logo i {
+    margin-right: 8px !important;
+}
+
+/* Controls container - for desktop layout */
+.app-header-single .header-controls-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 12px !important;
+}
+
+/* Icons row */
+.app-header-single .header-icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+}
+
+/* Icon buttons */
+.app-header-single .header-icon-btn,
+.app-header-single .connection-status {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.app-header-single .header-icon-btn {
+    background: #f3f4f6 !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.app-header-single .connection-status.online {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+/* User menu */
+.app-header-single .user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #f3f4f6 !important;
+    padding: 4px 12px 4px 4px !important;
+    border-radius: 40px !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    margin: 0 auto !important;
+}
+
+.app-header-single .user-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+}
+
+.app-header-single .user-email {
+    font-size: 0.9rem !important;
+    color: #111827 !important;
+    font-weight: 500 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 0 8px !important;
+}
+
+.app-header-single .logout-btn {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+    .app-header-single {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 12px 20px !important;
+    }
+    
+    .app-header-single .app-logo {
+        margin: 0 !important;
+        text-align: left !important;
+        flex-shrink: 0 !important;
+    }
+    
+    /* Create a right-side container for icons + user menu */
+    .app-header-single .header-controls-wrapper {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        width: auto !important;
+        gap: 16px !important;
+    }
+    
+    .app-header-single .header-icons {
+        width: auto !important;
+        justify-content: flex-end !important;
+        order: 1 !important;
+    }
+    
+    .app-header-single .user-menu {
+        width: auto !important;
+        margin: 0 !important;
+        order: 2 !important;
+        max-width: 300px !important;
+    }
+}
+
+/* Dark mode */
+body.dark-mode .app-header-single {
+    background: #1f2937 !important;
+}
+
+body.dark-mode .app-header-single .header-icon-btn {
+    background: #374151 !important;
+}
+
+body.dark-mode .app-header-single .user-menu {
+    background: #374151 !important;
+}
+
+body.dark-mode .app-header-single .user-email {
+    color: #f9fafb !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+    .app-header-single .user-menu {
+        max-width: 280px !important;
+    }
+    
+    .app-header-single .user-email {
+        max-width: 120px !important;
+        font-size: 0.85rem !important;
+    }
+}
