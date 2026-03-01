@@ -15,21 +15,21 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   
- <!-- PWA Manifest - FIXED -->
-<link rel="manifest" href="data:application/manifest+json,{
-  &quot;name&quot;: &quot;ImportIQ&quot;,
-  &quot;short_name&quot;: &quot;ImportIQ&quot;,
-  &quot;description&quot;: &quot;Smart Import Cost Calculator&quot;,
-  &quot;start_url&quot;: &quot;/ImportIQ/&quot;,
-  &quot;display&quot;: &quot;standalone&quot;,
-  &quot;background_color&quot;: &quot;#0f172a&quot;,
-  &quot;theme_color&quot;: &quot;#6366f1&quot;,
-  &quot;icons&quot;: [{
-    &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%8A%3C/text%3E%3C/svg%3E&quot;,
-    &quot;sizes&quot;: &quot;192x192&quot;,
-    &quot;type&quot;: &quot;image/svg+xml&quot;
-  }]
-}">
+  <!-- PWA Manifest - FIXED -->
+  <link rel="manifest" href="data:application/manifest+json,{
+    &quot;name&quot;: &quot;ImportIQ&quot;,
+    &quot;short_name&quot;: &quot;ImportIQ&quot;,
+    &quot;description&quot;: &quot;Smart Import Cost Calculator&quot;,
+    &quot;start_url&quot;: &quot;/ImportIQ/&quot;,
+    &quot;display&quot;: &quot;standalone&quot;,
+    &quot;background_color&quot;: &quot;#0f172a&quot;,
+    &quot;theme_color&quot;: &quot;#6366f1&quot;,
+    &quot;icons&quot;: [{
+      &quot;src&quot;: &quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📊%3C/text%3E%3C/svg%3E&quot;,
+      &quot;sizes&quot;: &quot;192x192&quot;,
+      &quot;type&quot;: &quot;image/svg+xml&quot;
+    }]
+  }">
 
   <!-- Theme Color -->
   <meta name="theme-color" content="#6366f1">
@@ -100,7 +100,7 @@
       
       <!-- Right Side - Auth Forms -->
       <div class="auth-card">
-        <!-- Login Form (default) -->
+        <!-- Login Form -->
         <div id="loginForm" class="auth-form active">
           <div class="auth-header">
             <h2>Welcome back</h2>
@@ -141,12 +141,10 @@
               </span>
             </button>
 
-            <!-- Divider -->
             <div class="divider">
               <span class="divider-text">OR</span>
             </div>
             
-            <!-- Google Sign-In Button -->
             <button onclick="googleSignInLogin()" class="btn google-btn" id="googleSignInBtn">
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
               <span>Continue with Google</span>
@@ -218,12 +216,10 @@
               </span>
             </button>
 
-            <!-- Divider -->
             <div class="divider">
               <span class="divider-text">OR</span>
             </div>
             
-            <!-- Google Sign-Up Button (use same function) -->
             <button onclick="googleSignInSignup()" class="btn google-btn" id="googleSignUpBtn">
               <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
               <span>Sign up with Google</span>
@@ -269,86 +265,82 @@
     <div id="toastContainer" class="toast-container"></div>
   </div>
 
-<!-- Main App -->
-<div id="appSection" class="app-container" style="display: none;">
+  <!-- Main App -->
+  <div id="appSection" class="app-container" style="display: none;">
     <!-- SINGLE ROW: Logo + Icons + User Menu all in one line -->
     <div class="app-header-single">
-        <!-- Logo on left -->
-        <h1 class="app-logo">
-            <i class="fas fa-chart-line"></i>
-            <span>ImportIQ</span>
-        </h1>
+      <!-- Logo on left -->
+      <h1 class="app-logo">
+        <i class="fas fa-chart-line"></i>
+        <span>ImportIQ</span>
+      </h1>
+      
+      <!-- Icons in middle (centered) -->
+      <div class="header-icons">
+        <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
+          <i class="fas fa-sun sun"></i>
+          <i class="fas fa-moon moon"></i>
+        </button>
         
-        <!-- Icons in middle (centered) -->
-        <div class="header-icons">
-            <button class="header-icon-btn" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
-                <i class="fas fa-sun sun"></i>
-                <i class="fas fa-moon moon"></i>
-            </button>
-            
-            <div id="connectionStatus" class="connection-status online" title="Online">
-                <i class="fas fa-wifi"></i>
-            </div>
+        <div id="connectionStatus" class="connection-status online" title="Online">
+          <i class="fas fa-wifi"></i>
         </div>
-        
-        <!-- User menu on right -->
-        <div class="user-menu">
-          <div class="user-avatar">
-              <i class="fas fa-user"></i>
-          </div>
-          <span class="user-email" id="userEmail"></span>
-          <button class="logout-btn" onclick="logout()" title="Logout">
-              <i class="fas fa-sign-out-alt"></i>
-          </button>
       </div>
+      
+      <!-- User menu on right -->
+      <div class="user-menu">
+        <div class="user-avatar">
+          <i class="fas fa-user"></i>
+        </div>
+        <span class="user-email" id="userEmail"></span>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
     
     <!-- Toolbar -->
     <div class="toolbar">
-        <button class="btn primary" onclick="openNew()">
-            <i class="fas fa-plus"></i> New Product
-        </button>
-        <button id="refreshBtn" class="btn secondary" onclick="refreshData()">
-            <i class="fas fa-sync-alt"></i> Refresh
-        </button>
-        <button id="viewToggle" class="btn secondary" onclick="toggleView()">
-            <i class="fas fa-table"></i> <span>Card View</span>
-        </button>
-        <span id="status" class="status"></span>
+      <button class="btn primary" onclick="openNew()">
+        <i class="fas fa-plus"></i> New Product
+      </button>
+      <button id="refreshBtn" class="btn secondary" onclick="refreshData()">
+        <i class="fas fa-sync-alt"></i> Refresh
+      </button>
+      <button id="viewToggle" class="btn secondary" onclick="toggleView()">
+        <i class="fas fa-table"></i> <span>Card View</span>
+      </button>
+      <span id="status" class="status"></span>
     </div>
 
-    <!-- Table Container -->
+    <!-- Table View -->
     <div class="table-view active">
-        <div class="table-container">
-            <table id="productTable">
-                <thead>
-                    <tr>
-                        <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
-                        <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
-                        <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
-                        <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
-                        <th>Final</th><th>Total Final</th><th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-        </div>
+      <div class="table-container">
+        <table id="productTable">
+          <thead>
+            <tr>
+              <th>Item</th><th>Qty</th><th>Link</th><th>Cost</th><th>Shipping</th>
+              <th>Duty%</th><th>VAT%</th><th>Handling</th><th>Declared</th><th>Rate</th>
+              <th>Landed</th><th>Carrier</th><th>Markup%</th><th>Selling</th>
+              <th>Profit</th><th>Margin%</th><th>VAT Apply</th><th>VAT Amt</th>
+              <th>Final</th><th>Total Final</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
     
     <!-- Card View -->
     <div class="card-view">
-        <div class="mobile-product-grid"></div>
+      <div class="mobile-product-grid"></div>
     </div>
     
     <div class="scroll-hint">
-        <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
+      <i class="fas fa-arrow-right"></i> Scroll to see more columns <i class="fas fa-arrow-left"></i>
     </div>
-</div>
-  
-<!-- Card View (mobile) -->
-<div class="card-view">
-  <div class="mobile-product-grid"></div>
-</div>
-  
+  </div>
+
   <!-- New Product Modal -->
   <div id="newModal" class="modal">
     <div class="modal-content">
@@ -620,11 +612,11 @@
     </div>
   </div>
 
-  <!-- Floating Action Button - CORRECT VERSION -->
-    <button class="fab" onclick="openNew()" aria-label="Add new product">
-        <i class="fas fa-plus"></i>
-        <span class="tooltip">Add New Product</span>
-    </button>
+  <!-- Floating Action Button -->
+  <button class="fab" onclick="openNew()" aria-label="Add new product">
+    <i class="fas fa-plus"></i>
+    <span class="tooltip">Add New Product</span>
+  </button>
   
   <!-- Scripts -->
   <script src="firebase-config.js"></script>
