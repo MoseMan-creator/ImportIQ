@@ -3142,3 +3142,74 @@ body.table-mode .card-view {
         display: none !important;
     }
 }
+
+/* ===== MEDIUM SCREEN FIX - KEEP IN ROW ===== */
+@media screen and (max-width: 992px) and (min-width: 769px) {
+    .app-header {
+        padding: 12px 16px !important;
+        gap: 12px !important;
+    }
+    
+    .app-header h2 {
+        font-size: 1.2rem !important;
+        gap: 6px !important;
+    }
+    
+    .header-controls {
+        gap: 8px !important;
+    }
+    
+    .header-icon-btn, 
+    .connection-status {
+        width: 36px !important;
+        height: 36px !important;
+    }
+    
+    .user-menu {
+        padding: 3px 10px 3px 3px !important;
+        gap: 6px !important;
+    }
+    
+    .user-avatar {
+        width: 30px !important;
+        height: 30px !important;
+    }
+    
+    .user-email {
+        max-width: 100px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    .logout-btn {
+        width: 28px !important;
+        height: 28px !important;
+    }
+}
+
+/* Keep mobile stacking for small screens */
+@media screen and (max-width: 768px) {
+    .app-header {
+        flex-direction: column !important;
+        gap: 16px !important;
+        padding: 16px !important;
+    }
+    
+    .app-header h2 {
+        width: 100% !important;
+        text-align: center !important;
+        justify-content: center !important;
+    }
+    
+    .header-controls {
+        width: 100% !important;
+        justify-content: center !important;
+        flex-wrap: wrap !important;
+        gap: 12px !important;
+    }
+    
+    .user-menu {
+        width: 100% !important;
+        max-width: 320px !important;
+        margin: 0 auto !important;
+    }
+}
