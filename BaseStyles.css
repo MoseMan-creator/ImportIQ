@@ -3096,3 +3096,16 @@ body.dark-mode .user-email {
     margin-top: 4px;
   }
 }
+
+/* Table and Card Views */
+.table-view, .card-view {
+  display: none;
+}
+
+.table-view.active, .card-view.active {
+  display: block;
+}
+
+.card-view {
+  padding: 8px 0;
+}
