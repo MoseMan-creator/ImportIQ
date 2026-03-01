@@ -3599,3 +3599,184 @@ body.dark-mode .user-menu {
 body.dark-mode .user-email {
     color: #f9fafb !important;
 }
+
+/* ===== FIXED HEADER LAYOUT ===== */
+.app-header-single {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 8px 20px !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    width: 100% !important;
+    min-height: 64px !important;
+}
+
+/* Logo - properly sized */
+.app-header-single h2 {
+    margin: 0 !important;
+    font-size: 1.4rem !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Icons container */
+.app-header-single > div:nth-child(2) {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 0 10px !important;
+}
+
+/* Icon buttons */
+.app-header-single button[onclick*="toggleDarkMode"] {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+}
+
+/* Online indicator */
+.app-header-single > div:nth-child(2) > div:last-child {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+}
+
+/* User menu - FIXED */
+.app-header-single > div:last-child {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: #f3f4f6 !important;
+    padding: 4px 8px 4px 4px !important;
+    border-radius: 40px !important;
+    flex-shrink: 0 !important;
+    max-width: 260px !important;
+    min-width: 200px !important;
+    height: 44px !important;
+}
+
+/* Avatar - properly sized */
+.app-header-single > div:last-child > div:first-child {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+}
+
+/* Email - properly sized and visible */
+.app-header-single > div:last-child > span {
+    font-size: 0.9rem !important;
+    color: #111827 !important;
+    font-weight: 500 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    min-width: 80px !important;
+    max-width: 120px !important;
+    line-height: 1.2 !important;
+}
+
+/* Logout button - properly sized */
+.app-header-single > div:last-child > button {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: none !important;
+    color: #ef4444 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .app-header-single {
+    background: #1f2937 !important;
+}
+
+body.dark-mode .app-header-single > div:last-child {
+    background: #374151 !important;
+}
+
+body.dark-mode .app-header-single > div:last-child > span {
+    color: #f9fafb !important;
+}
+
+body.dark-mode .app-header-single button[onclick*="toggleDarkMode"] {
+    background: #4b5563 !important;
+}
+
+body.dark-mode .app-header-single button[onclick*="toggleDarkMode"] i {
+    color: #e5e7eb !important;
+}
+
+/* Large screen fixes */
+@media screen and (min-width: 1200px) {
+    .app-header-single {
+        padding: 8px 30px !important;
+    }
+    
+    .app-header-single > div:last-child {
+        max-width: 300px !important;
+    }
+    
+    .app-header-single > div:last-child > span {
+        max-width: 160px !important;
+        font-size: 0.95rem !important;
+    }
+}
+
+/* Mobile adjustments */
+@media screen and (max-width: 768px) {
+    .app-header-single {
+        flex-wrap: wrap !important;
+        height: auto !important;
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+    
+    .app-header-single h2 {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    .app-header-single > div:nth-child(2) {
+        margin: 0 auto !important;
+    }
+    
+    .app-header-single > div:last-child {
+        width: 100% !important;
+        max-width: 280px !important;
+        margin: 0 auto !important;
+    }
+}
+
