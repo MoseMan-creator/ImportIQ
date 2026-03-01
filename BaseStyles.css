@@ -3213,3 +3213,142 @@ body.table-mode .card-view {
         margin: 0 auto !important;
     }
 }
+
+/* ===== HEADER RESPONSIVE FIXES ===== */
+.app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    border-radius: 16px;
+    padding: 12px 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Large screens - everything in one row */
+@media (min-width: 993px) {
+    .app-header {
+        flex-direction: row;
+    }
+}
+
+/* Medium screens (tablets) - keep in row but adjust sizes */
+@media (max-width: 992px) and (min-width: 769px) {
+    .app-header {
+        padding: 10px 16px;
+        gap: 10px;
+    }
+    
+    .app-header h2 {
+        font-size: 1.1rem;
+        white-space: nowrap;
+    }
+    
+    .header-controls {
+        gap: 6px;
+    }
+    
+    .header-icon-btn, 
+    .connection-status {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+    
+    .user-menu {
+        padding: 3px 8px 3px 3px;
+        gap: 4px;
+    }
+    
+    .user-avatar {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+    }
+    
+    .user-email {
+        max-width: 80px;
+        font-size: 0.75rem;
+    }
+    
+    .logout-btn {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+    }
+}
+
+/* Small screens (phones) - stack vertically */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 16px;
+        gap: 16px;
+    }
+    
+    .app-header h2 {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+        font-size: 1.3rem;
+    }
+    
+    .header-controls {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .user-menu {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+        padding: 4px 12px 4px 4px;
+    }
+    
+    .user-email {
+        max-width: 140px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .app-header {
+        padding: 12px;
+    }
+    
+    .header-controls {
+        gap: 8px;
+    }
+    
+    .user-menu {
+        max-width: 260px;
+    }
+    
+    .user-email {
+        max-width: 100px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Dark mode support */
+body.dark-mode .app-header {
+    background: #1f2937;
+}
+
+body.dark-mode .header-icon-btn {
+    background: #374151;
+}
+
+body.dark-mode .user-menu {
+    background: #374151;
+}
+
+body.dark-mode .user-email {
+    color: #f9fafb;
+}
