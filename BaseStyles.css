@@ -3815,3 +3815,22 @@ body.dark-mode .user-menu:hover {
 body.dark-mode .user-email {
     color: #f9fafb;
 }
+
+/* ===== VERTICAL ALIGNMENT FIX FOR EMAIL ===== */
+.user-email {
+    display: flex !important;
+    align-items: center !important;
+    height: 100% !important;
+    line-height: 1.2 !important;
+    margin: 0 !important;
+    padding: 0 8px !important;
+    align-self: center !important;
+}
+
+.user-menu {
+    align-items: center !important;
+}
+
+.user-avatar, .logout-btn {
+    align-self: center !important;
+}
