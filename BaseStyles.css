@@ -3244,3 +3244,191 @@ body.dark-mode .header-icon-btn {
         max-width: 120px !important;
     }
 }
+
+/* ===== SINGLE ROW HEADER - CENTERED EMAIL WITH VISIBLE TEXT ===== */
+.app-header-single {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: white !important;
+    border-radius: 16px !important;
+    padding: 8px 16px !important;
+    margin-bottom: 16px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    width: 100% !important;
+    min-height: 60px !important;
+}
+
+/* Logo on left */
+.app-logo {
+    margin: 0 !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Icons in middle */
+.header-icons {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex: 1 !important;
+    justify-content: center !important;
+}
+
+.header-icon-btn,
+.connection-status {
+    width: 40px !important;
+    height: 40px !important;
+    min-width: 40px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.header-icon-btn {
+    background: #f3f4f6 !important;
+    border: none !important;
+    cursor: pointer !important;
+}
+
+.connection-status.online {
+    background: #10b981 !important;
+    color: white !important;
+}
+
+/* User menu on right - PERFECTLY CENTERED */
+.user-menu {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    background: #f3f4f6 !important;
+    padding: 4px 12px 4px 4px !important;
+    border-radius: 40px !important;
+    flex-shrink: 0 !important;
+    min-width: 200px !important;
+}
+
+.user-avatar {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    background: linear-gradient(135deg, #6366f1, #14b8a6) !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: white !important;
+    font-size: 0.9rem !important;
+}
+
+/* EMAIL - HIGHLY VISIBLE */
+.user-email {
+    font-size: 0.95rem !important;
+    font-weight: 600 !important;
+    color: #0f172a !important; /* Dark blue-gray - very readable */
+    background: rgba(255, 255, 255, 0.5) !important;
+    padding: 4px 8px !important;
+    border-radius: 20px !important;
+    text-align: center !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    flex: 1 !important;
+    max-width: 150px !important;
+    letter-spacing: 0.3px !important;
+}
+
+/* LOGOUT BUTTON - STAND OUT */
+.logout-btn {
+    width: 34px !important;
+    height: 34px !important;
+    min-width: 34px !important;
+    border-radius: 50% !important;
+    background: rgba(239, 68, 68, 0.1) !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    color: #dc2626 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+.logout-btn:hover {
+    background: #ef4444 !important;
+    color: white !important;
+    transform: scale(1.05) !important;
+}
+
+/* DARK MODE - Ensure email is still visible */
+body.dark-mode .app-header-single {
+    background: #1f2937 !important;
+}
+
+body.dark-mode .user-menu {
+    background: #374151 !important;
+}
+
+body.dark-mode .user-email {
+    color: #f8fafc !important; /* Off-white for dark mode */
+    background: rgba(0, 0, 0, 0.3) !important;
+    font-weight: 500 !important;
+}
+
+body.dark-mode .logout-btn {
+    background: rgba(239, 68, 68, 0.2) !important;
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    color: #fca5a5 !important;
+}
+
+body.dark-mode .logout-btn:hover {
+    background: #ef4444 !important;
+    color: white !important;
+}
+
+body.dark-mode .header-icon-btn {
+    background: #4b5563 !important;
+}
+
+body.dark-mode .header-icon-btn i {
+    color: #e5e7eb !important;
+}
+
+/* Mobile responsiveness */
+@media screen and (max-width: 600px) {
+    .app-header-single {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        padding: 12px !important;
+    }
+    
+    .app-logo {
+        width: 100% !important;
+        justify-content: center !important;
+        margin-bottom: 5px !important;
+    }
+    
+    .header-icons {
+        width: auto !important;
+        flex: 1 !important;
+        justify-content: center !important;
+    }
+    
+    .user-menu {
+        min-width: 180px !important;
+    }
+    
+    .user-email {
+        max-width: 110px !important;
+        font-size: 0.85rem !important;
+    }
+}
